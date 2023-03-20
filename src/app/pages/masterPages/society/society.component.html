@@ -1,0 +1,159 @@
+<div class="p-3">
+    <div class="theme-container">
+        <mat-card ngClass.lt-lg="p-0">
+            <!--[formGroup]="submitForm"-->
+            <mat-card-title class="fw-500 text-center">
+                Project
+            </mat-card-title>
+            <mat-card-content fxLayout="row wrap">
+                <div fxFlex="25" fxLayout="row wrap" class="px-2">
+                </div>
+                <div fxFlex="50" class="px-2" fxLayout="row wrap">
+                <form [formGroup]="societyForm" fxLayout="row wrap">
+                    <div fxFlex="50" class="px-2">
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>Project Name</mat-label>
+                            <input matInput placeholder="Property type" formControlName="society">
+                            <mat-error *ngIf="societyForm.controls.society.errors?.required">Project Name is Required</mat-error>
+
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="50" class="px-2">
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>City</mat-label>
+                            <mat-select placeholder="Select City..." formControlName="city" (selectionChange)="selectCity($event.value)">
+                                <mat-option *ngFor="let city of cities" [value]="city.city_id" >
+                                    {{city.city}}
+                                </mat-option>
+                                
+                            </mat-select>
+                            <mat-error *ngIf="societyForm.controls.city.errors?.required">City is Required</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="50"  class="px-2">
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>Locality</mat-label>
+                            <mat-select placeholder="Select Locality..." formControlName="neighborhood" (selectionChange)="selectNeighborhood($event.value)">
+                                <mat-option *ngFor="let neighborhood of neighborhoods" [value]="neighborhood.neighborhood_id">
+                                    {{neighborhood.neighborhood}}
+                                </mat-option>
+                                
+                            </mat-select>
+                            <mat-error *ngIf="societyForm.controls.neighborhood.errors?.required">Neighborhood is Required</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="50" class="px-2">
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>Street</mat-label>
+                            <mat-select placeholder="Select Street..." formControlName="streets">
+                                <mat-option *ngFor="let street of streets" [value]="street.street_id">
+                                    {{street.street}}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="societyForm.controls.streets.errors?.required">Streets is Required</mat-error>
+
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="100" fxFlex.gt-xs="50" class="px-2">
+                        <mat-form-field appearance="outline" class="w-100">
+                          <mat-icon matPrefix class="mr-1 text-muted">location_on</mat-icon>
+                          <mat-label>Address</mat-label>
+                          <input matInput placeholder="Enter a Address" autocomplete="off" formControlName="location">
+                          <mat-error *ngIf="societyForm.controls.location.errors?.required">Location is Required</mat-error>
+
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="100" fxFlex.gt-xs="50" class="px-2">
+                        <mat-form-field appearance="outline" class="w-100">
+                          <mat-label>Zip Code</mat-label>
+                          <input matInput placeholder="exp. 98104" autocomplete="off" formControlName="pin">
+                          <mat-error *ngIf="societyForm.controls.pin.errors?.required">pin is Required</mat-error>
+
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="100" fxlayoutalign="center center" class="p-2"
+                        ng-reflect-fx-layout="row" ng-reflect-fx-layout-align="center center"
+                        style="flex-direction: row; box-sizing: border-box; display: flex; place-content: center; align-items: center;">
+                        <button mat-raised-button="" 
+                            class="mat-focus-indicator uppercase mx-1 mat-raised-button mat-button-base"
+                            style="background: #ffe241;" (click)="submit()">
+                            <span class="mat-button-wrapper">submit</span>
+                        </button>
+                        
+                    </div>
+                </form>
+                </div>
+                <div fxFlex="25" class="px-2">
+                </div>
+                <div fxFlex="100" class="px-2">
+                    <mat-form-field appearance="standard">
+                        <mat-label>Filter</mat-label>
+                        <input matInput (keyup)="applyFilter($event)" placeholder="Ex. name" #input>
+                    </mat-form-field>
+                    <div class="mat-elevation-z8">
+                        <table mat-table [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)"
+                            class="mat-elevation-z8">
+                            <ng-container matColumnDef="position">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                    sortActionDescription="Sort by position"> No. </th>
+                                <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="society">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                    sortActionDescription="Sort by society"> Project Name </th>
+                                <td mat-cell *matCellDef="let element"> {{element.society}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="location">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                    sortActionDescription="Sort by location">Project Location</th>
+                                <td mat-cell *matCellDef="let element"> {{element.location}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="neighborhood">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                    sortActionDescription="Sort by neighborhood">Project Locality</th>
+                                <td mat-cell *matCellDef="let element"> {{element.neighborhood_name}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="street">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                    sortActionDescription="Sort by street">Project Street</th>
+                                <td mat-cell *matCellDef="let element"> {{element.streets_name}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="city">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                    sortActionDescription="Sort by city">Project City</th>
+                                <td mat-cell *matCellDef="let element"> {{element.city_name}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="Action">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                    sortActionDescription="Sort by Action">Edit</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <button mat-stroked-button (click)="editData(element)" 
+                                                style="background: green;" class=" mx-1 my-1">
+                                            <i class="material-icons" style="color: white;">edit</i>
+                                        </button>
+                                        <button mat-stroked-button (click)="deleteData(element)" class=" mx-1 my-1"
+                                        style="background: red;" >
+                                            <i class="material-icons"  style="color: white;">delete</i>
+                                        </button>
+                                    </td>
+                            </ng-container>
+                            <!-- <ng-container matColumnDef="Delete">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                    sortActionDescription="Sort by Delete">Delete</th>
+                                <td mat-cell *matCellDef="let element"> 
+                                    <i class="material-icons">delete</i>
+                                </td>
+                            </ng-container> -->
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                        </table>
+                        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
+                            aria-label="Select page of periodic elements">
+                        </mat-paginator>
+                    </div>
+                </div>
+
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

@@ -1,0 +1,921 @@
+<div class="px-3">     
+    <div class="theme-container px-5" > 
+    
+        <mat-sidenav-container class="single-property mt-3">
+            <mat-sidenav-content ngClass.gt-sm="distance">
+                <mat-card fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between center">             
+                    <div>
+                        <h2 class="uppercase" ngClass.xs="text-center">{{property?.title}}</h2>
+                        <p fxLayout="row" fxLayoutAlign.xs="center" class="address mb-0">
+                            <mat-icon class="text-muted">location_on</mat-icon>
+                            <span>{{property?.formattedAddress}}</span>
+                        </p>
+                    </div>
+                    <div fxLayout="column" fxLayoutAlign.xs="center center" class="mx-3">                      
+                        <h2 *ngIf="settings.currency == 'USD'" class="primary-color price">
+                            <span *ngIf="property?.priceDollar.sale">{{property?.priceDollar.sale | currency : 'INR' : 'symbol' : '1.0'}}</span>
+                            <span *ngIf="property?.priceDollar.rent">{{property?.priceDollar.rent | currency : 'INR' : 'symbol' : '1.0'}} /month</span>
+                        </h2>
+                        <h2 *ngIf="settings.currency == 'EUR'" class="primary-color price">
+                            <span *ngIf="property?.priceEuro.sale">{{property?.priceEuro.sale | currency : 'EUR' : 'symbol' : '1.0'}}</span>
+                            <span *ngIf="property?.priceEuro.rent">{{property?.priceEuro.rent | currency : 'EUR' : 'symbol' : '1.0'}} /month</span>
+                        </h2>
+                    </div>
+                    <button *ngIf="!sidenavOpen" mat-icon-button (click)="sidenav.toggle()">
+                        <mat-icon>more_vert</mat-icon>
+                    </button>                                  
+                </mat-card>
+                <mat-card class="mt-3">
+                    <div class="main-carousel mb-3"> 
+                        <div id="main-carousel" class="swiper-container" [swiper]="config" (indexChange)="onIndexChange($event)"> 
+                            <div class="swiper-wrapper">      
+                                <div *ngFor="let image of property?.gallery" class="swiper-slide">
+                                    <img [src]="image.big" class="swiper-lazy">
+                                    <div class="swiper-lazy-preloader"></div>          
+                                </div>
+                            </div>                      
+                            <button mat-mini-fab color="primary" class="swiper-button-prev swipe-arrow"><mat-icon>keyboard_arrow_left</mat-icon></button>
+                            <button mat-mini-fab color="primary" class="swiper-button-next swipe-arrow"><mat-icon>keyboard_arrow_right</mat-icon></button> 
+                        </div>
+                    </div>
+                    <div class="small-carousel">   
+                        <div id="small-carousel" class="swiper-container" [swiper]="config2"> 
+                            <div class="swiper-wrapper">      
+                                <div *ngFor="let image of property?.gallery; let i=index;" class="swiper-slide" [ngClass]="'thumb-'+i" [class.active-thumb]="i == 0">
+                                    <img src="{{image.small}}" class="swiper-lazy mw-100" (click)="selectImage(i)">
+                                    <div class="swiper-lazy-preloader"></div>          
+                                </div>
+                            </div>  
+                        </div>
+                    </div>
+                </mat-card> 
+                <mat-card *ngIf="property " class="mt-3" >
+                    <mat-card-header fxLayoutAlign="center center">
+                        <mat-card-title class="uppercase">Property Details</mat-card-title>
+                    </mat-card-header>
+                    <div fxLayout="row" fxLayoutAlign="end center" *ngFor = "let card of cardDetails" >
+                        <mat-slide-toggle  labelPosition="before" 
+                            *ngIf = "card?.card_number == 1" 
+                            [checked]="card?.card?.flag" (change)="putCardDetails(card?.card?.card_id,$event)"></mat-slide-toggle>
+                    </div>
+                    <div fxLayout="row wrap" class="details">
+                        <div fxFlex="100" fxFlex.gt-xs="50" fxLayout="row" class="item" *ngIf="property.propertyType">
+                            <span>Property Type:</span>
+                            <span>{{property.propertyType}}</span>
+                        </div>
+                        <div fxFlex="100" fxFlex.gt-xs="50" fxLayout="row" class="item" *ngIf="property.propertyStatus">
+                            <span>Property Status:</span>
+                            <div fxLayout="row wrap" class="list">
+                                <span *ngFor="let status of property.propertyStatus; let last=last"
+                                    [class.list-item]="property.propertyStatus.length > 1"
+                                    [class.last]="last">{{status}}</span>
+                            </div>
+                        </div>
+                        <div fxFlex="100" fxFlex.gt-xs="50" fxLayout="row" class="item" 
+                            *ngIf="property.propertyType === 'Residential' && property.extra_details.flat_no && property.extra_details.flat_no !== ''">
+                            <span>Flat No:</span>
+                            <span [class.last]="last">{{property.extra_details.flat_no}}</span>
+                        </div> 
+                        <!-- <div fxFlex="100" fxFlex.gt-xs="50" fxLayout="row" class="item" 
+                            *ngIf="property.propertyType === 'Residential' && property.transaction_type">
+                            <span>Transaction Type:</span>
+                            <span [class.last]="last">{{property.transaction_type}}</span>
+                        </div> -->
+                        <!-- <div fxFlex="100" fxFlex.gt-xs="50" fxLayout="row" class="item" 
+                            *ngIf="property.shopNo!== (null || undefine) && property.propertyType !== 'Residential' && property.floorNo">
+                            <span>Shop No:</span>
+                            <span>{{property.shopNo}}</span>
+                        </div> -->
+                        <div fxFlex="100" fxFlex.gt-xs="50" fxLayout="row" class="item" 
+                            *ngIf="property.commercial_details.shopNo !== null  && property.propertyType !== 'Residential'">
+                            <span>Unit No:</span>
+                            <span>{{property.commercial_details.shopNo}}</span>
+                        </div>
+                        <div fxFlex="100" fxFlex.gt-xs="50" fxLayout="row" class="item" *ngIf="property.floorNo">
+                            <span>Floor No:</span>
+                            <span>{{property.floorNo}}</span>
+                        </div>
+                        <div fxFlex="100" fxFlex.gt-xs="50" fxLayout="row" class="item" *ngIf="property.total_floor">
+                            <span>Total Floors:</span>
+                            <span>{{property.total_floor}}</span>
+                        </div>
+                        <div fxFlex="100" fxFlex.gt-xs="50" fxLayout="row" class="item" *ngIf="property.propertyType === 'Residential' && property.no_of_towers">
+                            <span>Number Of Towers:</span>
+                            <span>{{property.no_of_towers}}</span>
+                        </div>
+                        <div fxFlex="100" fxFlex.gt-xs="50" fxLayout="row" class="item" *ngIf = "property.furnishedStatus">
+                            <span>Furnished Status:</span>
+                            <span>{{property.furnishedStatus}}</span>
+                        </div>
+                        <div fxFlex="100" fxFlex.gt-xs="50" fxLayout="row" class="item" *ngIf="property.propertyType === 'Residential' && property.bedrooms">
+                            <span>Bedrooms:</span>
+                            <span>{{property.bedrooms}}</span>
+                        </div>
+                        <div fxFlex="100" fxFlex.gt-xs="50" fxLayout="row" class="item" *ngIf="property.propertyType === 'Residential' && property.bathrooms">
+                            <span>Bathrooms:</span>
+                            <span>{{property.bathrooms}}</span>
+                        </div>
+                        <div fxFlex="100" fxFlex.gt-xs="50" fxLayout="row" class="item" *ngIf="property.propertyType === 'Residential' && property.Balconies">
+                            <span>Balconies:</span>
+                            <span>{{property.Balconies}}</span>
+                        </div>
+                        <div fxFlex="100" fxFlex.gt-xs="50" fxLayout="row" class="item" 
+                            *ngIf="property.propertyType === 'Residential' && property.kitchen_details.length && property.kitchen_details.breadth">
+                            <span>Kitchen Area:</span>
+                            <span>{{property.kitchen_details.length}} x {{property.kitchen_details.breadth}} /
+                                Sq-ft</span>
+                        </div>
+                        <div fxFlex="100" fxFlex.gt-xs="50" fxLayout="row" class="item" 
+                            *ngIf="property.propertyType === 'Residential' && property.leaving_room_details.breadth && property.leaving_room_details.length">
+                            <span>Living Area:</span>
+                            <span>{{property.leaving_room_details.length}} x {{property.leaving_room_details.breadth}} /
+                                Sq-ft</span>
+                        </div>
+                        <div fxFlex="100" fxFlex.gt-xs="50" fxLayout="row" class="item" *ngIf = "property.area.value">
+                            <span>Property size:</span>
+                            <span>{{property.area.value}} {{property.area.unit}}</span>
+                        </div>
+                        <div fxFlex="100" fxFlex.gt-xs="50" fxLayout="row" class="item"
+                            *ngIf="property?.age_of_property !== '' && property?.age_of_property">
+                            <span>Age Of Property:</span>
+                            <span>{{property?.age_of_property}}</span>
+                        </div>
+                        <!-- <div fxFlex="100" fxFlex.gt-xs="50" fxLayout="row" class="item" 
+                             *ngIf="property.propertyType === 'Residential' && property.extra_details.Convenience">
+                            <span>Conveyance:</span>
+                            <span>{{property.extra_details.Convenience}}</span>
+                        </div>
+                        <div fxFlex="100" fxFlex.gt-xs="50" fxLayout="row" class="item" 
+                            *ngIf="property.propertyType === 'Residential' && property.extra_details.approvedBy">
+                            <span>approvedBy:</span>
+                            <span>{{property.extra_details.approvedBy}}</span>
+                        </div>
+                        <div fxFlex="100" fxFlex.gt-xs="50" fxLayout="row" class="item" 
+                            *ngIf="property.propertyType === 'Residential' && property.extra_details.coOperative">
+                            <span>Co-Operative:</span>
+                            <span>{{property.extra_details.coOperative}}</span>
+                        </div> -->
+                        <div fxFlex="100" fxFlex.gt-xs="50" fxLayout="row" class="item" 
+                            *ngIf="property.extra_details.facing" >
+                            <span>Facing:</span>
+                            <span>{{property.extra_details.facing}}</span>
+                        </div>
+                        <!-- <div fxFlex="100" fxFlex.gt-xs="50" fxLayout="row" class="item"
+                            *ngIf = "property.extra_details.covered">
+                            <span>Covered Parking:</span>
+                            <span *ngIf="property.extra_details.covered">Yes ( {{ property.extra_details.input_covered}}
+                                )</span>
+                            <span *ngIf="!property.extra_details.covered">No </span>
+                        </div>
+                        <div fxFlex="100" fxFlex.gt-xs="50" fxLayout="row" class="item" 
+                            *ngIf="property.extra_details.open">
+                            <span>Open Parking:</span>
+                            <span *ngIf="property.extra_details.open">Yes ( {{ property.extra_details.input_open}}
+                                )</span>
+                            <span *ngIf="!property.extra_details.open">No </span>
+                        </div> -->
+                        <div fxFlex="100" fxFlex.gt-xs="50" fxLayout="row" class="item">
+                            <span>Covered Parking:</span>
+                            <span *ngIf="property?.propertyType === 'Residential' && property.extra_details.covered">Yes ( {{ property.extra_details.input_covered}}
+                                )</span>
+                            <span *ngIf=" property?.propertyType === 'Residential' && !property.extra_details.covered">No </span>
+                            
+                            <span *ngIf="property?.propertyType !== 'Residential' && property.commercial_extra.carParking[0].selected" >Yes ( {{property.commercial_extra.carParking[0].unit}}
+                                )</span>
+                            <span *ngIf=" property?.propertyType !== 'Residential' && !property.commercial_extra.carParking[0].selected">No </span>
+                        </div>
+                        <div fxFlex="100" fxFlex.gt-xs="50" fxLayout="row" class="item">
+                            <span>Open Parking:</span>
+                            <span *ngIf=" property?.propertyType === 'Residential' && property.extra_details.open">Yes ( {{ property.extra_details.input_open}}
+                                )</span>
+                            <span *ngIf="property?.propertyType === 'Residential' && !property.extra_details.open">No </span>
+                            
+                            <span *ngIf="property?.propertyType !== 'Residential' && property.commercial_extra.carParking[1].selected" >Yes ( {{ property.commercial_extra.carParking[1].unit}}
+                                )</span>
+                            <span *ngIf=" property?.propertyType !== 'Residential' && !property.commercial_extra.carParking[1].selected">No </span>
+                        </div>
+                        <div fxFlex="100" fxFlex.gt-xs="50" fxLayout="row" class="item">
+                            <span>Common Parking:</span>
+                            <span *ngIf="property?.propertyType === 'Residential' && property.extra_details.Common">Yes ( {{ property.extra_details.input_open}}
+                                )</span>
+                            <span *ngIf="property?.propertyType === 'Residential' && !property.extra_details.Common">No </span>
+
+                            <span *ngIf="property?.propertyType !== 'Residential' && property.commercial_extra.carParking[2].selected" >Yes ( {{ property.commercial_extra.carParking[2].unit}}
+                                )</span>
+                            <span *ngIf=" property?.propertyType !== 'Residential' && !property.commercial_extra.carParking[2].selected">No </span>
+                        </div>
+                        <!-- <div fxFlex="100" fxFlex.gt-xs="50" fxLayout="row" class="item" 
+                             *ngIf="property?.ownership_status !== null && property?.ownership_status">
+                            <span>Ownership Status:</span>
+                            <span>{{property?.ownership_status}}</span>
+                        </div>
+                        <div fxFlex="100" fxFlex.gt-xs="50" fxLayout="row" class="item" 
+                            *ngIf="property.possession_status !== null && property?.possession_status">
+                            <span>Possession Status:</span>
+                            <span>{{property?.possession_status}}</span>
+                        </div> -->
+                        <div fxFlex="100" fxFlex.gt-xs="50" fxLayout="row" class="item" 
+                            *ngIf="property.status_of_water.electricityStatus !== null ">
+                            <span>Electricity Status:</span>
+                            <span>{{property.status_of_water.electricityStatus}}</span>
+                        </div>
+                        <div fxFlex="100" fxFlex.gt-xs="50" fxLayout="row" class="item" *ngIf="property.status_of_water.waterAvailability !== null">
+                            <span>Water Availability:</span>
+                            <span>{{property.status_of_water.waterAvailability}}</span>
+                        </div>
+                        <div fxFlex="100" fxFlex.gt-xs="50" fxLayout="row" class="item" *ngIf="property.extra_details.availableFrom !== null && property.propertyType === 'Residential' ">
+                            <span>Property Avaialable From:</span>
+                            <span>{{property.extra_details.availableFrom | date: 'dd/MM/yyyy'}}</span>
+                        </div>
+                        <div fxFlex="100" fxFlex.gt-xs="50" fxLayout="row" class="item" *ngIf="property.commercial_details.availableFrom !== null && property.propertyType === 'Commercial' ">
+                            <span>Property Avaialable From:</span>
+                            <span>{{property.commercial_details.availableFrom | date: 'dd/MM/yyyy'}}</span>
+                        </div>
+                    </div>
+                </mat-card>
+                <mat-card *ngIf="property" class="mt-3">
+                    <mat-card-header fxLayoutAlign="center center">
+                        <mat-card-title class="uppercase">Area Details</mat-card-title>
+                    </mat-card-header>
+                    <div fxLayout="row" fxLayoutAlign="end center" *ngFor = "let card of cardDetails" >
+                        <mat-slide-toggle  labelPosition="before" 
+                            *ngIf = "card?.card_number == 2" 
+                            [checked]="card?.card?.flag" (change)="putCardDetails(card?.card?.card_id,$event)"></mat-slide-toggle>
+                    </div>
+                    <div fxLayout="row wrap" class="details">
+                       
+                        <div fxFlex="100" fxFlex.gt-xs="50" fxLayout="row" class="item">
+                            <span>City:</span>
+                            <span>{{property.city}}</span>
+                        </div>
+                        
+                        <div fxFlex="100" fxFlex.gt-xs="50" fxLayout="row" class="item">
+                            <span>Neighborhood:</span>
+                            <div fxLayout="row wrap" class="list">
+                                <span *ngFor="let neighborhood of property.neighborhood; let last=last"
+                                    [class.list-item]="property.neighborhood.length > 1"
+                                    [class.last]="last">{{neighborhood}}</span>
+                            </div>
+                        </div>
+                        <div fxFlex="100" fxFlex.gt-xs="50" fxLayout="row" class="item">
+                            <span>Street:</span>
+                            <div fxLayout="row wrap" class="list">
+                                <span *ngFor="let street of property.street; let last=last"
+                                    [class.list-item]="property.street.length > 1" [class.last]="last">{{street}}</span>
+                            </div>
+                        </div>
+                        <div fxFlex="100" fxFlex.gt-xs="50" fxLayout="row" class="item">
+                            <span>Zip Code:</span>
+                            <span>{{property.zipCode}}</span>
+                        </div>
+                    </div>
+                </mat-card>
+                <mat-card *ngIf="property" class="mt-3">
+                    <mat-card-header fxLayoutAlign="center center">
+                        <mat-card-title class="uppercase">Property Area</mat-card-title>
+                    </mat-card-header>
+                    <div fxLayout="row" fxLayoutAlign="end center" *ngFor = "let card of cardDetails" >
+                        <mat-slide-toggle  labelPosition="before" 
+                            *ngIf = "card?.card_number == 3" 
+                            [checked]="card?.card?.flag" (change)="putCardDetails(card?.card?.card_id,$event)"></mat-slide-toggle>
+                    </div>
+                    <mat-card-content>
+                        <div fxLayout="row wrap" class="details">
+                            <div fxFlex="100" fxFlex.gt-xs="50" fxLayout="row" class="item" *ngIf="property?.propertyType === 'Residential'">
+                                <span>Super Area:</span>
+                                <span>{{property?.property_area.superArea}}
+                                    ({{property?.property_area.super_major}})</span>
+                            </div>
+                          
+                            <div fxFlex="100" fxFlex.gt-xs="50" fxLayout="row" class="item" *ngIf="property?.propertyType === 'Commercial'" >
+                                <span>Plot Area:</span>
+                                <span>{{property?.property_area.plotArea}}
+                                    ({{property?.property_area.plotMessure}})</span>
+                            </div>
+                            <div fxFlex="100" fxFlex.gt-xs="50" fxLayout="row" class="item">
+                                <span>Built Up Area:</span>
+                                <span>{{property?.property_area.builtUpArea}}
+                                    ({{property?.property_area.built_major}})</span>
+                            </div>
+                            <div fxFlex="100" fxFlex.gt-xs="50" fxLayout="row" class="item">
+                                <span>Carpet Area:</span>
+                                <span>{{property?.property_area.carpetArea}}
+                                    ({{property?.property_area.carpet_major}})</span>
+                            </div>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+                <mat-card *ngIf="property && property.propertyType === 'Residential'" class="mt-3">
+                    <mat-card-header fxLayoutAlign="center center">
+                        <mat-card-title class="uppercase">Bedroom List</mat-card-title>
+                    </mat-card-header>
+                    <div fxLayout="row" fxLayoutAlign="end center" *ngFor = "let card of cardDetails" >
+                        <mat-slide-toggle  labelPosition="before" 
+                            *ngIf = "card?.card_number == 4" 
+                            [checked]="card?.card?.flag" (change)="putCardDetails(card?.card?.card_id,$event)"></mat-slide-toggle>
+                    </div>
+                    <mat-card-content>
+                        <div fxLayout="row wrap" class="details"
+                            *ngFor="let list of property?.bedroomsList;let i = index;">
+                            <div fxFlex="100" fxFlex.gt-xs="50" fxLayout="row" class="item">
+                                <span>Bedroom {{i+1}} (Sq-ft):</span>
+                                <span>{{list.length}} x {{list.breadth}} </span>
+                            </div>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+                <mat-card *ngIf="property && property.propertyType === 'Residential'" class="mt-3" >
+                    <mat-card-header fxLayoutAlign="center center">
+                        <mat-card-title class="uppercase">balcony List</mat-card-title>
+                    </mat-card-header>
+                    <div fxLayout="row" fxLayoutAlign="end center" *ngFor = "let card of cardDetails" >
+                        <mat-slide-toggle  labelPosition="before" 
+                            *ngIf = "card?.card_number == 5" 
+                            [checked]="card?.card?.flag" (change)="putCardDetails(card?.card?.card_id,$event)"></mat-slide-toggle><!-- (change)="settings.rtl = !settings.rtl"-->
+                    </div>
+                    <mat-card-content>
+                        <div fxLayout="row wrap" class="details"
+                            *ngFor="let list of property?.balcony_list;let i = index;">
+                            <div fxFlex="100" fxFlex.gt-xs="50" fxLayout="row" class="item">
+                                <span>balcony {{i+1}} (Sq-ft):</span>
+                                <span>{{list.length}} x {{list.breadth}} </span>
+                            </div>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+                <mat-card *ngIf="property && property.propertyType === 'Residential' && 
+                property.furnishedStatus !== 'Unfurnished'" class="mt-3" >
+                    <mat-card-header fxLayoutAlign="center center">
+                        <mat-card-title class="uppercase">Furnished Items</mat-card-title>
+                    </mat-card-header>
+                    <div fxLayout="row" fxLayoutAlign="end center" *ngFor = "let card of cardDetails" >
+                        <mat-slide-toggle  labelPosition="before" 
+                            *ngIf = "card?.card_number == 6" 
+                            [checked]="card?.card?.flag" (change)="putCardDetails(card?.card?.card_id,$event)"></mat-slide-toggle><!-- (change)="settings.rtl = !settings.rtl"-->
+                    </div>
+                    <mat-card-content>
+
+                        <div fxLayout="row wrap" class="details">
+                            <div *ngFor="let feature of furnitureItems" fxFlex="100" fxFlex.gt-xs="33.3" class="item">
+                                <mat-icon class="mat-icon-sm" color="primary">check</mat-icon>
+                                <span class="mx-2">{{feature}}</span>
+                            </div>
+
+                        </div>
+                        <div fxLayout="row wrap" class="details mt-2">
+                            <div fxFlex="100" fxFlex.gt-xs="25" fxLayout="row" class="item" 
+                            *ngIf="property?.property_features.furnishedAc !== ''">
+                                <span >Ac :</span>
+                                <span class="mx-1">{{property?.property_features.furnishedAc }} / Unit</span>
+                            </div>
+                            <div fxFlex="100" fxFlex.gt-xs="25" fxLayout="row" class="item"
+                            *ngIf="property?.property_features.furnishedBed !== ''">
+                                <span>Bed :</span>
+                                <span class="mx-1">{{property?.property_features.furnishedBed }} / Unit</span>
+                            </div>
+                            <div fxFlex="100" fxFlex.gt-xs="25" fxLayout="row" class="item"
+                            *ngIf="property?.property_features.furnishedTv !== ''">
+                                <span>TV :</span>
+                                <span class="mx-1">{{property?.property_features.furnishedTv }} / Unit</span>
+                            </div>
+                            <div fxFlex="100" fxFlex.gt-xs="25" fxLayout="row" class="item"
+                            *ngIf="property?.property_features.furnishedWardrobe !== ''">
+                                <span>Wardrobe :</span>
+                                <span class="mx-1">{{property?.property_features.furnishedWardrobe }} / Unit</span>
+                            </div>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+                <mat-card *ngIf="property" class="mt-3">
+                    <mat-card-header fxLayoutAlign="center center">
+                        <mat-card-title class="uppercase">Over Looking</mat-card-title>
+                    </mat-card-header>
+                    <div fxLayout="row" fxLayoutAlign="end center" *ngFor = "let card of cardDetails" >
+                        <mat-slide-toggle  labelPosition="before" 
+                            *ngIf = "card?.card_number == 7" 
+                            [checked]="card?.card?.flag" (change)="putCardDetails(card?.card?.card_id,$event)"></mat-slide-toggle><!-- (change)="settings.rtl = !settings.rtl"-->
+                    </div>
+                    <mat-card-content>
+                        <div fxLayout="row wrap">
+                            <div *ngFor="let look of overlooking" fxFlex="100" fxFlex.gt-xs="33.3" class="item">
+                                <mat-icon class="mat-icon-sm" color="primary" >check</mat-icon>
+                                <span class="mx-2" >{{look}}</span>
+                            </div>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+                <mat-card *ngIf="property" class="mt-3">
+                    <mat-card-header fxLayoutAlign="center center">
+                        <mat-card-title class="uppercase">Amenities</mat-card-title>
+                    </mat-card-header>
+                    <div fxLayout="row" fxLayoutAlign="end center" *ngFor = "let card of cardDetails" >
+                        <mat-slide-toggle  labelPosition="before" 
+                            *ngIf = "card?.card_number == 8" 
+                            [checked]="card?.card?.flag" (change)="putCardDetails(card?.card?.card_id,$event)"></mat-slide-toggle><!-- (change)="settings.rtl = !settings.rtl"-->
+                    </div>
+                    <mat-card-content>
+                        <div fxLayout="row wrap">
+                            <div *ngFor="let amenitie of amenities" fxFlex="100" fxFlex.gt-xs="33.3">
+                                <mat-icon class="mat-icon-sm" color="primary">check</mat-icon>
+                                <span class="mx-2">{{amenitie}}</span>
+                            </div>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+                <mat-card *ngIf="property" class="mt-3">
+                    <mat-card-header fxLayoutAlign="center center">
+                        <mat-card-title class="uppercase">flooring</mat-card-title>
+                    </mat-card-header>
+                    <div fxLayout="row" fxLayoutAlign="end center" *ngFor = "let card of cardDetails" >
+                        <mat-slide-toggle  labelPosition="before" 
+                            *ngIf = "card?.card_number == 9" 
+                            [checked]="card?.card?.flag" (change)="putCardDetails(card?.card?.card_id,$event)"></mat-slide-toggle><!-- (change)="settings.rtl = !settings.rtl"-->
+                    </div>
+                    <mat-card-content>
+                        <div fxLayout="row wrap">
+                            <div *ngFor="let floor of flooring" fxFlex="100" fxFlex.gt-xs="33.3">
+                                <mat-icon class="mat-icon-sm" color="primary">check</mat-icon>
+                                <span class="mx-2">{{floor}}</span>
+                            </div>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+                <mat-card *ngIf="property" class="mt-3">
+                    <mat-card-header fxLayoutAlign="center center">
+                        <mat-card-title class="uppercase">Price Details</mat-card-title>
+                    </mat-card-header>
+                    <div fxLayout="row" fxLayoutAlign="end center" *ngFor = "let card of cardDetails" >
+                        <mat-slide-toggle  labelPosition="before" 
+                            *ngIf = "card?.card_number == 10" 
+                            [checked]="card?.card?.flag" (change)="putCardDetails(card?.card?.card_id,$event)"></mat-slide-toggle><!-- (change)="settings.rtl = !settings.rtl"-->
+                    </div>
+                    <mat-card-content>
+
+                        <div fxLayout="row wrap" class="details">
+                            <div fxFlex="100" fxFlex.gt-xs="50" fxLayout="row" class="item"  *ngIf="property.propertyStatus[0] !== 'For Rent'">
+                                <span>Expected Price :</span>
+                                <span class="mx-1">{{property?.price_details.expectedPrice | indiancurrency}}</span>
+                            </div>
+                            <div fxFlex="100" fxFlex.gt-xs="50" fxLayout="row" class="item" *ngIf="property.propertyStatus[0] !== 'For Rent'">
+                                <span>Expected Price Per Sq-ft :</span>
+                                <span class="mx-2">{{property?.price_details.pricePerSqft | indiancurrency}}</span>
+                            </div>
+                            
+                            <div fxFlex="100" fxFlex.gt-xs="50" fxLayout="row" class="item" *ngIf="property.propertyType !== 'Residential' && property.propertyStatus[0] !== 'For Rent'">
+                                <span>Currently Least Out :</span>
+                                <span class="mx-2">{{property?.commercial_details.currentLeast }}</span>
+                            </div>
+                            <div fxFlex="100" fxFlex.gt-xs="50" fxLayout="row" class="item" *ngIf="property.propertyType !== 'Residential' && property.propertyStatus[0] === 'For Rent'">
+                                <span>Currently Rent Out : </span>
+                                <span class="mx-2">{{property?.commercial_details.currentLeast}}</span>
+                            </div>
+                            <div fxFlex="100" fxFlex.gt-xs="50" fxLayout="row" class="item" *ngIf="property.propertyType !== 'Residential' && property.propertyStatus[0] === 'For Rent'">
+                                <span>Monthly Rent : </span>
+                                <span class="mx-2">{{property?.commercial_details.monthlyRentToLease | indiancurrency}}</span>
+                            </div>
+                            <div fxFlex="100" fxFlex.gt-xs="50" fxLayout="row" class="item" *ngIf="property.propertyType === 'Residential' && property.propertyStatus[0] === 'For Rent'">
+                                <span>Monthly Rent : </span>
+                                <span class="mx-2">{{property?.extra_details.monthlyRent | indiancurrency}}</span>
+                            </div>
+                            <div fxFlex="100" fxFlex.gt-xs="50" fxLayout="row" class="item" *ngIf="property.propertyType !== 'Residential' && property.propertyStatus[0] === 'For Rent'">
+                                <span>Security Amount : </span>
+                                <span class="mx-2">{{property?.commercial_details.securityAmount | indiancurrency}}</span>
+                            </div>
+                            <div fxFlex="100" fxFlex.gt-xs="50" fxLayout="row" class="item" *ngIf="property.propertyType === 'Residential' && property.propertyStatus[0] === 'For Rent'">
+                                <span>Security Amount : </span>
+                                <span class="mx-2">{{property?.extra_details.securityAmount | indiancurrency}}</span>
+                            </div>
+                            <div fxFlex="100" fxFlex.gt-xs="50" fxLayout="row" class="item" *ngIf="property.propertyType === 'Residential' && property.propertyStatus[0] !== 'For Rent'" >
+                                <span>Stamp Duty :</span>
+                                <span class="mx-2">{{property?.price_details.stampDuty}} %</span>
+                            </div>
+                            <div fxFlex="100" fxFlex.gt-xs="50" fxLayout="row" class="item" *ngIf="property.propertyType === 'Residential' && property.propertyStatus[0] !== 'For Rent'">
+                                <span>Stamp Duty (Included Price):</span>
+                                <span class="mx-2">{{property?.price_details.stampIncluded | indiancurrency}}</span>
+                            </div>
+                            <div fxFlex="100" fxFlex.gt-xs="50" fxLayout="row" class="item" *ngIf="property.propertyType === 'Residential' && property.propertyStatus[0] !== 'For Rent'">
+                                <span>Registration Chanrges:</span>
+                                <span class="mx-2">{{property?.price_details.regCharge | indiancurrency}}</span>
+                            </div>
+                            <div fxFlex="100" fxFlex.gt-xs="50" fxLayout="row" class="item">
+                                <span>Other Charges:</span>
+                                <span class="mx-2">{{property?.price_details.OtherCharges| indiancurrency}}</span>
+                            </div>
+                            <div fxFlex="100" fxFlex.gt-xs="50" fxLayout="row" class="item" *ngIf="property.propertyType === 'Residential' && 
+                                                                                            property.propertyStatus[0] === 'For Rent' && property?.price_details?.agreementCharges !== ''">
+                                <span>Agreement Charges:</span>
+                                <span class="mx-2">{{property?.extra_details.agreementCharges| indiancurrency}}</span>
+                            </div>
+                            <div fxFlex="100" fxFlex.gt-xs="50" fxLayout="row" class="item">
+                                <span>Brokerage:</span>
+                                <span class="mx-2"  *ngIf="property.propertyType === 'Residential' && property.propertyStatus[0] !== 'For Rent'"
+                                >{{property?.price_details.brokerage}}</span>
+                                <span class="mx-2"  *ngIf="property.propertyType === 'Residential' && property.propertyStatus[0] === 'For Rent'"
+                                >{{property?.extra_details.brokerageInDays}}</span>
+                                <span class="mx-2"  *ngIf="property.propertyType !== 'Residential' "
+                                >{{property?.commercial_details.brokerage}}</span>
+
+                            </div>
+                            <div fxFlex="100" fxFlex.gt-xs="50" fxLayout="row" class="item" *ngIf="property.propertyType === 'Residential'">
+                                <span>Brokerage Price:</span>
+                                <span class="mx-2"  *ngIf=" property.propertyStatus[0] !== 'For Rent'"
+                                >{{property?.price_details.brokerageIncluded | indiancurrency}}</span>
+                                <span class="mx-2"  *ngIf=" property.propertyStatus[0] === 'For Rent'"
+                                >{{property?.extra_details.brokeragePrice | indiancurrency}}</span>
+                            </div>
+                            <div fxFlex="100" fxFlex.gt-xs="50" fxLayout="row" class="item" *ngIf="property.propertyType !== 'Residential'">
+                                <span>Brokerage Price:</span>
+                                <!-- <span class="mx-2"  *ngIf=" property.propertyStatus[0] !== 'For Rent'"
+                                >{{property?.price_details.brokerageIncluded | indiancurrency}}</span> -->
+                                <span class="mx-2"  
+                                >{{property?.commercial_details.brokeragePrice | indiancurrency}}</span>
+                            </div>
+                            <div fxFlex="100" fxFlex.gt-xs="50" fxLayout="row" class="item" >
+                                <span>Maintenance Charges:</span>
+                                <span class="mx-2"  *ngIf="property.propertyType === 'Residential'"
+                                > {{property?.price_details.maintenenceCharges | indiancurrency}} /
+                                    {{property?.price_details.maintenenceChargesPerYear}}</span>
+                                    <span class="mx-2"  *ngIf="property.propertyType !== 'Residential'"
+                                    > {{property?.commercial_details.maintenenceCharges | indiancurrency}} /
+                                        {{property?.commercial_details.maintenenceChargesPerYear}}</span>    
+                            </div>
+                            <div fxFlex="100" fxFlex.gt-xs="50" fxLayout="row" class="item"
+                                *ngIf="property?.price_details?.finalPrice && getPropertyType(property.propertyId) === 'Residential'">
+                                <span>Final Price:</span>
+                                <span class="mx-2"> {{property?.price_details.finalPrice | indiancurrency}}</span>
+                            </div>
+                            <div fxFlex="100" fxFlex.gt-xs="50" fxLayout="row" class="item" *ngIf="property.propertyType !== 'Residential' 
+                                                        && property.propertyStatus[0] === 'For Rent'">
+                                <span>Final Price: </span>
+                                <span class="mx-2">{{property?.commercial_details.finalPrice | indiancurrency}}</span>
+                            </div>
+                        </div>
+
+                    </mat-card-content>
+                </mat-card>
+                <!-- <mat-card class="mt-3"> 
+                    <mat-card-header fxLayoutAlign="center center"> 
+                        <mat-card-title class="uppercase">Owner Details</mat-card-title> 
+                    </mat-card-header>
+                    <mat-card-content>
+                       
+                            <div fxLayout="row wrap" class="details" *ngFor="let list of property?.ownerDetails;let i = index;">
+                                <div fxFlex="100" fxFlex.gt-xs="33.3" fxLayout="row" class="item">
+                                    <span>Name :</span>
+                                    <span>{{list.name}} </span>
+                                </div>
+                                <div fxFlex="100" fxFlex.gt-xs="50" fxLayout="row" class="item">
+                                    <span>Email :</span>
+                                    <span *ngFor="let email of list.email ; let i=index;">{{i+1}}. {{ email}} </span>
+                                </div>
+                                <div fxFlex="100" fxFlex.gt-xs="50" fxLayout="row" class="item">
+                                    <span>Mobile Number :</span>
+                                    <span *ngFor="let mobile of list.mobile ; let i=index;">{{i+1}}. {{ mobile}} </span>
+                                </div>
+                            </div>
+                            <div fxLayout="row wrap" class="details" >
+                                <div fxFlex="100" fxFlex.gt-xs="50" fxLayout="row" class="item">
+                                    <span>Name :</span>
+                                    <span>{{ownerDetails?.owner?.owner_name}} </span>
+                                </div>
+                                <div fxFlex="100" fxFlex.gt-xs="50" fxLayout="row" class="item">
+                                    <span>Email :</span>
+                                    <span >{{ownerDetails?.owner?.email}} </span>
+                                </div>
+                                <div fxFlex="100" fxFlex.gt-xs="50" fxLayout="row" class="item">
+                                    <span>Mobile Number :</span>
+                                    <span > {{ ownerDetails?.owner?.contact_number}} </span>
+                                </div>
+                                <div  fxFlex="100" fxFlex.gt-xs="50" fxLayout="row" class="item">
+                                    <span >Is Current Owner :</span>
+                                    <mat-icon class="mat-icon-sm" color="primary">check</mat-icon>
+                                </div>
+                                <div fxFlex="100" fxFlex.gt-xs="50" fxLayout="row" class="item">
+                                    <span>From :</span>
+                                    <span > {{ ownerDetails?.created_on}} </span>
+                                </div>
+                                <div fxFlex="100" fxFlex.gt-xs="50" fxLayout="row" class="item">
+                                    <span>To :</span>
+                                    <span > {{ ownerDetails?.updated_at}} </span>
+                                </div>
+
+                            </div>
+                    
+                    </mat-card-content>
+                </mat-card> -->
+                <mat-card class="mt-3" *ngIf="property?.bankDocs.length !== 0 ">
+                    <mat-card-header fxLayoutAlign="center center">
+                        <mat-card-title class="uppercase">Bank Documents</mat-card-title>
+                    </mat-card-header>
+                    <div fxLayout="row" fxLayoutAlign="end center" *ngFor = "let card of cardDetails" >
+                        <mat-slide-toggle  labelPosition="before" 
+                            *ngIf = "card?.card_number == 11" 
+                            [checked]="card?.card?.flag" (change)="putCardDetails(card?.card?.card_id,$event)"></mat-slide-toggle><!-- (change)="settings.rtl = !settings.rtl"-->
+                    </div>
+                    <mat-card-content>
+                        <!-- <div fxLayout="row wrap"  > -->
+                        <div fxLayout="row wrap" class="details">
+                        <ul fxFlex="100" fxLayout="row" class="item p-3"
+                            *ngFor="let feature of property?.bankDocs ; let i=index;">
+                            <li fxFlex="100">
+                                <a [href]="feature.file_path" target="_blank">
+                                    {{feature.title }}
+                                </a>
+                            </li>
+                        </ul>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+                <mat-card class="mt-3" *ngIf="property?.completionDocs.length !== 0 ">
+                    <mat-card-header fxLayoutAlign="center center">
+                        <mat-card-title class="uppercase">Completion Certificates</mat-card-title>
+                    </mat-card-header>
+                    <div fxLayout="row" fxLayoutAlign="end center" *ngFor = "let card of cardDetails" >
+                        <mat-slide-toggle  labelPosition="before" 
+                            *ngIf = "card?.card_number == 12" 
+                            [checked]="card?.card?.flag" (change)="putCardDetails(card?.card?.card_id,$event)"></mat-slide-toggle><!-- (change)="settings.rtl = !settings.rtl"-->
+                    </div>
+                    <mat-card-content>
+                        <div fxLayout="row wrap" class="details">
+                        <ul fxFlex="100" fxLayout="row" class="item p-3"
+                            *ngFor="let feature of property?.completionDocs ; let i=index;">
+                            <li fxFlex="100">
+                                <a [href]="feature.file_path" target="_blank">
+                                    {{feature.title }}
+                                </a>
+                            </li>
+                        </ul>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+                <mat-card class="mt-3" *ngIf="property?.documentList.length !== 0 ">
+                    <mat-card-header fxLayoutAlign="center center">
+                        <mat-card-title class="uppercase">List Of Documents</mat-card-title>
+                    </mat-card-header>
+                    <div fxLayout="row" fxLayoutAlign="end center" *ngFor = "let card of cardDetails" >
+                        <mat-slide-toggle  labelPosition="before" 
+                            *ngIf = "card?.card_number == 13" 
+                            [checked]="card?.card?.flag" (change)="putCardDetails(card?.card?.card_id,$event)"></mat-slide-toggle><!-- (change)="settings.rtl = !settings.rtl"-->
+                    </div>
+                    <mat-card-content>
+                        <div fxLayout="row wrap" class="details">
+                        <ul fxFlex="100" fxLayout="row" class="item p-3"
+                            *ngFor="let feature of property?.documentList ; let i=index;">
+                            <li fxFlex="100">
+                                <a [href]="feature.file_path" target="_blank">
+                                    {{feature.title }}
+                                </a>
+                            </li>
+                        </ul>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+                <mat-card class="mt-3" *ngIf="property?.otherDocs.length !== 0 ">
+                    <mat-card-header fxLayoutAlign="center center">
+                        <mat-card-title class="uppercase">Index 2 Documents</mat-card-title>
+                    </mat-card-header>
+                    <div fxLayout="row" fxLayoutAlign="end center" *ngFor = "let card of cardDetails" >
+                        <mat-slide-toggle  labelPosition="before" 
+                            *ngIf = "card?.card_number == 14" 
+                            [checked]="card?.card?.flag" (change)="putCardDetails(card?.card?.card_id,$event)"></mat-slide-toggle>
+                    </div>
+                    <mat-card-content>
+                        <div fxLayout="row wrap" class="details">
+                        <ul fxFlex="100" fxLayout="row" class="item p-3"
+                            *ngFor="let feature of property?.otherDocs ; let i=index;">
+                            <li fxFlex="100">
+                                <a [href]="feature.file_path" target="_blank">
+                                    {{feature.title }}
+                                </a>
+                            </li>
+                        </ul>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+                <mat-card class="mt-3" *ngIf="property?.societyRegCertificate.length !== 0 ">
+                    <mat-card-header fxLayoutAlign="center center">
+                        <mat-card-title class="uppercase">Registration Cetificate Documents</mat-card-title>
+                    </mat-card-header>
+                    <div fxLayout="row" fxLayoutAlign="end center" *ngFor = "let card of cardDetails" >
+                        <mat-slide-toggle  labelPosition="before" 
+                            *ngIf = "card?.card_number == 15" 
+                            [checked]="card?.card?.flag" (change)="putCardDetails(card?.card?.card_id,$event)"></mat-slide-toggle>
+                    </div>
+                    <mat-card-content>
+                        <div fxLayout="row wrap" class="details">
+                        <ul fxFlex="100" fxLayout="row" class="item p-3"
+                            *ngFor="let feature of property?.societyRegCertificate ; let i=index;">
+                            <li fxFlex="100">
+
+                                <a [href]="feature.file_path" target="_blank">
+                                    {{feature.title }}
+                                </a>
+                            </li>
+                        </ul>
+                        </div>
+                    </mat-card-content>
+                    
+                </mat-card>
+                <mat-card class="mt-3" *ngIf="property">
+                    <mat-card-header fxLayoutAlign="center center">
+                        <mat-card-title class="uppercase">Description</mat-card-title>
+                    </mat-card-header>
+                    <div fxLayout="row" fxLayoutAlign="end center" *ngFor = "let card of cardDetails" >
+                        <mat-slide-toggle  labelPosition="before" 
+                            *ngIf = "card?.card_number == 16" 
+                            [checked]="card?.card?.flag" (change)="putCardDetails(card?.card?.card_id,$event)"></mat-slide-toggle>
+                    </div>
+                    <mat-card-content *ngIf="property && property.propertyType === 'Residential'">
+                        <ul class="px-3" *ngFor="let property of property?.desc ; let i=index;" >
+                            <li fxFlex="100"> {{property}}</li>
+                        </ul>
+                    </mat-card-content>
+                    <mat-card-content *ngIf="property && property.propertyType !== 'Residential'">
+                        <p>{{property?.desc}}</p>
+                    </mat-card-content>
+                </mat-card>
+                <mat-card class="mt-3" *ngIf="property && property.propertyType === 'Residential'">
+                    <mat-card-header fxLayoutAlign="center center">
+                        <mat-card-title class="uppercase">Landmarks & Neighborhood</mat-card-title>
+                    </mat-card-header>
+                    <div fxLayout="row" fxLayoutAlign="end center" *ngFor = "let card of cardDetails" >
+                        <mat-slide-toggle  labelPosition="before" 
+                            *ngIf = "card?.card_number == 17" 
+                            [checked]="card?.card?.flag" (change)="putCardDetails(card?.card?.card_id,$event)"></mat-slide-toggle>
+                    </div>
+                    <mat-card-content fxLayoutAlign="center center">
+                        <p>{{property?.extra_details.landmarkNeighbourhood}}</p>
+                        <!-- <p>{{property?.desc}}</p>
+                        <p>{{property?.desc}}</p> -->
+                    </mat-card-content>
+                </mat-card>
+                <mat-card class="mt-3" *ngIf="property && property.propertyType === 'Residential'">
+                    <mat-card-header fxLayoutAlign="center center">
+                        <mat-card-title class="uppercase">More About This Project</mat-card-title>
+                    </mat-card-header>
+                    <div fxLayout="row" fxLayoutAlign="end center" *ngFor = "let card of cardDetails" >
+                        <mat-slide-toggle  labelPosition="before" 
+                            *ngIf = "card?.card_number == 18" 
+                            [checked]="card?.card?.flag" (change)="putCardDetails(card?.card?.card_id,$event)"></mat-slide-toggle>
+                    </div>
+                    <mat-card-content fxLayoutAlign="center center">
+                        <p>{{property?.extra_details.teUsMore}}</p>
+
+                    </mat-card-content>
+                </mat-card>
+                <mat-card class="mt-3" *ngIf="property"> 
+                    <mat-card-header fxLayoutAlign="center center"> 
+                        <mat-card-title class="uppercase">Activity</mat-card-title> 
+                    </mat-card-header>
+                    <div fxLayout="row" fxLayoutAlign="end center" *ngFor = "let card of cardDetails" >
+                        <mat-slide-toggle  labelPosition="before" 
+                            *ngIf = "card?.card_number == 18" 
+                            [checked]="card?.card?.flag" (change)="putCardDetails(card?.card?.card_id,$event)"></mat-slide-toggle>
+                    </div>
+                    <mat-card-content fxLayoutAlign="center center">
+                        <!-- <div fxLayout="row wrap" class="details" >
+                                                <div fxFlex="100" fxFlex.gt-xs="50" fxLayout="row" class="item">
+                                                    <span>Name :</span>
+                                                    <span>{{ownerDetails?.owner?.owner_name}} </span>
+                                                </div>
+                                                <div fxFlex="100" fxFlex.gt-xs="50" fxLayout="row" class="item">
+                                                    <span>Email :</span>
+                                                    <span >{{ownerDetails?.owner?.email}} </span>
+                                                </div>
+                                                <div fxFlex="100" fxFlex.gt-xs="50" fxLayout="row" class="item">
+                                                    <span>Mobile Number :</span>
+                                                    <span > {{ ownerDetails?.owner?.contact_number}} </span>
+                                                </div>
+                                                <div  fxFlex="100" fxFlex.gt-xs="50" fxLayout="row" class="item">
+                                                    <span >Is Current Owner :</span>
+                                                    <mat-icon *ngIf="ownerDetails?.owner?.is_current_owner === true" class="mat-icon-sm" color="primary">check</mat-icon>
+                                                    <mat-icon *ngIf="ownerDetails?.owner?.is_current_owner === false" class="mat-icon-sm" color="primary">clear</mat-icon>
+                    
+                                                </div>
+                                                <div fxFlex="100" fxFlex.gt-xs="50" fxLayout="row" class="item">
+                                                    <span>From :</span>
+                                                    <span > {{ ownerDetails?.created_on | date: 'dd/MM/yyyy'}} </span>
+                                                </div>
+                                                <div fxFlex="100" fxFlex.gt-xs="50" fxLayout="row" class="item">
+                                                    <span>To :</span>
+                                                    <span > {{ ownerDetails?.updated_at | date: 'dd/MM/yyyy'}} </span>
+                                                </div>
+                                            </div> -->
+                        <div fxLayout="row wrap" class="details">
+                            <h5 class="ml-5" *ngIf="ownerDetails?.length !== 0">Owner</h5>
+                            <div fxFlex="100" fxLayout="row" *ngIf="ownerDetails?.length !== 0">
+                                <table>
+                                    <tr>
+                    
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Contact Number</th>
+                                        <th>Is Current Owner</th>
+                                        <th>Form</th>
+                                        <th>To</th>
+                    
+                                    </tr>
+                                    <tr *ngFor="let ele of ownerDetails;let i = index;">
+                                        <td>{{ele.owner.owner_name}}</td>
+                                        <td>{{ele.owner.email}}</td>
+                                        <td>{{ele.owner.contact_number}}</td>
+                                        <td> <span *ngIf="ele?.owner?.is_current_owner === true">YES</span>
+                                            <span *ngIf="ele?.owner?.is_current_owner === false">NO</span>
+                                        </td>
+                                        <td>{{ele?.created_on | date :'MM/dd/yyyy' }} </td>
+                                        <td>{{ele?.updated_at | date :'MM/dd/yyyy' }} </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <h5 class="ml-5" *ngIf="dto?.length !== 0">Co-Owner</h5>
+                            <div fxFlex="100" fxLayout="row" class="my-2" *ngIf="dto?.length !== 0">
+                                <table >
+                                    <tr>
+                    
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Contact Number</th>
+                                        <!-- <th>Is Current Owner</th>
+                                                       <th>Form</th>
+                                                       <th>To</th> -->
+                    
+                                    </tr>
+                                    <tr *ngFor="let ele of dto;let i = index;">
+                                        <td>{{ele.owner_name}}</td>
+                                        <td>{{ele.email}}</td>
+                                        <td>{{ele.contact_number}}</td>
+                                        <!-- <td> <span *ngIf="ele?.owner?.is_current_owner === true">YES</span>
+                                                         <span *ngIf="ele?.owner?.is_current_owner === false">NO</span></td>
+                                                        <td>{{ele?.created_on  | date :'MM/dd/yyyy' }} </td>
+                                                        <td>{{ele?.updated_at  | date :'MM/dd/yyyy' }} </td> -->
+                                    </tr>
+                                </table>
+                            </div>
+                            <h5 class="ml-5" *ngIf="poaOwner?.length !== 0">Power Of Attorney</h5>
+                            <div fxFlex="100" fxLayout="row" class="my-2" *ngIf="poaOwner?.length !== 0">
+                                <table>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Contact Number</th>
+                                    </tr>
+                                    <tr *ngFor="let ele of poaOwner;let i = index;">
+                                        <td>{{ele.owner_name}}</td>
+                                        <td>{{ele.email}}</td>
+                                        <td>{{ele.contact_number}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+                <mat-card class="mt-3" *ngIf="property"> 
+                    <mat-card-header fxLayoutAlign="center center"> 
+                        <mat-card-title class="uppercase">Tenant Details</mat-card-title> 
+                    </mat-card-header>
+                    <!-- <div fxLayout="row" fxLayoutAlign="end center" *ngFor = "let card of cardDetails" >
+                        <mat-slide-toggle  labelPosition="before" 
+                            *ngIf = "card?.card_number == 19" 
+                            [checked]="card?.card?.flag" (change)="putCardDetails(card?.card?.card_id,$event)"></mat-slide-toggle>
+                    </div> -->
+                    <mat-card-content fxLayoutAlign="center center">
+                        <table>
+                            <tr>
+                              <th>Name</th>
+                              <th>Email</th>
+                              <th>Contact Number</th>
+                              <th>Address</th>
+                              <th>Aggrement Duration</th>
+
+                            </tr>
+                            <tr *ngFor="let ele of tenentbyOwner;let i = index;"> 
+                              <td>{{ele.tenant_name}}</td>
+                              <td>{{ele.email}}</td>
+                              <td>{{ele.contact_number}}</td>
+                              <td>{{ele.tenant_address}}</td>
+                              <td>{{ele.aggrement_start_date  | date :'MM/dd/yyyy' }} To {{ele.getAggrement_end_date | date :'MM/dd/yyyy'}}</td>
+                            </tr>
+                          </table>
+                    </mat-card-content>
+                </mat-card>
+                <div class="my-3" fxLayoutAlign="center center">
+                    <div>
+                        <a [routerLink]="['/submit-property', property?.id]" mat-stroked-button  class="uppercase" style="color: green;">  Edit Details</a>
+                    </div> 
+                </div>
+            </mat-sidenav-content>
+        </mat-sidenav-container>
+
+    </div>
+</div>
+ 
+<!-- <div class="section mt-3">
+    <div class="px-3">
+        <div class="theme-container"> 
+            <h1 class="section-title">Related properties</h1>            
+            <app-properties-carousel [properties]="relatedProperties"></app-properties-carousel>                        
+        </div>
+    </div>   
+</div>  -->
+
+<!-- <app-get-in-touch></app-get-in-touch> -->

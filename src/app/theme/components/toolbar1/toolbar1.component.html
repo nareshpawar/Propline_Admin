@@ -1,0 +1,63 @@
+<mat-toolbar id="top-toolbar" class="top-toolbar">
+  <div class="theme-container" fxLayout="row" fxLayoutAlign="space-between center">
+    <div fxLayout="row" fxLayoutAlign="start center">
+      <span fxHide="false" fxHide.gt-sm>
+        <button mat-button (click)="sidenavToggle()" *ngIf="sidebarFlag"><!--sidenavToggle('basic')-->
+          <mat-icon style="color: black;">menu</mat-icon>
+        </button> 
+      </span>
+        <!-- <div fxLayout="row" fxLayoutAlign="start center" *ngIf="changeMenuFlag">
+          <span>
+            <!--fxHide="false" fxHide.gt-sm- ->
+            <button mat-button (click)="sidenavToggle('admin')">
+              <!-- <mat-icon>account_circle</mat-icon> - ->
+              <!-- <mat-icon>domain</mat-icon> - ->
+              <a mat-button  ><!--[matMenuTriggerFor]="userMenu" #userMenuTrigger="matMenuTrigger"- ->
+                <mat-icon class="mat-icon-sm">person</mat-icon>
+                <span fxShow="false" fxShow.gt-sm class="mx-1 uppercase">{{ 'menu' | translate }}</span> 
+                <mat-icon class="mat-icon-sm caret">arrow_drop_down</mat-icon>
+            </a>
+            </button>
+          </span>
+        </div> -->
+      <!-- <app-contacts fxLayout="row" fxLayoutAlign="start center" fxShow="false" fxShow.gt-sm *ngIf="changeHederFlag == true"></app-contacts>          -->
+    </div>
+    <!-- <app-social-icons fxLayout="row" fxLayoutAlign="start center" fxShow="false" fxShow.gt-md *ngIf="changeHederFlag == true"></app-social-icons> -->
+    <div fxLayout="row" fxLayoutAlign="end center" class="">
+      <!-- <app-currency *ngIf="changeHederFlag == true"></app-currency> -->
+      <!-- <app-lang *ngIf="changeHederFlag == true"></app-lang> -->
+      <app-user-menu *ngIf="changeAccountFlag == true"></app-user-menu>
+      <!-- <div fxLayout="row" fxLayoutAlign="start center">
+        <span ><!--fxHide="false" fxHide.gt-sm- ->
+          <button mat-button (click)="sidenavToggle('admin')">
+            <mat-icon>menu</mat-icon>
+          </button> 
+        </span>
+      </div> -->
+    </div>    
+  </div>           
+</mat-toolbar>  
+<mat-toolbar id="main-toolbar" class="mat-elevation-z2" style="height: 60%;"> 
+  <div class="theme-container" fxLayout="row" fxLayoutAlign="space-between center">
+    <a class="logo"  ><app-logo></app-logo></a> <!--routerLink="/"-->
+    <div fxShow="false" fxShow.gt-sm class="horizontal-menu" *ngIf="changeHederFlag == true">          
+        <app-horizontal-menu [menuParentId]="0"></app-horizontal-menu>
+    </div> 
+    <div fxLayout="row" fxLayoutAlign="start center">
+      <!-- <a routerLink="/account/favorites" mat-icon-button matTooltip="Favorites" fxShow="false" fxShow.gt-md *ngIf="changeHederFlag == true">
+          <mat-icon [matBadge]="appService.Data.favorites.length" 
+                    [matBadgeHidden]="appService.Data.favorites.length == 0" 
+                    matBadgeSize="small" 
+                    matBadgeColor="warn">favorite_border</mat-icon>
+      </a>
+      <a routerLink="/compare" mat-icon-button matTooltip="Compare list" fxShow="false" fxShow.gt-md class="mr-3 ml-2" *ngIf="changeHederFlag == true">
+          <mat-icon [matBadge]="appService.Data.compareList.length" 
+                    [matBadgeHidden]="appService.Data.compareList.length == 0" 
+                    matBadgeSize="small" 
+                    matBadgeColor="warn">compare_arrows</mat-icon>
+      </a>      
+      <a routerLink="/submit-property" mat-mini-fab style="background:#ffe241;" fxHide="false" fxHide.gt-xs *ngIf="changeHederFlag == true"><mat-icon>add</mat-icon></a> -->
+      <a routerLink="/submit-property" mat-raised-button style="background:#ffe241;" fxShow="false" fxShow.gt-xs class="uppercase" *ngIf="submitButton == true">{{ 'SUBMIT_PROPERTY' | translate }}</a>
+    </div>   
+  </div>     
+</mat-toolbar>

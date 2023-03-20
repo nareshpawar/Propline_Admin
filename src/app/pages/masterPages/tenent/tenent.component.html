@@ -1,0 +1,345 @@
+<div class="p-3">
+    <div class="theme-container">
+        <mat-card ngClass.lt-lg="p-0" [formGroup]="tenentForm">
+            <mat-card-title class="fw-500 text-center">
+                Tenant Details
+            </mat-card-title>
+
+            <mat-card-content fxLayout="row wrap">
+                <div fxFlex="20" class="px-2">
+                </div>
+                <div fxFlex="60" class="px-2" fxLayout="row wrap">
+                    <div fxFlex="50" class="px-2">
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>Tenant Name</mat-label>
+                            <input matInput placeholder="Tenant Name" formControlName="tenant_name">
+                            <mat-error *ngIf="tenentForm.get('tenant_name').errors?.required">Tenant Name is required</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="50" class="px-2">
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>Date of Birth</mat-label>
+                            <input matInput [matDatepicker]="picker" placeholder="Date" formControlName="dob">
+                            <mat-hint>DD/MM/YYYY</mat-hint>
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                            <mat-error *ngIf="tenentForm.get('dob').errors?.required">Date of Birth is required</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="50" class="px-2">
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>Email</mat-label>
+                            <input matInput placeholder="Email" formControlName="email">
+                            <mat-error *ngIf="tenentForm.get('email').errors?.required">Email is required</mat-error>
+
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="50" class="px-2">
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>Mobile</mat-label>
+                            <input matInput placeholder="Mobile" formControlName="contact_number">
+                            <mat-error *ngIf="tenentForm.get('contact_number').errors?.required">Mobile Number is required</mat-error>
+
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="100" class="px-2">
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>Address</mat-label>
+                            <input matInput placeholder="Address" formControlName="tenant_address">
+                            <mat-error *ngIf="tenentForm.get('tenant_address').errors?.required">Address is required</mat-error>
+
+                        </mat-form-field>
+                    </div>
+                    <!-- <div fxFlex="50" class="px-2">
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>Status</mat-label>
+                            <!-- <input matInput placeholder="Status" formControlName="status"> - ->
+                            <mat-select placeholder="Select Owner..." formControlName="status">
+                                <mat-option  [value]="'Active'" >
+                                    Active
+                                </mat-option>
+                                <mat-option  [value]="'Inactive'" >
+                                    Inactive
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="tenentForm.get('status').errors?.required">Status is required</mat-error>
+
+                        </mat-form-field>
+                    </div> -->
+                    <div fxFlex="100" class="px-2">
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>Owner</mat-label>
+                            <mat-select placeholder="Select Owner..." formControlName="owner">
+                                <mat-option *ngFor="let owner of ownerDetails" [value]="owner.owner_id">
+                                    {{owner.owner_name}} - {{owner?.property?.property_name}}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="tenentForm.get('owner').errors?.required">Owner is required</mat-error>
+
+                            </mat-form-field>
+                    </div>
+                    <!-- <div fxFlex="50" class="px-2">
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>Created On</mat-label>
+                            <input matInput [matDatepicker]="picker4" placeholder="Date" formControlName="created_on">
+                            <mat-hint>DD/MM/YYYY</mat-hint>
+                            <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
+                            <mat-datepicker #picker4></mat-datepicker>
+                            <mat-error *ngIf="tenentForm.get('created_on').errors?.required">Cereated Date is required</mat-error>
+
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="50" class="px-2">
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>Updated On</mat-label>
+                            <input matInput [matDatepicker]="picker5" placeholder="Date" formControlName="updated_on">
+                            <mat-hint>DD/MM/YYYY</mat-hint>
+                            <mat-datepicker-toggle matSuffix [for]="picker5"></mat-datepicker-toggle>
+                            <mat-datepicker #picker5></mat-datepicker>
+                            <mat-error *ngIf="tenentForm.get('updated_on').errors?.required">Updated Date is required</mat-error>
+
+                        </mat-form-field>
+                    </div> -->
+                    <div fxFlex="100" class="px-2" fxLayout="row wrap">
+                        <div fxFlex="40" >
+                            <mat-form-field appearance="legacy" class="w-100">
+                                <mat-label>Agreement Duration</mat-label>
+                                <input matInput type="text" placeholder="" formControlName="daysCount" (keyup)="getMonth(null)" style="text-align: right">
+                                <span matSuffix> &nbsp; Month</span>
+                            </mat-form-field>
+                        </div>
+                            
+                    </div>
+
+                    <div fxFlex="50" class="px-2">
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>Aggrement Start Date</mat-label>
+                            <input matInput [matDatepicker]="picker2" placeholder="Date" formControlName="aggrement_start_date" (dateChange)="getMonth($event)" >
+                            <mat-hint>DD/MM/YYYY</mat-hint>
+                            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                            <mat-datepicker #picker2></mat-datepicker>
+                            <mat-error *ngIf="tenentForm.get('aggrement_start_date').errors?.required">Aggrement Start Date is required</mat-error>
+
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="50" class="px-2">
+                        <mat-form-field appearance="outline" class="w-100"> 
+                            <mat-label>Aggrement End Date</mat-label>
+                            <input matInput [matDatepicker]="picker3" placeholder="Date" formControlName="getAggrement_end_date" (dateChange)="countDays()">
+                            <mat-hint>DD/MM/YYYY</mat-hint>
+                            <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                            <mat-datepicker #picker3></mat-datepicker>
+                            <mat-error *ngIf="tenentForm.get('getAggrement_end_date').errors?.required">Aggrement End Date is required</mat-error>
+                        </mat-form-field>
+                    </div>
+                   
+                    <div fxFlex="33" class="pb-2 center mt-2" fxlayoutalign="center center">
+                        <div  class="px-2">  
+                            <input-file 
+                                    type="file" 
+                                    placeholder="Profile Photo"  
+                                    fileLimit="1"
+                                    fileAccept="image/*"  
+                                    formControlName="profile_photo"
+                                    >
+                            </input-file>
+                            <!-- <img *ngIf="imageFile !== null" src={{imageFile}} alt="" width="200" height="100"/> -->
+                            <!-- <mat-error *ngIf="missionForm.controls.image.errors?.required ">Image is Required</mat-error> -->
+
+                        </div>
+                    </div>
+                    <div fxFlex="33" class="pb-2 center mt-2" fxlayoutalign="center center">
+                        <div  class="px-2">  
+                            <input-file 
+                                    type="file" 
+                                    placeholder="Adhar Card File"  
+                                    fileLimit="1"
+                                    formControlName="adhar_card"
+                                    
+                                    >
+                            </input-file>
+                            <!-- <img *ngIf="imageFile !== null" src={{imageFile}} alt="" width="200" height="100"/> -->
+                            <!-- <mat-error *ngIf="missionForm.controls.image.errors?.required ">Image is Required</mat-error> -->
+
+                        </div>
+                    </div>
+                    <div fxFlex="33" class="pb-2 center mt-2" fxlayoutalign="center center">
+                        <div  class="px-2">  
+                            <input-file 
+                                    type="file" 
+                                    placeholder="Pan Card File"  
+                                    fileLimit="1"
+                                    formControlName="pan_card"
+                                  
+                                     >
+                            </input-file>
+                            <!-- <img *ngIf="imageFile !== null" src={{imageFile}} alt="" width="200" height="100"/> -->
+                            <!-- <mat-error *ngIf="missionForm.controls.image.errors?.required ">Image is Required</mat-error> -->
+
+                        </div>
+                    </div>
+                    <div fxFlex="33" class="pb-2 center mt-2" fxlayoutalign="center center">
+                        <div  class="px-2">  
+                            <input-file 
+                                    type="file" 
+                                    placeholder="Company Document"  
+                                    fileLimit="1"
+                                    formControlName="company_doc"
+                                    >
+                            </input-file>
+                            <!-- <img *ngIf="imageFile !== null" src={{imageFile}} alt="" width="200" height="100"/> -->
+                            <!-- <mat-error *ngIf="missionForm.controls.image.errors?.required ">Image is Required</mat-error> -->
+
+                        </div>
+                    </div>
+                    <div fxFlex="33" class="pb-2 center mt-2" fxlayoutalign="center center">
+                        <div  class="px-2">  
+                            <input-file 
+                                    type="file" 
+                                    placeholder="Other Document"  
+                                    fileLimit="1"
+                                    formControlName="other_doc"
+                                    >
+                            </input-file>
+                            <!-- <img *ngIf="imageFile !== null" src={{imageFile}} alt="" width="200" height="100"/> -->
+                            <!-- <mat-error *ngIf="missionForm.controls.image.errors?.required ">Image is Required</mat-error> -->
+
+                        </div>
+                    </div>
+                    <div fxFlex="33" class="pb-2 center mt-2" fxlayoutalign="center center">
+                        <div  class="px-2">  
+                            <input-file 
+                                    type="file" 
+                                    placeholder="Agreement Upload"  
+                                    fileLimit="1"
+                                    formControlName="agreement_doc"
+                                     >
+                            </input-file>
+                            <!-- <img *ngIf="imageFile !== null" src={{imageFile}} alt="" width="200" height="100"/> -->
+                            <!-- <mat-error *ngIf="missionForm.controls.image.errors?.required ">Image is Required</mat-error> -->
+
+                        </div>
+                    </div>
+
+                    <!-- <div fxFlex="100" class="px-2" *ngIf="docFlag">
+                        <div fxLayout="row wrap" class="details">
+                            <ul fxFlex="100" fxLayout="row" class="item p-3"
+                                *ngFor="let doc of document; let i=index;">
+                                <li fxFlex="100">
+                                    {{doc}}
+                                    <a [href]="feature.file_path" target="_blank">
+                                        {{feature.title }}
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div> -->
+                </div>
+                <div fxFlex="20" class="px-2">
+
+                </div>
+                <div fxFlex="100" class="px-2">
+                    <div fxlayout="row" fxlayoutalign="center center" class="p-2" ng-reflect-fx-layout="row"
+                        ng-reflect-fx-layout-align="center center"
+                        style="flex-direction: row; box-sizing: border-box; display: flex; place-content: center; align-items: center;">
+                        <button mat-raised-button="" class="mat-focus-indicator uppercase mx-1 mat-raised-button mat-button-base "
+                            (click)="submitTenent()" style="background: #ffe241;">
+                            <span class="mat-button-wrapper">submit</span>
+                        </button>
+                    </div>
+                </div>
+                <div fxFlex="100" class="px-2">
+                    <mat-form-field appearance="standard">
+                        <mat-label>Filter</mat-label>
+                        <input matInput (keyup)="applyFilter($event)" placeholder="Ex. name" #input>
+                    </mat-form-field>
+                    <div class="mat-elevation-z8">
+                        <table mat-table [dataSource]="dataSource" matSort
+                            (matSortChange)="announceSortChange($event)" class="mat-elevation-z8">
+
+                            <ng-container matColumnDef="position">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                    sortActionDescription="Sort by position"> No. </th>
+                                <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="Tenent_Name">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                    sortActionDescription="Sort by tenant_name"> Tenant Name </th>
+                                <td mat-cell *matCellDef="let element"> {{element.tenant_name}} </td>
+                            </ng-container>
+                            <!-- <ng-container matColumnDef="DOB">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                    sortActionDescription="Sort by dob"> Date Of Birth </th>
+                                <td mat-cell *matCellDef="let element"> {{element['dob']}} </td>
+                            </ng-container> -->
+                            <ng-container matColumnDef="Email">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                    sortActionDescription="Sort by email"> Email </th>
+                                <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="Mobile">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header 
+                                sortActionDescription="Sort by contact_number"> Mobile Number </th>
+                                <td mat-cell *matCellDef="let element">{{element.contact_number}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="Address">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                    sortActionDescription="Sort by tenant_address"> Address </th>
+                                <td mat-cell *matCellDef="let element"> {{element.tenant_address}} </td>
+                            </ng-container>
+                            <!-- <ng-container matColumnDef="Status">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                    sortActionDescription="Sort by status"> Status </th>
+                                <td mat-cell *matCellDef="let element">{{element.status}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="Owner">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                    sortActionDescription="Sort by owner"> Owner </th>
+                                <td mat-cell *matCellDef="let element">{{element.owner}} </td>
+                            </ng-container> -->
+                            <ng-container matColumnDef="Created_On">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                    sortActionDescription="Sort by created_on"> Created On </th>
+                                <td mat-cell *matCellDef="let element">{{element.created_on | date : 'dd/MM/yyyy'}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="Updated_On">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                    sortActionDescription="Sort by updated_on"> Updated On </th>
+                                <td mat-cell *matCellDef="let element">{{element.created_on | date : 'dd/MM/yyyy'}} </td>
+                            </ng-container>
+                            <!-- <ng-container matColumnDef="Aggrement_Start">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                    sortActionDescription="Sort by aggrement_start_date"> Aggrement Start Date </th>
+                                <td mat-cell *matCellDef="let element">{{element.aggrement_start_date}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="Aggrement_End">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                    sortActionDescription="Sort by getAggrement_end_date"> Aggrement End Date </th>
+                                <td mat-cell *matCellDef="let element">{{element.getAggrement_end_date}} </td>
+                            </ng-container> -->
+                            <ng-container matColumnDef="Action">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by Action"> Edit </th>
+                                <td mat-cell *matCellDef="let element">
+                                    <button mat-stroked-button (click)="editData(element)" 
+                                            style="background: green;" class=" mx-1 my-1">
+                                        <i class="material-icons" style="color: white;">edit</i>
+                                    </button>
+                                    <button mat-stroked-button (click)="deleteData(element)" class=" mx-1 my-1"
+                                    style="background: red;" >
+                                        <i class="material-icons"  style="color: white;">delete</i>
+                                    </button>
+                                </td>
+                            </ng-container>
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                        </table>
+                        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
+                            aria-label="Select page of periodic elements">
+                        </mat-paginator>
+                    </div>
+                </div>
+            </mat-card-content>
+
+        </mat-card>
+    </div>
+</div>

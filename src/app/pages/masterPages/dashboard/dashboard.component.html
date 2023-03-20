@@ -1,0 +1,134 @@
+<div class="p-3">
+    <div class="theme-container">
+      <mat-card ngClass.lt-lg="p-0"   class="custom-form pt-2">
+          <!-- <mat-card-title class="fw-500 text-center">
+              Dashboard
+          </mat-card-title> -->
+           <mat-card-content fxLayout="row wrap">
+            <div fxFlex="33.33" class="px-2 my-2" >
+                <mat-card class="card" style="height: 150px;
+                    background: linear-gradient(45deg,#4099ff,#73b4ff); color: white;">
+                    <h6 class="m-b-20">Inactive Properties</h6>
+                    <h1 class="text-right"><i class="fa fa-cart-plus f-left"></i><span>{{dashboardCounts?.inActiveProperties}}</span></h1>
+                    <p class="m-b-0">Total Properties<span style="float: right;">{{dashboardCounts?.inActiveProperties + dashboardCounts?.activeProperties}}</span></p>
+                </mat-card>
+            </div>
+            <div fxFlex="33.33" class="px-2 my-2" >
+                <mat-card class="card" style="height: 150px;
+                background: linear-gradient(45deg,#2ed8b6,#59e0c5); color: white;">
+                    <h6 class="m-b-20">Active  Properties</h6>
+                    <h1 class="text-right"><i class="fa fa-cart-plus f-left"></i><span>{{dashboardCounts?.activeProperties}}</span></h1>
+                    <p class="m-b-0">Total Properties<span style="float: right;">{{dashboardCounts?.inActiveProperties + dashboardCounts?.activeProperties}}</span></p>
+                </mat-card>
+            </div>
+            <div fxFlex="33.33" class="px-2 my-2" >
+                <mat-card class="card" style="height: 150px;
+                 background: linear-gradient(45deg,#FFB64D,#ffcb80); color: white;">
+                    <h6 class="m-b-20">Rent Properties</h6>
+                    <h1 class="text-right"><i class="fa fa-cart-plus f-left"></i><span>{{dashboardCounts?.rentProperties}}</span></h1>
+                    <p class="m-b-0">Total Properties<span style="float: right;">{{dashboardCounts?.inActiveProperties + dashboardCounts?.activeProperties}}</span></p>
+                </mat-card>
+            </div>
+            <div fxFlex="16.665" class="px-2 my-2" >
+            </div>    
+            <div fxFlex="33.33" class="px-2 my-2" >
+                <mat-card class="card" style="height: 150px; background: linear-gradient(45deg,#ffe253,#ffe253); color: white;">
+                    <!-- <div class="cards" style="border: none;"> -->
+                    <h6 class="m-b-20">Ready To Move Properties</h6>
+                    <h1 class="text-right"><i class="fa fa-cart-plus f-left"></i><span>{{dashboardCounts?.readyToMoveProperties}}</span></h1>
+                    <p class="m-b-0">Total Properties<span style="float: right;">{{dashboardCounts?.inActiveProperties + dashboardCounts?.activeProperties}}</span></p>
+                    <!-- </div> -->
+            </mat-card>
+            </div>
+            <div fxFlex="33.33" class="px-2 my-2" >
+                <mat-card class="card" style="height: 150px; background: linear-gradient(45deg,#FF5370,#ff869a); color: white;">
+                    <!-- <div class="cards" style="border: none;"> -->
+                    <h6 class="m-b-20">Under Construction Properties</h6>
+                    <h1 class="text-right"><i class="fa fa-cart-plus f-left"></i><span>{{dashboardCounts?.underConstructionProperties}}</span></h1>
+                    <p class="m-b-0">Total Properties<span style="float: right;">{{dashboardCounts?.inActiveProperties + dashboardCounts?.activeProperties}}</span></p>
+                    <!-- </div> -->
+            </mat-card>
+            </div>
+            <div fxFlex="16.665" class="px-2 my-2" >
+            </div> 
+            <div fxFlex="100" class="px-2 my-2">
+                <h4>Choose The Year</h4>
+                <mat-radio-group  [(ngModel)]="currentYear" (change)="selectYear()" class="mx-2 my-2">
+                    <mat-radio-button class="example-radio-button pr-2"  *ngFor="let yr of years" [value]="yr.year">Year - {{yr.year}}</mat-radio-button>
+                </mat-radio-group>
+            </div>
+            <div fxFlex="50" class="px-2 my-2" >
+                <mat-card class="card" >
+                    <div class="cards" style="border: none;">
+                        <ngx-charts-pie-chart
+                        [view]="viewP"
+                        [scheme]="colorSchemeP"
+                        [results]="single"
+                        [gradient]="gradientP"
+                        [legend]="showLegend"
+                        [legendPosition]="legendPosition"
+                        [labels]="showLabels"
+                        [doughnut]="isDoughnut"
+                        (select)="onSelectP($event)"
+                        (activate)="onActivate($event)"
+                        (deactivate)="onDeactivate($event)"
+                        >
+                      </ngx-charts-pie-chart>
+                    
+                    </div>
+            </mat-card>
+            </div>
+            <div fxFlex="50" class="px-2 my-2" >
+                <mat-card class="card" >
+                    <div class="cards" style="border: none;">
+                        <ngx-charts-pie-chart
+                        [view]="viewP"
+                        [scheme]="colorSchemeP"
+                        [results]="single"
+                        [gradient]="gradientP"
+                        [legend]="showLegend"
+                        [legendPosition]="legendPosition"
+                        [labels]="showLabels"
+                        [doughnut]="isDoughnut"
+                        (select)="onSelectP($event)"
+                        (activate)="onActivate($event)"
+                        (deactivate)="onDeactivate($event)"
+                        >
+                      </ngx-charts-pie-chart>
+                    
+                    </div>
+            </mat-card>
+            </div>
+          
+        
+            
+            <div fxFlex="100" class="px-2 my-2" >
+                <mat-card class="card" >
+                    
+                    <div class="cards" style="border: none;">
+                    <!-- <ngx-charts-bar-vertical-stacked
+                      [view]="view"
+                      [scheme]="colorScheme"
+                      [results]="multi"
+                      [gradient]="gradient"
+                      [xAxis]="showXAxis"
+                      [yAxis]="showYAxis"
+                      [legend]="showLegend"
+                      [showXAxisLabel]="showXAxisLabel"
+                      [showYAxisLabel]="showYAxisLabel"
+                      [xAxisLabel]="xAxisLabel"
+                      [yAxisLabel]="yAxisLabel"
+                      [animations]="animations"
+                      (select)="onSelect($event)">
+                    </ngx-charts-bar-vertical-stacked> -->
+                    <ngx-charts-bar-vertical [view]="view" [scheme]="colorScheme" [results]="single" [gradient]="gradient"
+                        [xAxis]="showXAxis" [yAxis]="showYAxis" [legend]="showLegend" [showXAxisLabel]="showXAxisLabel"
+                        [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel" (select)="onSelect($event)">
+                    </ngx-charts-bar-vertical>
+                    </div>
+            </mat-card>
+            </div>
+          </mat-card-content>
+      </mat-card>    
+    </div>  
+  </div>

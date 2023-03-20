@@ -1,0 +1,113 @@
+<div class="p-2">
+
+    <mat-form-field appearance="standard">
+        <mat-label>Filter</mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input>
+      </mat-form-field>
+      
+      <div class="mat-elevation-z8">
+        <table mat-table [dataSource]="dataSource" matSort #empTbSort="matSort">
+            
+            <ng-container matColumnDef="SR No">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Property ID </th>
+                <td mat-cell *matCellDef="let row">{{row?.property_name}}</td>
+              </ng-container>
+          <ng-container matColumnDef="Image">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Image </th>
+            <td mat-cell *matCellDef="let row">
+                <img src="{{row?.covered_image?.Small}}" class="my-3" alt="" height="100" width="150"> 
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="Title">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Property Name </th>
+            <td mat-cell *matCellDef="let row"> {{row?.title}} </td>
+          </ng-container>
+          <ng-container matColumnDef="Action">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Action </th>
+            <td mat-cell *matCellDef="let row"> 
+                <a [routerLink]="['/properties', row?.id]" mat-stroked-button color="primary" class="uppercase">Details</a>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="Active/Inactive">
+            <th mat-header-cell *matHeaderCellDef> Active/Inactive </th>
+            <td mat-cell *matCellDef="let row"> 
+                <div fxLayout="row" fxLayoutAlign="end center">
+                        <mat-slide-toggle  labelPosition="before" 
+                            [checked]="row?.is_property_active" (change)="isPropertyActive(row?.id,$event)">
+                        </mat-slide-toggle>
+                </div>    
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+          </tr>
+        </table>
+      
+        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons aria-label="Select page of users"></mat-paginator>
+      </div>
+    
+      <!-- <div fxLayout="row" fxLayoutAlign="end center" *ngFor = "let card of cardDetails" >
+        <mat-slide-toggle  labelPosition="before" 
+            *ngIf = "card.card_number == 1" 
+            [checked]="card.card.flag" (change)="putCardDetails(card.card.card_id,$event)"></mat-slide-toggle>
+    </div> -->
+
+                        
+                    <!-- <div class="theme-container">
+                        <mat-card class="main-content-header" >
+                            <app-properties-search 
+                                [variant]="settings.searchPanelVariant"
+                                [searchOnBtnClick]="settings.searchOnBtnClick"
+                                [removedSearchField]="removedSearchField" 
+                                (onSearchChange)="searchChanged($event)"
+                                (onSearchClick)="searchClicked()">
+                            </app-properties-search>
+                        </mat-card>  
+                    </div> -->
+                    <!-- <div fxLayout="row wrap" class="properties-wrapper mt-0">
+                        <div fxFlex="100" fxLayoutAlign="start start" class="p-2">
+                            <mat-chip-list [ngClass]="(settings.rtl) ? 'ml-2' : 'mr-2'">
+                                <mat-chip selected disableRipple="true" color="warn" class="uppercase ws-nowrap">
+                                    {{ pagination?.total }} found
+                                </mat-chip>
+                            </mat-chip-list>
+                            <app-properties-search-results-filters 
+                                [searchFields]="searchFields"
+                                (onRemoveSearchField)="removeSearchField($event)">
+                               
+                            </app-properties-search-results-filters>
+                        </div>
+                        <div fxFlex="100" class="px-2 pb-2 pt-0" >
+                            <app-properties-toolbar [isHomePage]="true"  
+                                (onChangeCount)="changeCount($event)" (onChangeSorting)="changeSorting($event)"
+                                (onChangeViewType)="changeViewType($event)">
+                            </app-properties-toolbar>
+                        </div>
+                        <div *ngFor="let property of properties" [fxFlex]="(viewType=='grid') ? viewCol : 100" class="item">
+                            <app-property-item [property]="property" [viewType]="viewType" [viewColChanged]="viewCol"></app-property-item>
+                        </div>
+                        <div *ngIf="properties?.length" fxFlex="100" fxLayoutAlign="center center" class="p-2 mt-2">                
+                            <app-load-more [step]="2"></app-load-more> 
+                        </div>
+                        <div *ngIf="properties?.length == 0" fxFlex="100" fxLayoutAlign="center center" [style.min-height.px]="200">
+                            <mat-spinner *ngIf="!message"></mat-spinner>
+                            <mat-chip-list *ngIf="message">
+                                <mat-chip selected disableRipple="true" color="warn" class="uppercase ws-nowrap">
+                                    {{message}}
+                                </mat-chip>
+                            </mat-chip-list>
+                        </div>
+                      
+                    
+                    </div> -->
+                   <!-- <div class="theme-container">
+                             <mat-card ngClass.lt-lg="p-0"> 
+                                    <mat-card-content fxLayout=" wrap">
+                                    <mat-sidenav-content ngClass.gt-lg="distance">
+                               </mat-sidenav-content>
+                                    </mat-card-content>
+                             </mat-card>
+                        </div> -->
+</div>

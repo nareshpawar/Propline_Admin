@@ -1,0 +1,117 @@
+<div class="p-3">
+    <div class="theme-container">
+      <mat-card ngClass.lt-lg="p-0" [formGroup]="propertyForm"   class="custom-form pt-2">
+          <mat-card-title class="fw-500 text-center">
+              Property Type
+          </mat-card-title>
+          <mat-card-content fxLayout="row wrap">
+              <div fxFlex="25" class="px-2" >
+              </div>
+              <div fxFlex="50" class="px-2" >
+                  <mat-form-field appearance="outline" class="w-100">
+                      <!-- <mat-label>Property type</mat-label>
+                      <input matInput autocomplete="off"  placeholder="Property type" formControlName="propertytype" #Property>
+                      <mat-error *ngIf="propertyForm.controls.propertytype.errors?.required">Property Type is Required</mat-error> -->
+
+                        <mat-label>Property For</mat-label>
+                        <mat-select placeholder="Select Property For" formControlName="propertyFor">
+                          <mat-option *ngFor="let ele of propertyFor" [value]="ele">
+                            {{ele}}
+                          </mat-option>
+                        </mat-select>
+                  </mat-form-field>
+                  <mat-form-field appearance="outline" class="w-100" *ngIf="propertyForType.value === 'Residential' ">
+                    <!-- <mat-label>Discription</mat-label>
+                    <input matInput  placeholder="Property type" formControlName="discription" #discription>
+                    <mat-error *ngIf="propertyForm.controls.discription.errors?.required">Discription is Required</mat-error> -->
+                    <mat-label>Property Type</mat-label>
+                        <mat-select placeholder="Select Property Type" formControlName="propertyType">
+                          <mat-option *ngFor="let ele of propertyType" [value]="ele">
+                            {{ele}}
+                          </mat-option>
+                    </mat-select>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="w-100" *ngIf="propertyForType.value === 'Commercial' ">
+                        <mat-label>Property Type</mat-label>
+                            <mat-select placeholder="Select Property Type" formControlName="propertyType">
+                              <mat-option *ngFor="let ele of commercialProperty" [value]="ele">
+                                {{ele}}
+                              </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                  <div 
+                      fxlayout="row" 
+                      fxlayoutalign="center center" 
+                      class="p-2" 
+                      ng-reflect-fx-layout="row" 
+                      ng-reflect-fx-layout-align="center center" 
+                      style="flex-direction: row; box-sizing: border-box; display: flex; place-content: center; align-items: center;">
+                      <button mat-flat-button class="uppercase"
+                              style="background: #ffe241;"
+                              type="submit"
+                              (click)="submit()"
+                              >
+                              <span class="mat-button-wrapper">submit</span>
+                      
+                      </button>
+                      
+                  </div>
+              </div>
+              <div fxFlex="25" class="px-2" >
+                  <!-- <button mat-raised-button color="primary"  fxLayoutAlign="center">Primary</button> -->
+              </div>
+              <div fxFlex="100" class="px-2">
+                  <mat-form-field  appearance="standard" >
+                      <mat-label>Filter</mat-label>
+                      <input matInput (keyup)="applyFilter($event)" placeholder="Ex. name" #input>
+                  </mat-form-field>
+                  <div class="mat-elevation-z8">
+                      <table mat-table [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)"
+                          class="mat-elevation-z8">
+                          <!-- Position Column -->
+                          <ng-container matColumnDef="position">
+                              <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number"> No. </th>
+                              <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+                          </ng-container>
+                          <!-- Name Column -->
+                          <ng-container matColumnDef="propertytype">
+                              <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by propertytype"> Property For  </th>
+                              <td mat-cell *matCellDef="let element"> {{element.propertytype}} </td>
+                          </ng-container>
+                          <!-- Weight Column -->
+                          <ng-container matColumnDef="discription">
+                              <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by discription"> Property Type </th>
+                              <td mat-cell *matCellDef="let element"> {{element.discription}} </td>
+                          </ng-container>
+                          <ng-container matColumnDef="Action" >
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header > Action </th>
+                            <td mat-cell *matCellDef="let element">
+                                <button mat-stroked-button (click)="editData(element)" 
+                                        style="background: green;" class=" mx-1 my-1">
+                                    <i class="material-icons" style="color: white;">edit</i>
+                                </button>
+                                <button mat-stroked-button (click)="deleteData(element)" class=" mx-1 my-1"
+                                style="background: red;" >
+                                    <i class="material-icons"  style="color: white;">delete</i>
+                                </button>
+                            </td>
+                          </ng-container>
+                          <!-- <ng-container matColumnDef="Delete">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                sortActionDescription="Sort by Delete">Delete</th>
+                            <td mat-cell *matCellDef="let element"> 
+                                <i class="material-icons">delete</i>
+                            </td>
+                            </ng-container> -->
+                
+                          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                      </table>
+                      <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of periodic elements">
+                      </mat-paginator>
+                  </div>
+              </div>
+          </mat-card-content>
+      </mat-card>    
+    </div>  
+  </div>

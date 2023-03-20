@@ -1,0 +1,186 @@
+<div class="p-3">
+    <div class="theme-container">
+      <mat-card ngClass.lt-lg="p-0" ><!--[formGroup]="cityForm"-->
+        <form action="" [formGroup]="userForm">
+          <mat-card-title class="fw-500 text-center">
+              User
+          </mat-card-title>
+       
+          <mat-card-content fxLayout="row wrap">
+                <div fxFlex="20" class="px-2" >
+                </div>
+                <div fxFlex="60" class="px-2" fxLayout="row wrap">
+                    <div fxFlex="50" class="px-2">
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>First Name</mat-label>
+                            <input matInput  placeholder="First Name"  formControlName="first_name">
+                            <mat-error *ngIf="userForm.controls.first_name.errors?.required">First Name is Required</mat-error>
+
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="50" class="px-2">
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>Last Name</mat-label>
+                            <input matInput  placeholder="Last Name" formControlName="last_name" >
+                            <mat-error *ngIf="userForm.controls.last_name.errors?.required">Last Name is Required</mat-error>
+
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="50" class="px-2">
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>User Name</mat-label>
+                            <input matInput  placeholder="User Name" formControlName="username" >
+                            <mat-error *ngIf="userForm.controls.username.errors?.required">Username is Required</mat-error>
+
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="50" class="px-2">
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>Password</mat-label>
+                            <input matInput  placeholder="Password" formControlName="password" >
+                            <mat-error *ngIf="userForm.controls.password.errors?.required">Password is Required</mat-error>
+
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="50" class="px-2">
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>Email</mat-label>
+                            <input matInput  placeholder="Email" formControlName="user_email" >
+                            <mat-error *ngIf="userForm.controls.user_email.errors?.required">Email is Required</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="50" class="px-2">
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>Mobile Number</mat-label>
+                            <input matInput  placeholder="Mobile Number" formControlName="user_mobile" >
+                            <mat-error *ngIf="userForm.controls.user_mobile.errors?.required">Mobile is Required</mat-error>
+                        
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="100" class="px-2">
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>Address</mat-label>
+                            <input matInput  placeholder="Address" formControlName="user_address" >
+                            
+                            <mat-error *ngIf="userForm.controls.user_address.errors?.required">User Address is Required</mat-error>
+                        </mat-form-field>
+                    </div>
+                    
+                    <div fxFlex="100" class="px-2">
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>Role</mat-label>
+                            <mat-select placeholder="Select User Role..." formControlName="role">
+                                <!--(selectionChange)=""-->
+                                <mat-option *ngFor="let role of userRoleData" [value]="role.role">
+                                    {{role.role}}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="userForm.controls.role.errors?.required">Role is Required</mat-error>
+
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div fxFlex="20" class="px-2" >
+                </div>
+                <div fxFlex="100" class="px-2" >
+                    <div  fxlayout="row" 
+                          fxlayoutalign="center center" 
+                          class="p-2" 
+                          ng-reflect-fx-layout="row" 
+                          ng-reflect-fx-layout-align="center center" 
+                          style="flex-direction: row; box-sizing: border-box; display: flex; place-content: center; align-items: center;">
+                          <button   mat-raised-button="" 
+                                    class="mat-focus-indicator uppercase mx-1 mat-raised-button mat-button-base " 
+                                    style="background: #ffe241;" (click)="submitUserData()">
+                                    <span class="mat-button-wrapper">submit</span>
+                          </button>
+                    </div>
+                </div>
+                <div fxFlex="100" class="px-2">
+                  <mat-form-field  appearance="standard" >
+                      <mat-label>Filter</mat-label>
+                      <input matInput (keyup)="applyFilter($event)" placeholder="Ex. name" #input>
+                  </mat-form-field>
+                  <div class="mat-elevation-z8">
+                      <table mat-table [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)"
+                          class="mat-elevation-z8">
+                  
+                          <ng-container matColumnDef="position">
+                              <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by position"> No. </th>
+                              <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+                          </ng-container>
+                  
+                          <ng-container matColumnDef="First Name">
+                              <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by First Name"> First Name </th>
+                              <td mat-cell *matCellDef="let element"> {{element.first_name}} </td>
+                          </ng-container>
+
+                          <ng-container matColumnDef="Last Name">
+                              <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by last_name"> Last Name </th>
+                              <td mat-cell *matCellDef="let element"> {{element.last_name}} </td>
+                          </ng-container>
+
+                          <ng-container matColumnDef="User Name">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by username"> User Name </th>
+                            <td mat-cell *matCellDef="let element"> {{element.username}} </td>
+                          </ng-container>
+
+                          <ng-container matColumnDef="Password">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by password"> Password </th>
+                            <td mat-cell *matCellDef="let element"> {{element.password}} </td>
+                          </ng-container>
+
+                          <ng-container matColumnDef="Email">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by Email"> Email </th>
+                            <td mat-cell *matCellDef="let element"> {{element.user_email}} </td>
+                          </ng-container>
+                          <!-- <ng-container matColumnDef="Mobile Number">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by Mobile Number"> Mobile Number </th>
+                            <td mat-cell *matCellDef="let element"> 9561668101 </td>
+                          </ng-container> -->
+                          <ng-container matColumnDef="Address">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by Address"> Address </th>
+                            <td mat-cell *matCellDef="let element"> {{element.user_address}} </td>
+                          </ng-container>
+                  
+                          <ng-container matColumnDef="Role">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by Role"> Role </th>
+                            <td mat-cell *matCellDef="let element"> {{element.role}} </td>
+                          </ng-container>
+                  
+
+                          <ng-container matColumnDef="Action">
+                              <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by Action"> Edit </th>
+                              <td mat-cell *matCellDef="let element">
+                                <button mat-stroked-button (click)="editData(element)" 
+                                        style="background: green;" class=" mx-1 my-1">
+                                    <i class="material-icons" style="color: white;">edit</i>
+                                </button>
+                                <button mat-stroked-button (click)="deleteData(element)" class=" mx-1 my-1"
+                                style="background: red;" >
+                                    <i class="material-icons"  style="color: white;">delete</i>
+                                </button>
+                            </td>
+                          </ng-container>
+                          <ng-container matColumnDef="Delete">
+                              <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                  sortActionDescription="Sort by Delete">Delete</th>
+                              <td mat-cell *matCellDef="let element"> 
+                                  <i class="material-icons">delete</i>
+                              </td>
+                          </ng-container>
+                  
+                  
+                  
+                          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                      </table>
+                      <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of periodic elements">
+                      </mat-paginator>
+                  </div>
+              </div>
+          </mat-card-content>
+        </form>
+      </mat-card>    
+    </div>  
+  </div>

@@ -1,0 +1,41 @@
+main {
+    padding: 1rem;
+  }
+  
+  .filler {
+    flex: 1;
+  }
+  
+  .rating {
+    display: flex;
+    align-items: center;
+  }
+  
+  .rating span {
+    width: 10rem;
+  }
+  
+  .dense {
+    margin: 0 0.5rem;
+  }
+  
+  .list{
+    border-style: ridge;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    padding: 5px; 
+  }
+
+  ul {
+    list-style: circle;
+    padding-left: 20px;
+    
+}
+
+.yellow-icon {
+  color: #ffe241;
+}
+.black{
+  color: black;
+}
+

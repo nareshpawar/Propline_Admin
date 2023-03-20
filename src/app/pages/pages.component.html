@@ -1,0 +1,303 @@
+
+  
+<mat-sidenav-container> 
+    <mat-sidenav  [opened]="false" mode="over" #sidenav class="sidenav mat-elevation-z6" style="background: #fcfde3;">
+        <button mat-icon-button color="warn" class="close" (click)="sidenav.close()">
+           <mat-icon color="warn">close</mat-icon>
+        </button>
+        <div class="divider"></div>
+
+        <!-- <div perfectScrollbar class="vertical-menu-wrapper">
+            <app-vertical-menu [menuParentId]="0"></app-vertical-menu>    
+        </div>        -->
+        <div perfectScrollbar class="vertical-menu-wrapper">
+            <a mat-button fxLayoutAlign="start center" routerLink="/master-data/property"
+                (click)="headerContentFlag()" routerLinkActive="horizontal-active-link" [routerLinkActiveOptions]="{exact:true}">
+                <span>{{ 'Property Types' | translate }}</span>
+            </a>
+            <a mat-button fxLayout="row" 
+                fxLayoutAlign="start center" 
+                routerLink="/master-data/city"
+                (click)="headerContentFlag()" routerLinkActive="horizontal-active-link" [routerLinkActiveOptions]="{exact:true}">
+                <span>{{ 'Cities' | translate }}</span>
+            </a>
+            <a mat-button fxLayout="row" fxLayoutAlign="start center"
+                routerLink="/master-data/neighborhood"
+                (click)="headerContentFlag()" routerLinkActive="horizontal-active-link" [routerLinkActiveOptions]="{exact:true}">
+                <span>{{ 'Locality' | translate }}</span>
+            </a>
+            <a mat-button fxLayout="row" fxLayoutAlign="start center" routerLink="/master-data/street"
+                (click)="headerContentFlag()" routerLinkActive="horizontal-active-link" [routerLinkActiveOptions]="{exact:true}">
+                <span>{{ 'Landmarks' | translate }}</span>
+            </a>
+            <a mat-button fxLayout="row" fxLayoutAlign="start center" routerLink="/master-data/society"
+                (click)="headerContentFlag()" routerLinkActive="horizontal-active-link" [routerLinkActiveOptions]="{exact:true}">
+                <span>{{ 'Society' | translate }}</span>
+            </a>
+            <a mat-button fxLayout="row" fxLayoutAlign="start center" routerLink="/master-data/services"
+                (click)="headerContentFlag()" routerLinkActive="horizontal-active-link" [routerLinkActiveOptions]="{exact:true}">
+                <span>{{ 'Services' | translate }}</span>
+            </a>
+            <a mat-button fxLayout="row" fxLayoutAlign="start center" routerLink="/master-data/mission"
+                (click)="headerContentFlag()" routerLinkActive="horizontal-active-link" [routerLinkActiveOptions]="{exact:true}">
+                <span>{{ 'Mission' | translate }}</span>
+            </a>
+            <a mat-button fxLayout="row" fxLayoutAlign="start center"
+                routerLink="/master-data/testimonial" (click)="headerContentFlag()" routerLinkActive="horizontal-active-link" [routerLinkActiveOptions]="{exact:true}">
+                <span>{{ 'Testimonial' | translate }}</span>
+            </a>
+            <a mat-button fxLayout="row" fxLayoutAlign="start center" routerLink="/master-data/agents"
+                (click)="headerContentFlag()" routerLinkActive="horizontal-active-link" [routerLinkActiveOptions]="{exact:true}">
+                <span>{{ 'Advisor ' | translate }}</span>
+            </a>
+            <a mat-button fxLayout="row" fxLayoutAlign="start center" routerLink="/master-data/feedback"
+                (click)="headerContentFlag()" routerLinkActive="horizontal-active-link" [routerLinkActiveOptions]="{exact:true}">
+                <span>{{ 'Feedback' | translate }}</span>
+            </a>
+            <a mat-button fxLayout="row" fxLayoutAlign="start center" routerLink="/master-data/user" (click)="headerContentFlag()"
+            routerLinkActive="horizontal-active-link" [routerLinkActiveOptions]="{exact:true}">
+                <span>{{ 'User' | translate }}</span>
+            </a>
+            <a mat-button fxLayout="row" fxLayoutAlign="start center" routerLink="/master-data/owner" (click)="headerContentFlag()"
+            routerLinkActive="horizontal-active-link" [routerLinkActiveOptions]="{exact:true}">
+                <span>{{ 'Owner' | translate }}</span>
+            </a>
+            <a mat-button fxLayout="row" fxLayoutAlign="start center" routerLink="/master-data/tenent" (click)="headerContentFlag()"
+            routerLinkActive="horizontal-active-link" [routerLinkActiveOptions]="{exact:true}">
+                <span>{{ 'Tenant' | translate }}</span>
+            </a>
+            <a mat-button fxLayout="row" fxLayoutAlign="start center" routerLink="/master-data/banner" (click)="headerContentFlag()"
+                routerLinkActive="horizontal-active-link" [routerLinkActiveOptions]="{exact:true}">
+                <span>{{ 'Banner' | translate }}</span>
+            </a>
+            <a mat-button fxLayout="row" fxLayoutAlign="start center" routerLink="/adminProperties"
+                (click)="headerContentFlag()" routerLinkActive="horizontal-active-link" [routerLinkActiveOptions]="{exact:true}">
+                <span>{{ 'Properties' | translate }}</span>
+            </a>
+        </div>
+
+        <!-- <div class="divider"></div>
+        <app-social-icons [iconSize]="'xlg'" [iconColor]="'primary'" fxLayout="row" fxLayoutAlign="center center"></app-social-icons> -->
+        
+    </mat-sidenav>
+
+    <!-- <mat-sidenav [opened]="false" mode="over" #sidenavForAdmin class="sidenavForAdmin mat-elevation-z6">
+        <div fxLayout="row">
+            <button mat-icon-button color="warn" class="close" (click)="sidenavForAdmin.close()">
+               <mat-icon color="warn">close</mat-icon>
+            </button>
+        </div>
+        <div class="divider">
+        </div>
+        <div perfectScrollbar class="vertical-menu-wrapper" >
+            <a  mat-button   fxLayoutAlign="start center"
+                routerLink="/master-data/property" (click)="headerContentFlag()"> 
+                <span>{{ 'PROPERTY TYPES' | translate }}</span> 
+            </a>
+            <a  mat-button  fxLayout="row" fxLayoutAlign="start center"
+                routerLink="/master-data/city" (click)="headerContentFlag()"> 
+                <span>{{ 'CITIES' | translate }}</span> 
+            </a>
+            <a  mat-button  fxLayout="row" fxLayoutAlign="start center"
+                routerLink="/master-data/neighborhood" (click)="headerContentFlag()"> 
+                <span>{{ 'LOCALITY' | translate }}</span> 
+            </a>
+            <a  mat-button  fxLayout="row" fxLayoutAlign="start center"
+                routerLink="/master-data/street" (click)="headerContentFlag()"> 
+                <span>{{ 'STREETS' | translate }}</span> 
+            </a>
+            <a  mat-button  fxLayout="row" fxLayoutAlign="start center"
+                routerLink="/master-data/society" (click)="headerContentFlag()"> 
+                <span>{{ 'SOCIETY' | translate }}</span> 
+            </a>
+            <a mat-button fxLayout="row" fxLayoutAlign="start center" routerLink="/master-data/services"
+                (click)="headerContentFlag()">
+                <span>{{ 'SERVICES' | translate }}</span>
+            </a>
+            <a mat-button fxLayout="row" fxLayoutAlign="start center" routerLink="/master-data/mission"
+                (click)="headerContentFlag()">
+                <span>{{ 'MISSION' | translate }}</span>
+            </a>
+            <a mat-button fxLayout="row" fxLayoutAlign="start center" routerLink="/master-data/testimonial"
+                (click)="headerContentFlag()">
+                <span>{{ 'TESTIMONIAL' | translate }}</span>
+            </a>
+            <a mat-button fxLayout="row" fxLayoutAlign="start center" routerLink="/master-data/agents"
+                (click)="headerContentFlag()">
+                <span>{{ 'AGENTS' | translate }}</span>
+            </a>
+            <a mat-button fxLayout="row" fxLayoutAlign="start center" routerLink="/master-data/feedback"
+                (click)="headerContentFlag()">
+                <span>{{ 'FEEDBACK' | translate }}</span>
+            </a>
+            <a  mat-button  fxLayout="row" fxLayoutAlign="start center"
+                routerLink="/adminProperties" (click)="headerContentFlag()"> 
+                <span>{{ 'PROPERTIES' | translate }}</span> 
+            </a>
+            </div>    
+        <div class="divider"></div>
+    </mat-sidenav> -->
+    <mat-sidenav-content class="page-wrapper" fxLayout="column" fxLayoutAlign="start stretch">
+        <header [ngClass]="'toolbar-'+settings.toolbar" [class.has-bg-image]="settings.headerBgImage"
+            [class.has-bg-video]="settings.headerBgVideo" [class.main-toolbar-fixed]="settings.mainToolbarFixed">
+            <app-toolbar1 *ngIf="settings.toolbar == 1" (onMenuIconClick)="sidenav.toggle()"
+                (onMenuAdminIconClick)="sidenavForAdmin.toggle()"></app-toolbar1>
+            <app-toolbar2 *ngIf="settings.toolbar == 2" (onMenuIconClick)="sidenav.toggle()"></app-toolbar2>
+        </header>
+        <div class="px-3">
+    
+            <div class="theme-container ">
+                <mat-sidenav-container class="all-properties" >
+                    <mat-sidenav fxShow="false" fxShow.gt-sm = "true" opened mode="side" #propertieSidebar 
+                                class="sidenavForAdmin mat-elevation-z6 mt-3 mb-3" *ngIf="sidebarFlag" style="background: #fcfde3;">
+                            <div perfectScrollbar class="vertical-menu-wrapper">
+                                <a mat-button fxLayoutAlign="start center" routerLink="/master-data/dashboard"
+                                (click)="headerContentFlag()" routerLinkActive="horizontal-active-link" [routerLinkActiveOptions]="{exact:true}">
+                                <span>{{ 'Dashboard' | translate }}</span>
+                                </a>
+                                <a mat-button fxLayoutAlign="start center" routerLink="/master-data/property"
+                                    (click)="headerContentFlag()" routerLinkActive="horizontal-active-link" [routerLinkActiveOptions]="{exact:true}">
+                                    <span>{{ 'Property Types' | translate }}</span>
+                                </a>
+                                <a mat-button fxLayout="row" fxLayoutAlign="start center" routerLink="/master-data/city"
+                                    (click)="headerContentFlag()" routerLinkActive="horizontal-active-link" [routerLinkActiveOptions]="{exact:true}">
+                                    <span>{{ 'Cities' | translate }}</span>
+                                </a>
+                                <a mat-button fxLayout="row" fxLayoutAlign="start center"
+                                    routerLink="/master-data/neighborhood" (click)="headerContentFlag()" routerLinkActive="horizontal-active-link" [routerLinkActiveOptions]="{exact:true}">
+                                    <span>{{ 'Locality' | translate }}</span>
+                                </a>
+                                <a mat-button fxLayout="row" fxLayoutAlign="start center" routerLink="/master-data/street"
+                                    (click)="headerContentFlag()" routerLinkActive="horizontal-active-link" [routerLinkActiveOptions]="{exact:true}">
+                                    <span>{{ 'Landmarks' | translate }}</span>
+                                </a>
+                                <a mat-button fxLayout="row" fxLayoutAlign="start center" routerLink="/master-data/society"
+                                    (click)="headerContentFlag()" routerLinkActive="horizontal-active-link" [routerLinkActiveOptions]="{exact:true}">
+                                    <span>{{ 'Society' | translate }}</span>
+                                </a>
+                                <a mat-button fxLayout="row" fxLayoutAlign="start center" routerLink="/master-data/services"
+                                    (click)="headerContentFlag()" routerLinkActive="horizontal-active-link" [routerLinkActiveOptions]="{exact:true}">
+                                    <span>{{ 'Services' | translate }}</span>
+                                </a>
+                                <a mat-button fxLayout="row" fxLayoutAlign="start center" routerLink="/master-data/mission"
+                                    (click)="headerContentFlag()" routerLinkActive="horizontal-active-link" [routerLinkActiveOptions]="{exact:true}">
+                                    <span>{{ 'Mission' | translate }}</span>
+                                </a>
+                                <a mat-button fxLayout="row" fxLayoutAlign="start center"
+                                    routerLink="/master-data/testimonial" (click)="headerContentFlag()" 
+                                    routerLinkActive="horizontal-active-link" [routerLinkActiveOptions]="{exact:true}">
+                                    <span>{{ 'Testimonial' | translate }}</span>
+                                </a>
+                                <a mat-button fxLayout="row" fxLayoutAlign="start center" routerLink="/master-data/agents"
+                                    (click)="headerContentFlag()" routerLinkActive="horizontal-active-link" [routerLinkActiveOptions]="{exact:true}">
+                                    <span>{{ 'Advisor ' | translate }}</span>
+                                </a>
+                                <a mat-button fxLayout="row" fxLayoutAlign="start center" routerLink="/master-data/feedback"
+                                    (click)="headerContentFlag()" routerLinkActive="horizontal-active-link" [routerLinkActiveOptions]="{exact:true}">
+                                    <span>{{ 'Feedback' | translate }}</span>
+                                </a>
+                                <a mat-button fxLayout="row" fxLayoutAlign="start center" routerLink="/master-data/user"
+                                    (click)="headerContentFlag()"routerLinkActive="horizontal-active-link" [routerLinkActiveOptions]="{exact:true}">
+                                    <span>{{ 'User' | translate }}</span>
+                                </a>
+                                <a mat-button fxLayout="row" fxLayoutAlign="start center" routerLink="/master-data/owner"
+                                    (click)="headerContentFlag()" routerLinkActive="horizontal-active-link" [routerLinkActiveOptions]="{exact:true}">
+                                    <span>{{ 'Owner' | translate }}</span>
+                                </a>
+                                <a mat-button fxLayout="row" fxLayoutAlign="start center" routerLink="/master-data/tenent"
+                                    (click)="headerContentFlag()" routerLinkActive="horizontal-active-link" [routerLinkActiveOptions]="{exact:true}">
+                                    <span>{{ 'Tenant' | translate }}</span>
+                                </a>
+                                <a mat-button fxLayout="row" fxLayoutAlign="start center" routerLink="/master-data/banner"
+                                    (click)="headerContentFlag()" routerLinkActive="horizontal-active-link" [routerLinkActiveOptions]="{exact:true}">
+                                    <span>{{ 'Banner' | translate }}</span>
+                                </a>
+                                
+                                <a mat-button fxLayout="row" fxLayoutAlign="start center" routerLink="/adminProperties"
+                                    (click)="headerContentFlag()" routerLinkActive="horizontal-active-link" [routerLinkActiveOptions]="{exact:true}">
+                                    <span>{{ 'Properties' | translate }}</span>
+                                </a>
+                            </div>
+                            <!-- <div class="divider"></div> -->
+                       
+                    </mat-sidenav>
+                    <mat-sidenav-content ngClass.gt-sm="distance">
+                        <main [class.content-offset-to-top]="settings.contentOffsetToTop">
+                            <router-outlet>
+                            </router-outlet>
+                        </main>
+                    </mat-sidenav-content>
+    
+                </mat-sidenav-container>
+                <!-- <div class="sticky-footer-helper" fxFlex="grow">
+            </div>
+            <app-footer></app-footer>
+            <div fxLayout="row" fxLayoutAlign="center center" class="options-icon" (click)="options.toggle()">
+                <mat-icon>settings</mat-icon>
+            </div>
+            <div *ngIf="showBackToTop" fxLayout="row" fxLayoutAlign="center center" class="back-to-top" (click)="scrollToTop()">
+                <mat-icon>arrow_upward</mat-icon>
+            </div> -->
+            </div>
+        </div>
+    </mat-sidenav-content>
+    
+    <mat-sidenav #options position="end" class="options" autoFocus="false">
+        <div fxLayout="row" fxLayoutAlign="space-between center" class="op-header mat-elevation-z1">
+            <h2>Settings</h2>
+            <button mat-icon-button (click)="options.toggle()" color="accent">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div> 
+        <div perfectScrollbar>
+            <div fxLayout="column" class="control">
+                <h4>Layout</h4>
+                <div fxLayout="row" fxLayoutAlign="space-between center">
+                    <span>Sticky Menu Toolbar</span>
+                    <mat-slide-toggle [checked]="settings.stickyMenuToolbar" (change)="settings.stickyMenuToolbar = !settings.stickyMenuToolbar" labelPosition="before"></mat-slide-toggle>
+                </div>                 
+                <div fxLayout="row" fxLayoutAlign="space-between center">
+                    <span>RTL</span>
+                    <mat-slide-toggle [checked]="settings.rtl" (change)="settings.rtl = !settings.rtl" labelPosition="before"></mat-slide-toggle>
+                </div> 
+            </div>
+
+            <div fxLayout="column" class="control">
+                <h4>Choose toolbar type</h4>
+                <mat-radio-group [(ngModel)]="toolbarTypeOption" (change)="chooseToolbarType()">
+                    <mat-radio-button *ngFor="let toolbarType of toolbarTypes" [value]="toolbarType">toolbar-{{toolbarType}}</mat-radio-button>
+                </mat-radio-group>
+            </div>
+            
+            <div fxLayout="column" class="control">
+                <h4>Choose header type</h4>
+                <mat-radio-group [(ngModel)]="headerTypeOption" (change)="chooseHeaderType()">
+                    <mat-radio-button *ngFor="let headerType of headerTypes" [value]="headerType">{{headerType}}</mat-radio-button>
+                </mat-radio-group>
+            </div>
+
+            <div fxLayout="column" class="control">
+                <h4>Choose theme skin</h4> 
+                <div fxLayout="row" fxLayoutAlign="space-between center"> 
+                    <div class="skin-primary blue" (click)="changeTheme('blue')"></div>  
+                    <div class="skin-primary green" (click)="changeTheme('green')"></div> 
+                    <div class="skin-primary red" (click)="changeTheme('red')"></div> 
+                    <div class="skin-primary pink" (click)="changeTheme('pink')"></div> 
+                    <div class="skin-primary purple" (click)="changeTheme('purple')"></div>
+                    <div class="skin-primary grey" (click)="changeTheme('grey')"></div>
+                    <div class="skin-primary orange-dark" (click)="changeTheme('orange-dark')"><div class="skin-secondary"></div></div>
+                </div>
+            </div>
+
+            <div fxLayout="column" class="control">
+                <h4>Choose search panel variant</h4>
+                <mat-radio-group [(ngModel)]="searchPanelVariantOption" (change)="chooseSearchPanelVariant()">
+                    <mat-radio-button *ngFor="let searchPanelVariant of searchPanelVariants" [value]="searchPanelVariant">variant-{{searchPanelVariant}}</mat-radio-button>
+                </mat-radio-group>
+                <mat-slide-toggle [checked]="settings.searchOnBtnClick" (change)="settings.searchOnBtnClick = !settings.searchOnBtnClick" labelPosition="after">Search On Button Click</mat-slide-toggle>
+            </div> 
+
+        </div>
+    </mat-sidenav>
+    
+</mat-sidenav-container> 

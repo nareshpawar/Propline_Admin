@@ -1,0 +1,27 @@
+<div mat-dialog-title> 
+    <div class="text-center"> 
+        <mat-icon class="mat-icon-xlg" style="color: #ffe241;">warning</mat-icon>
+        <h4 class="mb-1">{{title}}</h4> 
+    </div> 
+</div>
+  
+<div mat-dialog-content>
+    <p>{{message}}</p>
+    <div class="px-2">
+        <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Reasons</mat-label>
+            <mat-select placeholder="Select Reasons..." (selectionChange)="selectReason($event)">
+                <mat-option *ngFor="let reasons of reasonsArray" [value]="reasons" 
+                [disabled]="reasons === 'Active' || reasons === 'Inactive'">
+                    {{reasons}}
+                </mat-option>
+            </mat-select>
+            <!-- <mat-error *ngIf="tenentForm.get('owner').errors?.required">Owner is required</mat-error> -->
+            </mat-form-field>
+    </div>
+</div>
+  
+<div mat-dialog-actions fxLayoutAlign="space-between center" class="pb-4">
+    <button mat-button (click)="onDismiss()">{{ 'BTN.NO' | translate }}</button>
+    <button mat-raised-button style="background: #ffe241;" [disabled]="resonSaveFlag === false" (click)="onConfirm()">{{ 'BTN.YES' | translate }}</button>
+</div>

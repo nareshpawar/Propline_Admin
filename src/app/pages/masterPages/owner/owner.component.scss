@@ -1,0 +1,39 @@
+table {
+    width: 100%;
+    text-align: center;
+  }
+
+  th.mat-sort-header-sorted {
+    color: black;
+  }
+  
+  .mat-header-cell{
+    font-size: 15px;
+    font-weight: bold;
+  }
+
+
+  .ico{
+    width:100px;
+    display:block;
+    height:100px;
+    background:white;
+    color:white;
+    text-decoration:none;
+    padding-left:20px;
+}
+.ico:before{
+    content: '';
+    // background:url('../../../../assets/images/images.png');
+    background-size:cover;
+        position:absolute;
+    width:20px;
+    height:20px;
+    margin-left:-20px;
+}
+
+.shortName{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

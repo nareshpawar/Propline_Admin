@@ -1,0 +1,2444 @@
+<div class="p-3">
+  <div class="theme-container">
+    <mat-card ngClass.lt-lg="p-0" [formGroup]="submitForm">
+      <mat-horizontal-stepper #horizontalStepper linear="true" class="submit-property"
+        (selectionChange)="onSelectionChange($event)">
+        <!-- <mat-step [stepControl]="submitForm.get('owner')" label="Owner">
+          <div class="step-content" >
+            <form formGroupName="owner" fxLayout="row wrap">
+              <div fxFlex="100" fxLayoutAlign="start center" class="my-3 px-2">
+                <p class="uppercase fw-500 mb-0">Owner</p>
+              </div>
+              <div fxFlex="100" fxLayout="row wrap" formArrayName="owners">
+                <div fxFlex="100" class=" pb-2"
+                  *ngFor="let item of submitForm.get('owner')['controls'].owners['controls']; let i = index;">
+                  <div fxFlex="90" fxLayout="row wrap" [formGroupName]="i">
+                    <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="80"  class="px-2">
+                      <mat-label>Name</mat-label>
+                      <input matInput placeholder="Owner name" formControlName="name" autocomplete="off">
+                    </mat-form-field>
+                    <div fxFlex="100" formArrayName="email"
+                      *ngFor="let email of this.submitForm.get('owner')['controls'].owners['controls'][i]['controls'].email['controls']; let j=index">
+                      <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="80"  class="px-2">
+                        <mat-label>Email</mat-label>
+                        <input matInput autocomplete="off" [formControlName]="j" placeholder="Ex. pat@example.com">
+                      </mat-form-field>
+                      <button type="button" mat-button color="warn" matTooltip="Remove Mobile Number" matTooltipPosition="after"
+                        class="mb-4" (click)="removeMobileOrEmail(i,j,'email')" *ngIf="j !== 0">
+                        <mat-icon >remove_circle</mat-icon>
+                      </button>
+                      <button type="button" mat-button color="primary" matTooltip="Add New Email Address" matTooltipPosition="after"
+                        class="mb-4" (click)="addDetail(i,'email')"
+                        *ngIf="j == this.submitForm.get('owner')['controls'].owners['controls'][i]['controls'].email['controls'].length - 1">
+                        <mat-icon class="yellow-icon">add_circle</mat-icon>
+                      </button>
+                    </div>
+                    <div fxFlex="100" formArrayName="mobile"
+                      *ngFor="let mobile of this.submitForm.get('owner')['controls'].owners['controls'][i]['controls'].mobile['controls']; let k=index">
+                      <mat-form-field appearance="outline" fxFlex="100" fxFlex.gt-xs="80" class="px-2">
+                        <mat-label>Mobile</mat-label>
+                        <input matInput placeholder="Mobile number" [formControlName]="k" autocomplete="off" onlyNumber>
+                      </mat-form-field>
+                      <button type="button" mat-button color="warn" matTooltip="Remove Mobile Number" matTooltipPosition="after"
+                        class="mb-4" (click)="removeMobileOrEmail(i,k,'mobile')" *ngIf="k !== 0">
+                        <mat-icon>remove_circle</mat-icon>
+                      </button>
+                      <button type="button" mat-button color="primary" matTooltip="Add New Mobile Number" matTooltipPosition="after"
+                        class="mb-4" (click)="addDetail(i,'mobile')"
+                        *ngIf=" k == this.submitForm.get('owner')['controls'].owners['controls'][i]['controls'].mobile['controls'].length - 1">
+                        <mat-icon class="yellow-icon">add_circle</mat-icon>
+                      </button>
+                    </div>
+                  </div>
+                  <div fxFlex="6" class="text-center pt-2">
+                    <button mat-icon-button color="warn" matTooltip="Delete Plan" (click)="deleteOwner(i)" *ngIf=" i !== 0">
+                      <mat-icon>cancel</mat-icon>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div fxFlex="100" fxLayoutAlign="start center" class="my-3">
+                <button type="button" mat-icon-button color="primary" matTooltip="Add New Owner" (click)="addOwners()"
+                matTooltipPosition="after" class="mx-3">
+                <mat-icon class="yellow-icon">add_circle</mat-icon>
+                <span class="uppercase fw-500 ml-1 black" >Add Owner</span>
+                </button>
+              </div>
+              <div fxFlex="100" class="mb-2">
+                <div  fxLayout="row wrap">
+                  <div  fxFlex="100" fxFlex.gt-xs="25"class="p-2">
+                    <mat-checkbox (change)="isPoaAvailable()">Is POA is Available</mat-checkbox>
+                  </div>
+                </div>
+              </div>
+              <div fxFlex="100" class="mt-3 p-2" fxLayoutAlign="end center">
+                <button mat-raised-button style="background: #ffe241;" matStepperNext fxLayout="row" fxLayoutAlign="center center"
+                  type="button">
+                  <span class="mx-1 uppercase" >Next</span>
+                  <mat-icon>navigate_next</mat-icon>
+                </button>
+              </div>
+            </form>
+          </div>
+        </mat-step> -->
+        <mat-step [stepControl]="submitForm.get('address')" label="Property Details">
+          <div class="step-content">
+            <form formGroupName="address" fxLayout="row wrap">
+              <div fxFlex="100" class="p-3" fxLayoutAlign="center center">
+                <h1 class="fw-500 text-center">Property Details</h1>
+              </div>
+              <div fxFlex="100" fxFlex.gt-xs="50" class="px-2">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Project Name</mat-label>
+                  <mat-select placeholder="Select Society..." formControlName="projectName"
+                    (selectionChange)="slectProject($event.value)">
+                    <mat-option *ngFor="let proname of societyData" [value]="proname.society_id">
+                      {{proname.society}}
+                    </mat-option>
+                  </mat-select>
+                  <!--  <mat-error *ngIf="submitForm.get('address')['controls'].city.errors?.required">City is required
+                        </mat-error> -->
+                </mat-form-field>
+              </div>
+              <div fxFlex="100" fxFlex.gt-xs="50" class="px-2">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>City</mat-label>
+                  <!-- <mat-label><span *ngIf="selectedCity">City</span>  </mat-label>
+                  <mat-label><span *ngIf="!selectedCity" style="font-weight:500;">{{submitForm.get('address')['controls'].city.value}}</span></mat-label> -->
+                  <mat-select placeholder="Select City..." name="city" formControlName="city"
+                    (selectionChange)="onSelectCity($event.value.city_id)">
+                    <!-- <mat-option>--</mat-option> -->
+                    <mat-option *ngFor="let city of cities" [value]="city.city">
+                      {{city.city}}
+                    </mat-option>
+                  </mat-select>
+                  <!-- <mat-error *ngIf="submitForm.get('address')['controls'].city.errors?.required">City is required
+                  </mat-error> -->
+                </mat-form-field>
+              </div>
+              <div fxFlex="100" fxFlex.gt-xs="50" class="px-2">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Locality</mat-label>
+                  <!-- <mat-label><span *ngIf="selectedNeighborhood">Locality</span>  </mat-label>
+                  <mat-label><span *ngIf="!selectedNeighborhood" style="font-weight:500;">{{submitForm.get('address')['controls'].neighborhood.value}}</span></mat-label> -->
+                  <mat-select placeholder="Select Locality..." formControlName="neighborhood"
+                    (selectionChange)="onSelectNeighborhood($event.value)">
+                    <mat-option *ngFor="let neighborhood of neighborhoods " [value]="neighborhood.neighborhood">
+                      <!--| filterNeighborhoods: submitForm.get('address')['controls'].city.value?.id-->
+                      {{neighborhood.neighborhood}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div fxFlex="100" fxFlex.gt-xs="50" class="px-2">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Street</mat-label>
+                  <!-- <mat-label><span *ngIf="selectedStreet">Street</span>  </mat-label>
+                  <mat-label><span *ngIf="!selectedStreet" style="font-weight:500;">{{submitForm.get('address')['controls'].street.value}}</span></mat-label> -->
+                  <mat-select placeholder="Select Street..." formControlName="street"
+                    (selectionChange)="onSelectStreet($event.value)">
+                    <mat-option *ngFor="let street of streets" [value]="street.street">
+                      <!--| filterStreets : { neighborhoods: submitForm.get('address')['controls'].neighborhood.value?.id, cityId:submitForm.get('address')['controls'].city.value?.id }-->
+                      {{street.street}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div fxFlex="100" fxFlex.gt-xs="50" class="px-2">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-icon matPrefix class="mr-1 text-muted">location_on</mat-icon>
+                  <mat-label>Address</mat-label>
+                  <!--Sub Location-->
+                  <input matInput placeholder="Enter a Address" formControlName="location" autocomplete="off"
+                    #addressAutocomplete>
+                  <!-- <button *ngIf="submitForm.get('address')['controls'].location.value" mat-button matSuffix
+                    mat-icon-button (click)="submitForm.get('address')['controls'].location.setValue(null)"
+                    type="button">
+                    <mat-icon>close</mat-icon>
+                  </button> -->
+                  <!-- <mat-error *ngIf="submitForm.get('address')['controls'].location.errors?.required">Location is
+                    required
+                  </mat-error> -->
+                </mat-form-field>
+              </div>
+              <div fxFlex="100" fxFlex.gt-xs="50" class="px-2">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Zip Code</mat-label>
+                  <input matInput placeholder="exp. 98104" autocomplete="off" formControlName="zipCode">
+                </mat-form-field>
+              </div>
+              <div fxFlex="100" fxFlex.gt-xs="100" class="px-2">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Property Type</mat-label>
+                  <mat-select formControlName="propertyType" (selectionChange)="propertyTypeChangeEvent()">
+                    <mat-optgroup *ngFor="let propertyType of propertyTypes" [label]="propertyType.type">
+                      <mat-option *ngFor="let arr of propertyType.arr" [value]="arr.property_type_id">
+                        {{arr.property_desc}}
+                      </mat-option>
+                    </mat-optgroup>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div fxFlex="100" fxFlex.gt-xs="50" class="px-2">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Property Status</mat-label>
+                  <mat-select placeholder="Select Property Status" formControlName="propertyStatus"
+                    (selectionChange)="propeertyStatus($event.value)">
+                    <mat-option *ngFor="let propertyStatus of propertyStatuses" [value]="propertyStatus.name">
+                      {{propertyStatus.name}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div fxFlex="100" fxFlex.gt-xs="50" class="px-2">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>RERA ID</mat-label>
+                  <input matInput placeholder="RERA ID" formControlName="reraId" autocomplete="off">
+                </mat-form-field>
+              </div>
+              <div fxFlex="100" class="mt-3 p-2" fxLayoutAlign="end center">
+                <!-- <button mat-raised-button style="background: #ffe241;" matStepperPrevious fxLayout="row"
+                  fxLayoutAlign="center center" type="button">
+                  <mat-icon>navigate_before</mat-icon>
+                  <span class="mx-1 uppercase">Back</span>
+                </button> -->
+                <button mat-raised-button style="background: #ffe241;" matStepperNext fxLayout="row"
+                  fxLayoutAlign="center center" type="button">
+                  <span class="mx-1 uppercase">Next</span>
+                  <mat-icon>navigate_next</mat-icon>
+                </button>
+              </div>
+            </form>
+          </div>
+        </mat-step>
+        <mat-step [stepControl]="submitForm.get('commercial')" label="Additional Details"
+          *ngIf="displayAditionalFeaturPage">
+          <div class="step-content">
+            <form formGroupName="commercial" fxLayout="row wrap">
+
+              <div fxFlex="100" class="p-3" fxLayoutAlign="center center">
+                <h1 class="fw-500 text-center">Additional Details</h1>
+              </div>
+
+              <div fxFlex="100" fxFlex.gt-xs="100">
+                <p class="uppercase m-2 fw-500">Popular Landmarks Nearby</p>
+              </div>
+              <div fxFlex="100" fxFlex.gt-xs="100" class="px-2">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Landmarks</mat-label>
+                  <mat-select placeholder="Select Landmarks..." formControlName="landmark"
+                    (selectionChange)="selectLandmarks($event)">
+                    <mat-option *ngFor="let land of landmarks" [value]="land">
+                      {{land}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div fxFlex="100" fxFlex.gt-xs="50" class="px-2"
+                *ngIf="submitForm['controls'].commercial['controls'].landmark['value'] === 'Metro/Railway'">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Metro / Railway</mat-label>
+                  <input matInput placeholder="Metro/Railway" formControlName="metroRailway" autocomplete="off">
+                </mat-form-field>
+              </div>
+              <div fxFlex="100" fxFlex.gt-xs="50" class="px-2"
+                *ngIf="submitForm['controls'].commercial['controls'].landmark['value'] === 'Bus stop'">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Bus Stops</mat-label>
+                  <input matInput placeholder="Bus Stops" autocomplete="off" formControlName="busStops">
+                </mat-form-field>
+              </div>
+              <div fxFlex="100" fxFlex.gt-xs="50" class="px-2"
+                *ngIf="submitForm['controls'].commercial['controls'].landmark['value'] === 'Airports'">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Airport</mat-label>
+                  <input matInput placeholder="Airport" autocomplete="off" formControlName="airport">
+                </mat-form-field>
+              </div>
+              <div fxFlex="100" fxFlex.gt-xs="50" class="px-2"
+                *ngIf="submitForm['controls'].commercial['controls'].landmark['value'] === 'Shopping Malls'">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Shopping Malls</mat-label>
+                  <input matInput placeholder="Shopping Malls" autocomplete="off" formControlName="shoppingMall">
+                </mat-form-field>
+              </div>
+              <div fxFlex="100" fxFlex.gt-xs="50" class="px-2"
+                *ngIf="submitForm['controls'].commercial['controls'].landmark['value'] === 'Office Complex'">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Office Complex</mat-label>
+                  <input matInput placeholder="Office Complex" autocomplete="off" formControlName="officeComplex">
+                </mat-form-field>
+              </div>
+              <div fxFlex="100" fxFlex.gt-xs="50" class="px-2">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Distance From Property</mat-label>
+                  <input matInput placeholder="Distance From Property" autocomplete="off"
+                    formControlName="distanceFromProperty">
+                  <span matSuffix>Km/m</span>
+                </mat-form-field>
+              </div>
+
+              <div fxFlex="100" fxFlex.gt-xs="100">
+                <p class="uppercase m-2 fw-500">Property Features</p>
+              </div>
+              <div fxFlex="100" fxFlex.gt-xs="50" class="px-2" 
+              *ngIf="propertyNameData ===  'Commercial office Space' || 
+                     propertyNameData ===  'Commercial Showroom' || propertyNameData ===  'Commercial Shop' 
+                     || propertyNameData === 'Restaurant Space' ">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Unit No.</mat-label>
+                  <input matInput placeholder="Unit no." autocomplete="off"
+                    formControlName="shopNo">
+                </mat-form-field>
+              </div>
+              <div fxFlex="100" fxFlex.gt-xs="50" class="px-2" 
+              *ngIf="propertyNameData ===  'Commercial office Space' || 
+                  propertyNameData ===  'Commercial Showroom' || propertyNameData ===  'Commercial Shop'
+                  || propertyNameData === 'Restaurant Space' ">
+               
+              </div>
+              <div fxFlex="100" fxFlex.gt-xs="33" class="px-2">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Floor No.</mat-label>
+                  <mat-select formControlName="floorNo" placeholder="Select Floor...">
+                    <mat-option *ngFor="let floor of floorNo" [value]="floor">
+                      {{floor}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div fxFlex="100" fxFlex.gt-xs="33" class="px-2">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Total Floors</mat-label>
+                  <mat-select formControlName="totalFoors" placeholder="Select Total Floors...">
+                    <mat-option *ngFor="let floors of floorNo" [value]="floors">
+                      {{floors}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div fxFlex="100" fxFlex.gt-xs="33" class="px-2">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Furnished Status</mat-label>
+                  <mat-select formControlName="furnishedStatus" placeholder="Select Status...">
+                    <mat-option *ngFor="let furnished of furnishedStatus" [value]="furnished"
+                      (click)="furnishedSelection(furnished)">
+                      {{furnished}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div fxFlex="100" fxFlex.gt-xs="30" class="px-2"
+                *ngIf="(propertyNameData === 'Warehouse/ Godown') && (propTypes === 'For Sale') ">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Floors Allowed for construction</mat-label>
+                  <mat-select formControlName="floorAllowCunstruction" placeholder="Total Floor">
+                    <mat-option *ngFor="let floors of totalFloors" [value]="floors">
+                      {{floors}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div fxFlex="100" fxFlex.gt-xs="30" class="px-2"
+                *ngIf="(propertyNameData ===  'Warehouse/ Godown') && (propTypes ==='For Sale')">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>No of open sides</mat-label>
+                  <mat-select formControlName="noOfSides" placeholder="Select sides...">
+                    <mat-option *ngFor="let sides of openSides" [value]="sides">
+                      {{sides}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div fxFlex="100" fxFlex.gt-xs="40" class="px-2"
+                *ngIf="propertyNameData ===  'Warehouse/ Godown' && propTypes ==='For Sale'">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Width of road facing the plot</mat-label>
+                  <input formControlName="widthOfRoadFacingPlot" matInput placeholder="Width" autocomplete="off">
+                  <span matSuffix>Meters</span>
+                </mat-form-field>
+              </div>
+              <div fxFlex="100" fxFlex.gt-xs="50" class="px-2"
+                *ngIf="propertyNameData ===  'Commercial office Space' || propertyNameData ===  'Commercial Showroom'">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Washrooms</mat-label>
+                  <mat-select formControlName="washrooms" placeholder="Select Washrooms...">
+                    <mat-option *ngFor="let wash of washrooms" [value]="wash">
+                      {{wash}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div fxFlex="100" fxFlex.gt-xs="50" class="px-2"
+                *ngIf="propertyNameData === 'Commercial office Space' "><!--&& propTypes ==='For Sale'-->
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Number of Seats</mat-label>
+                  <input formControlName="numberOfSeats" matInput placeholder="Seats" autocomplete="off">
+                </mat-form-field>
+              </div>
+              <div fxFlex="100" fxFlex.gt-xs="50" class="px-2 mt-2"
+                *ngIf="propertyNameData === 'Commercial office Space'"><!--&& propTypes ==='For Sale'-->
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Cabin/Meeting Rooms</mat-label>
+                  <mat-select formControlName="cabinOrMeetingRooms" placeholder="Select Cabin/Meeting Rooms...">
+                    <mat-option *ngFor="let meet of meetingRooms" [value]="meet">
+                      {{meet}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div fxFlex="100" fxFlex.gt-xs="50" class="px-2 mt-2"
+                *ngIf="(propertyNameData === 'Commercial office Space' 
+              || propertyNameData === 'Commercial Shop' || propertyNameData === 'Commercial Showroom') && propTypes ==='For Rent'">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Lock-in Period(In Months)</mat-label>
+                  <input formControlName="lockInPeriod" matInput placeholder="Lock-in Period" autocomplete="off">
+                  <!-- <mat-select formControlName="lockInPeriod" placeholder="Select Cabin/Meeting Rooms...">
+                      <mat-option *ngFor="let loc of lokInPeriods" [value]="loc">
+                        {{loc}}
+                      </mat-option>
+                    </mat-select> -->
+                </mat-form-field>
+              </div>
+              <div fxFlex="100" fxFlex.gt-xs="50" class="px-2 mt-2"
+                *ngIf="(propertyNameData === 'Commercial office Space' 
+              || propertyNameData === 'Commercial Shop' || propertyNameData === 'Commercial Showroom') && propTypes ==='For Rent'">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Yearly rent is expected to increase by(%)</mat-label>
+                  <input formControlName="yearlyrentexpectedincrease" matInput
+                    placeholder="Yearly rent is expected to increase by" autocomplete="off">
+                </mat-form-field>
+              </div>
+              <div fxFlex="100" fxFlex.gt-xs="100" class="px-2 my-1"
+                *ngIf="propertyNameData === 'Commercial office Space' && propTypes ==='For Rent'">
+                <p>Willing to modify interiors</p>
+                <mat-radio-group aria-label="Select an option" formControlName="modifuInterior">
+                  <mat-radio-button id="interior{{i}}" *ngFor="let least of multipleUnits; let i = index;"
+                    class="example-radio-button pr-2" [value]="least">{{least}}
+                  </mat-radio-button>
+                </mat-radio-group>
+              </div>
+              <div fxFlex="100" fxFlex.gt-xs="50"
+                *ngIf="propertyNameData !== 'Commercial Showroom' &&  propTypes ==='For Rent'"></div>
+              <div fxFlex="100" fxFlex.gt-xs="50" class="px-2 my-1"
+                *ngIf="propertyNameData === 'Commercial Shop' || propertyNameData === 'Commercial Showroom' ">
+                <p *ngIf="propertyNameData === 'Commercial Shop'">Corner Shop</p>
+                <p *ngIf="propertyNameData === 'Commercial Showroom'">Corner Showroom</p>
+                <mat-radio-group aria-label="Select an option" formControlName="cornerShop">
+                  <mat-radio-button id="corner_{{i}}" *ngFor="let least of multipleUnits; let i = index;"
+                    class="example-radio-button pr-2" [value]="least">{{least}}
+                  </mat-radio-button>
+                </mat-radio-group>
+              </div>
+
+              <div fxFlex="100" fxFlex.gt-xs="50" class="px-2 my-1"
+                *ngIf="propertyNameData === 'Commercial Shop' || propertyNameData === 'Commercial Showroom' ">
+                <p>Is Main Road Facing</p>
+                <mat-radio-group aria-label="Select an option" formControlName="mainRoadFacing">
+                  <mat-radio-button id="mainRoad_{{i}}" *ngFor="let least of multipleUnits; let i = index;"
+                    class="example-radio-button pr-2" [value]="least">{{least}}
+                  </mat-radio-button>
+                </mat-radio-group>
+              </div>
+              <div fxFlex="100" fxFlex.gt-xs="50" class="px-2 my-1"
+                *ngIf="(propertyNameData === 'Commercial office Space' && propTypes ==='For Sale')">
+              </div>
+              <div fxFlex="100" fxFlex.gt-xs="50" class="px-2 my-1" *ngIf="(propertyNameData === 'Commercial office Space' && propTypes ==='For Sale') || 
+                    
+                      (propertyNameData === 'Commercial Shop' ) ||
+                     (propertyNameData === 'Commercial Showroom' )">
+                <p>Personal Washroom</p>
+                <mat-radio-group aria-label="Select an option" formControlName="personalWash">
+                  <mat-radio-button id="personal_{{i}}" *ngFor="let least of multipleUnits; let i = index;"
+                    class="example-radio-button pr-2" [value]="least">{{least}}
+                  </mat-radio-button>
+                </mat-radio-group>
+              </div>
+              <div fxFlex="100" fxFlex.gt-xs="50" class="px-2 my-1" *ngIf="(propertyNameData === 'Commercial office Space' && propTypes ==='For Sale') || 
+               (propertyNameData === 'Commercial Shop' ) ||
+              (propertyNameData === 'Commercial Showroom' )">
+                <p>Pantry/Cafeteria</p>
+                <mat-radio-group aria-label="Select an option" formControlName="Cafeteria">
+                  <mat-radio-button id="cafeteria{{i}}" *ngFor="let least of pantry; let i = index;"
+                    class="example-radio-button pr-2" [value]="least">{{least}}
+                  </mat-radio-button>
+                </mat-radio-group>
+              </div>
+
+              <div fxFlex="100" class="my-2">
+                <p class="uppercase m-2 fw-500">Area</p>
+              </div>
+
+              <div fxFlex="100" fxFlex.gt-xs="25" class="px-2">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Covered Area</mat-label>
+                  <input matInput formControlName="coverdArea" placeholder="Covered Area" autocomplete="off">
+                </mat-form-field>
+              </div>
+              <div fxFlex="100" fxFlex.gt-xs="25" class="px-2">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>measure</mat-label>
+                  <mat-select formControlName="coveredMessure" placeholder="Select measure...">
+                    <mat-option *ngFor="let ele of major" [value]="ele">
+                      {{ele}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div fxFlex="100" fxFlex.gt-xs="25" class="px-2">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Plot Area</mat-label>
+                  <input matInput formControlName="plotArea" placeholder="Plot Area" autocomplete="off">
+                </mat-form-field>
+              </div>
+              <div fxFlex="100" fxFlex.gt-xs="25" class="px-2">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>measure</mat-label>
+                  <mat-select formControlName="plotMessure" placeholder="Select measure...">
+                    <mat-option *ngFor="let ele of major" [value]="ele">
+                      {{ele}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div fxFlex="100" fxFlex.gt-xs="25" class="px-2" *ngIf="propertyNameData === 'Warehouse/ Godown' ">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Plot Length</mat-label>
+                  <input formControlName="plotLength" matInput placeholder="Plot Length" autocomplete="off">
+                  <span matSuffix>ft</span>
+                </mat-form-field>
+              </div>
+              <div fxFlex="100" fxFlex.gt-xs="25" class="px-2" *ngIf="propertyNameData === 'Warehouse/ Godown' ">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Plot Breadth</mat-label>
+                  <input formControlName="plotBreadth" matInput placeholder="Plot Breadth" autocomplete="off">
+                  <span matSuffix>ft</span>
+                </mat-form-field>
+              </div>
+
+
+              <div fxFlex="100" fxFlex.gt-xs="25" class="px-2" *ngIf="propertyNameData === 'Commercial office Space' ||
+              propertyNameData === 'Commercial Shop' ||
+              propertyNameData === 'Commercial Showroom'">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Built-up Area </mat-label>
+                  <input matInput formControlName="builtUpArea" placeholder="Built-up Area" autocomplete="off">
+                </mat-form-field>
+              </div>
+              <div fxFlex="100" fxFlex.gt-xs="25" class="px-2"
+                *ngIf="propertyNameData === 'Commercial office Space' || propertyNameData === 'Commercial Shop' || propertyNameData === 'Commercial Showroom'">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>measure</mat-label>
+                  <mat-select formControlName="built_major" placeholder="Select measure...">
+                    <mat-option *ngFor="let ele of major" [value]="ele">
+                      {{ele}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+              <div fxFlex="100" fxFlex.gt-xs="25" class="px-2">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Carpet Area</mat-label>
+                  <input matInput formControlName="carpetArea" placeholder="Covered Area" autocomplete="off"
+                    (input)="carpetAreaPricePerSqft()">
+                </mat-form-field>
+              </div>
+              <div fxFlex="100" fxFlex.gt-xs="25" class="px-2">
+             
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>measure</mat-label>
+                  <mat-select formControlName="carpetMessure" placeholder="Select measure...">
+                    <mat-option *ngFor="let ele of major" [value]="ele">
+                      {{ele}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+              <div fxFlex="100" fxFlex.gt-xs="25" class="px-2"
+                *ngIf="propertyNameData === 'Commercial Shop' || propertyNameData === 'Commercial Showroom' ">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Width Of Entrance</mat-label>
+                  <input matInput formControlName="widthEntrance" placeholder="Width" autocomplete="off">
+                </mat-form-field>
+              </div>
+              <div fxFlex="100" fxFlex.gt-xs="25" class="px-2"
+                *ngIf="propertyNameData === 'Commercial Shop' || propertyNameData === 'Commercial Showroom' ">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>measure</mat-label>
+                  <mat-select formControlName="wdthEntrancemeasure" placeholder="Select measure...">
+                    <mat-option [value]="'meters'">
+                      meters
+                    </mat-option>
+                    <mat-option [value]="'ft'">
+                      ft
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div fxFlex="100" fxFlex.gt-xs="40" class="px-2"
+                *ngIf="(propertyNameData ===  'Commercial Shop' || propertyNameData === 'Commercial Showroom') && propTypes === 'For Sale' ">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Width of facing road</mat-label>
+                  <input formControlName="widthOfFacingRoad" matInput placeholder="Width" autocomplete="off">
+                </mat-form-field>
+              </div>
+              <div fxFlex="100" fxFlex.gt-xs="25" class="px-2"
+                *ngIf="(propertyNameData === 'Commercial Shop' || propertyNameData === 'Commercial Showroom')&& propTypes === 'For Sale' ">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>measure</mat-label>
+                  <mat-select formControlName="widthOfFacingRoadmeasure" placeholder="Select measure...">
+                    <mat-option [value]="'meters'">
+                      meters
+                    </mat-option>
+                    <mat-option [value]="'ft'">
+                      ft
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+              <div fxFlex="100" class="my-2">
+                <p class="uppercase m-2 fw-500">Transaction Type, Property Availability</p>
+              </div>
+
+              <div fxFlex="100" fxFlex.gt-xs="50" class="mb-2" *ngIf="propTypes ==='For Sale'">
+                <p class="m-2 fw-500">Transaction Type</p>
+                <div formArrayName="transactionType" fxLayout="row wrap">
+                  <div [formGroupName]="i"
+                    *ngFor="let control of submitForm.get('commercial')['controls'].transactionType['controls']; index as i"
+                    class="p-2">
+                    <mat-checkbox formControlName="selected"
+                      (change)="TransactionSelectionChange($event , transactionType[i])">
+                      <!--(change)="checked($event , transactionType[i]  )"-->
+                      {{transactionType[i].name}}
+                    </mat-checkbox>
+                  </div>
+                </div>
+              </div>
+              <div fxFlex="100" fxFlex.gt-xs="50" class="mb-2" *ngIf="propTypes ==='For Sale'">
+                <p class="m-2 fw-500">Possession Status</p>
+
+                <mat-radio-group aria-label="Select an option" formControlName="possessionStatus">
+                  <mat-radio-button id="pass_{{i}}" *ngFor="let pass of passasionStatusCom; let i = index;"
+                    class="example-radio-button pr-2" [value]="pass">{{pass}}
+                  </mat-radio-button>
+                </mat-radio-group>
+
+              </div>
+
+              <div fxFlex="100" class="px-2 mb-1" *ngIf="propTypes === 'For Rent'">
+                <p class=" fw-500">Available From</p>
+                <mat-radio-group aria-label="Select an option" formControlName="availFromBtn">
+                  <mat-radio-button id="avail_{{i}}" *ngFor="let avail of availableFromBtn; let i = index;"
+                    class="example-radio-button pr-2" [value]="avail">
+                    {{avail}}
+                  </mat-radio-button>
+                </mat-radio-group>
+              </div>
+
+              <div fxFlex="100" class="px-2 my-2" *ngIf="submitForm.get('commercial')['controls'].possessionStatus.value === 'Under Construction' 
+                || submitForm.get('commercial')['controls'].availFromBtn.value === 'Select Date'">
+                <div fxFlex="100" fxFlex.gt-xs="50" class="px-2 my-2">
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Available From</mat-label>
+                    <input matInput formControlName="availableFrom" [matDatepicker]="avail" [min]="todaysDate">
+                    <mat-hint>DD/MM/YYYY</mat-hint>
+                    <mat-datepicker-toggle matSuffix [for]="avail"></mat-datepicker-toggle>
+                    <mat-datepicker #avail></mat-datepicker>
+                  </mat-form-field>
+                </div>
+                <div fxFlex="100" fxFlex.gt-xs="50" class="px-2 my-2"></div>
+              </div>
+
+              <div fxFlex="100" class="px-2 my-2"
+                *ngIf="submitForm.get('commercial')['controls'].possessionStatus.value === 'Ready to Move' || propTypes === 'For Rent'">
+                <div fxFlex="100" fxFlex.gt-xs="50" class="px-2 my-2">
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Age of Property</mat-label>
+                    <mat-select formControlName="ageOfProperty" placeholder="Select Age...">
+                      <mat-option *ngFor="let ele of ageOfPro" [value]="ele">
+                        {{ele}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div fxFlex="100" fxFlex.gt-xs="50" class="px-2 my-2"></div>
+              </div>
+
+              <div fxFlex="100" fxFlex.gt-xs="50" class="px-2 mb-1" *ngIf="propTypes === 'For Sale'">
+                <p class=" fw-500">Currently Leased out</p>
+                <mat-radio-group aria-label="Select an option" formControlName="currentLeast">
+                  <mat-radio-button id="leastOut_{{i}}" *ngFor="let least of multipleUnits; let i = index;"
+                    class="example-radio-button pr-2" [value]="least">{{least}}
+                  </mat-radio-button>
+                </mat-radio-group>
+              </div>
+              <div fxFlex="100" fxFlex.gt-xs="50" class="px-2 mb-1" *ngIf="propTypes === 'For Rent' && (propertyNameData === 'Commercial office Space' 
+              ||  propertyNameData === 'Commercial Shop' || propertyNameData === 'Commercial Showroom')">
+                <p class=" fw-500">Currently Rent out</p>
+                <mat-radio-group aria-label="Select an option" formControlName="currentLeast">
+                  <mat-radio-button id="leastOut_{{i}}" *ngFor="let least of multipleUnits; let i = index;"
+                    class="example-radio-button pr-2" [value]="least">{{least}}
+                  </mat-radio-button>
+                </mat-radio-group>
+              </div>
+              <div fxFlex="100" fxFlex.gt-xs="50" class="px-2 mb-1"></div>
+
+
+              <div fxFlex="100" fxFlex.gt-xs="50" class="px-2" *ngIf="currentLeaseOut.value === 'Yes'  ">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Monthly Rent</mat-label>
+                  <input matInput formControlName="monthlyRent" placeholder="Monthly Rent" autocomplete="off">
+                </mat-form-field>
+                {{ submitForm["controls"].commercial['controls'].monthlyRent.value | numberToWords}}
+              </div>
+
+              <div fxFlex="100" fxFlex.gt-xs="50" class="px-2"
+                *ngIf="currentLeaseOut.value === 'Yes' && (propertyNameData === 'Commercial office Space' || propertyNameData === 'Commercial Shop' || propertyNameData === 'Commercial Showroom')">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Leased On</mat-label>
+                  <input matInput formControlName="leasedOn" [matDatepicker]="leased">
+                  <mat-hint>DD/MM/YYYY</mat-hint>
+                  <mat-datepicker-toggle matSuffix [for]="leased"></mat-datepicker-toggle>
+                  <mat-datepicker #leased></mat-datepicker>
+                </mat-form-field>
+              </div>
+              <div fxFlex="100" fxFlex.gt-xs="50" class="px-2 my-2"
+                *ngIf="currentLeaseOut.value === 'Yes' && (propertyNameData === 'Commercial office Space' || propertyNameData === 'Commercial Shop' || propertyNameData === 'Commercial Showroom')">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Current Business Sector</mat-label>
+                  <mat-select formControlName="currentBussinessSecctor" placeholder="Current Business Sector">
+                    <mat-option *ngFor="let ele of businessSector" [value]="ele">
+                      {{ele}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div fxFlex="100" fxFlex.gt-xs="50" class="px-2 my-2"
+                *ngIf="currentLeaseOut.value === 'Yes' && (propertyNameData === 'Commercial office Space' || propertyNameData === 'Commercial Shop' || propertyNameData === 'Commercial Showroom')">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>In Business Since</mat-label>
+                  <mat-select formControlName="inBusinessSince" placeholder="In Business Since">
+                    <mat-option *ngFor="let ele of businessSince" [value]="ele">
+                      {{ele}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div fxFlex="100" fxFlex.gt-xs="50" class="px-2 my-1" *ngIf="(propertyNameData === 'Commercial office Space' || propertyNameData === 'Commercial Shop' 
+                            || propertyNameData === 'Commercial Showroom') && propTypes === 'For Sale'">
+                <p class=" fw-500">Assured Returns</p>
+                <mat-radio-group aria-label="Select an option" formControlName="assuredReturns">
+                  <mat-radio-button id="assured_{{i}}" *ngFor="let least of multipleUnits; let i = index;"
+                    class="example-radio-button pr-2" [value]="least">{{least}}
+                  </mat-radio-button>
+                </mat-radio-group>
+              </div>
+              <div fxFlex="100" fxFlex.gt-xs="50" class="px-2 mb-1">
+              </div>
+              <div fxFlex="100" fxFlex.gt-xs="50" class="px-2"
+                *ngIf=" submitForm.get('commercial')['controls'].assuredReturns.value === 'Yes'">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Rate Of Return</mat-label>
+                  <input matInput formControlName="rateOfReturn" placeholder="E.X.:- 5%" autocomplete="off">
+                </mat-form-field>
+              </div>
+
+              <div fxFlex="100" fxFlex.gt-xs="100" *ngIf="propTypes === 'For Rent'">
+                <p class="uppercase m-2 fw-500">Rent/ Lease Details</p>
+              </div>
+              <div fxFlex="100" fxFlex.gt-xs="100" *ngIf="propTypes === 'For Sale'">
+                <p class="uppercase m-2 fw-500">Price Details</p>
+              </div>
+
+              <div fxFlex="100" fxFlex.gt-xs="50" class="px-2" *ngIf="propTypes === 'For Rent'">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Monthly Rent To Lease</mat-label>
+                  <input matInput formControlName="monthlyRentToLease" placeholder="Monthly Rent" autocomplete="off" (input)="calculateFinalPrice()">
+                </mat-form-field>
+                {{ submitForm["controls"].commercial['controls'].monthlyRentToLease.value | numberToWords}}
+              </div>
+
+              <div fxFlex="100" fxFlex.gt-xs="50" class="px-2" *ngIf="propTypes === 'For Sale'">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Expected Price</mat-label>
+                  <input matInput formControlName="expectedPrice" placeholder="Expected Price" autocomplete="off"
+                    (input)="carpetAreaPricePerSqft()">
+                </mat-form-field>
+                {{ submitForm["controls"].commercial['controls'].expectedPrice.value | numberToWords}}
+
+              </div>
+              <div fxFlex="100" fxFlex.gt-xs="50" class="px-2" *ngIf="propTypes === 'For Sale'">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Price per Sq-ft:</mat-label>
+                  <input matInput formControlName="expectedPricePerSqft" placeholder="Price per Sq-ft..."
+                    autocomplete="off" readonly>
+                </mat-form-field>
+                {{ submitForm["controls"].commercial['controls'].expectedPricePerSqft.value | numberToWords}}
+              </div>
+
+              <div fxFlex="100" class="mb-2"
+                *ngIf="(propertyNameData === 'Commercial office Space' || propertyNameData === 'Commercial Shop' 
+                            || propertyNameData === 'Commercial Showroom' ) && propTypes === 'For Sale'">
+                <p class="m-2 fw-500">Price Includes</p>
+                <div formArrayName="priceIncludes" fxLayout="row wrap">
+                  <div [formGroupName]="i"
+                    *ngFor="let control of submitForm.get('commercial')['controls'].priceIncludes['controls']; index as i"
+                    class="p-2">
+                    <mat-checkbox formControlName="selected">{{priceIncludes[i].name}}</mat-checkbox>
+                  </div>
+                </div>
+              </div>
+
+              <div fxFlex="100" fxFlex.gt-xs="50" class="px-2 pb-2">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Other Charges</mat-label>
+                  <input matInput placeholder="Other Charges" formControlName="otherCharges" autocomplete="off" (input)="calculateFinalPrice()">
+                </mat-form-field>
+                {{ submitForm["controls"].commercial['controls'].otherCharges.value | numberToWords}}
+
+              </div>
+
+              <div fxFlex="100" fxFlex.gt-xs="50" class="px-2 pb-2" *ngIf="propTypes === 'For Rent'">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Security Amount</mat-label>
+                  <input matInput placeholder="Security Amount" formControlName="securityAmount" autocomplete="off" (input)="calculateFinalPrice()">
+                </mat-form-field>
+                {{ submitForm["controls"].commercial['controls'].securityAmount.value | numberToWords}}
+
+              </div>
+
+              <div fxFlex="100" fxFlex.gt-xs="50" class="px-2" *ngIf="propTypes === 'For Sale'">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Booking/Token Amount</mat-label>
+                  <input matInput formControlName="bookingOrTokenAmount" placeholder="Booking/Token Amount"
+                    autocomplete="off">
+                </mat-form-field>
+                {{ submitForm["controls"].commercial['controls'].bookingOrTokenAmount.value | numberToWords}}
+
+              </div>
+
+              <div fxFlex="100" class="px-2">
+                <div fxFlex="100" fxFlex.gt-xs="50" class="pr-2 pb-2">
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Maintenance Charges</mat-label>
+                    <input matInput formControlName="maintenenceCharges" placeholder="Maintenance Charges" (input)="calculateFinalPrice()"
+                      autocomplete="off">
+                  </mat-form-field>
+                  {{ submitForm["controls"].commercial['controls'].maintenenceCharges.value | numberToWords}}
+
+                </div>
+                <div fxFlex="100" fxFlex.gt-xs="50" class="pl-2">
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>per</mat-label>
+                    <mat-select formControlName="maintenenceChargesPerYear"
+                      placeholder="Select Maintenance Charges per...">
+                      <mat-option *ngFor="let per of maintenenceChargePer" [value]="per">
+                        {{per}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>  
+              <div fxFlex="100" fxFlex.gt-xs="50" class="px-2">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Brokerage</mat-label>
+                  <mat-select formControlName="brokerage" placeholder="brokerage" (selectionChange)="getBrokerageCommercialValue($event.value)">
+                    <mat-option *ngFor="let brokerage of BrokerageInDays" [value]="brokerage">
+                      <!--Brokerage-->
+                      {{brokerage}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <!-- <div fxFlex="100" fxFlex.gt-xs="50" class="px-2" *ngIf="propTypes =='For Rent'">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Brokerage(Brokers only)</mat-label>
+                  <mat-select formControlName="brokerageInDays" placeholder="Select Major..."
+                    (selectionChange)="calculationMethod()">
+                    <mat-option *ngFor="let brokerage of BrokerageInDays" [value]="brokerage">
+                      {{brokerage}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div> -->
+
+              <div fxFlex="100" fxFlex.gt-xs="50" class="px-2 pb-2">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Brokerage Price</mat-label>
+                  <input matInput formControlName="brokeragePrice" readonly placeholder="Brokerage Price" autocomplete="off">
+                </mat-form-field>
+                {{ submitForm["controls"].commercial['controls'].brokeragePrice.value | numberToWords}}
+              </div>
+
+              <div fxFlex="100" fxFlex.gt-xs="50" class="px-2 pb-2">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Final Price</mat-label>
+                  <input matInput placeholder="Final Price" formControlName="finalPrice" autocomplete="off"
+                    disabled>
+                </mat-form-field>
+                <div >
+
+                  {{submitForm["controls"].commercial['controls'].finalPrice.value | numberToWords}}
+                </div>
+               </div> 
+              <div fxFlex="100" class="mt-3 p-2" fxLayoutAlign="space-between center">
+                <button mat-raised-button style="background: #ffe241;" matStepperPrevious fxLayout="row"
+                  fxLayoutAlign="center center" type="button">
+                  <mat-icon>navigate_before</mat-icon>
+                  <span class="mx-1 uppercase">Back</span>
+                </button>
+                <button mat-raised-button style="background: #ffe241;" matStepperNext fxLayout="row"
+                  fxLayoutAlign="center center" type="button" (click)="addDescriptionComm()">
+                  <span class="mx-1 uppercase">Next</span>
+                  <mat-icon>navigate_next</mat-icon>
+                </button>
+              </div>
+
+            </form>
+          </div>
+
+        </mat-step>
+        <mat-step [stepControl]="submitForm.get('commercialPropertyFeature')" label="Property Feature"
+          *ngIf="displayAditionalFeaturPage">
+          <div class="step-content">
+            <form formGroupName="commercialPropertyFeature" fxLayout="row wrap">
+
+              <div fxFlex="100" class="p-3" fxLayoutAlign="center center">
+                <h1 class="fw-500 text-center">Property Feature</h1>
+              </div>
+
+              <div fxFlex="100" fxFlex.gt-xs="50" class="pl-2" *ngIf="( propertyNameData === 'Commercial office Space' && propTypes === 'For Sale' ) || 
+                       ( propertyNameData === 'Commercial office Space' && propTypes === 'For Rent' ) || 
+                       ( propertyNameData === 'Commercial Shop' && propTypes === 'For Sale' )         || 
+                       ( propertyNameData === 'Commercial Shop' && propTypes === 'For Rent' )         ||
+                       ( propertyNameData === 'Commercial Showroom' && propTypes === 'For Sale' )     || 
+                       ( propertyNameData === 'Commercial Showroom' && propTypes === 'For Rent' )">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Facing</mat-label>
+                  <mat-select formControlName="facing" placeholder="Facing">
+                    <mat-option *ngFor="let ele of facing" [value]="ele">
+                      {{ele}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+              <!-- *ngIf = "(propertyNameData === 'Warehouse/ Godown' || propertyNameData === 'Commercial office Space') && (propTypes === 'For Sale' || propTypes === 'For Rent')" -->
+              <div fxFlex="100" class="mb-2">
+                <p class="uppercase m-2 fw-500">Overlooking</p>
+                <div formArrayName="overlooking" fxLayout="row wrap">
+                  <div [formGroupName]="i"
+                    *ngFor="let control of submitForm.get('commercialPropertyFeature')['controls'].overlooking['controls']; index as i"
+                    class="p-2">
+                    <mat-checkbox formControlName="selected" (change)="OverlookingEvent(control.value.id,$event)">
+                      {{control.value.name}}</mat-checkbox>
+                  </div>
+                </div>
+              </div>
+
+              <div fxFlex="100" class="mb-2" *ngIf="( propertyNameData === 'Commercial office Space' && propTypes === 'For Sale' ) || 
+                     ( propertyNameData === 'Commercial office Space' && propTypes === 'For Rent' ) || 
+                     ( propertyNameData === 'Commercial Shop' && propTypes === 'For Sale' )         || 
+                     ( propertyNameData === 'Commercial Shop' && propTypes === 'For Rent' )         ||
+                     ( propertyNameData === 'Commercial Showroom' && propTypes === 'For Sale' )     || 
+                     ( propertyNameData === 'Commercial Showroom' && propTypes === 'For Rent' )">
+                <p class="uppercase m-2 fw-500">Car Parking</p>
+                <div formArrayName="carParking" fxLayout="row wrap">
+                  <div [formGroupName]="i" fxFlex="50" fxLayout="row wrap"
+                    *ngFor="let control of submitForm.get('commercialPropertyFeature')['controls'].carParking['controls']; index as i"
+                    class="p-2">
+                    <div fxFlex="50" class="py-3">
+                      <mat-checkbox formControlName="selected">{{control.value.name}}</mat-checkbox>
+                    </div>
+                    <div fxFlex="50">
+                      <mat-form-field class="pr-5"
+                        *ngIf="control.value.selected && control.value.name !== 'None Of This'">
+                        <mat-label>per</mat-label>
+                        <mat-select formControlName="unit" placeholder="Select Major...">
+                          <mat-option [value]="'1 Unit'">1 Unit</mat-option>
+                          <mat-option [value]="'2 Unit'">2 Unit</mat-option>
+                          <mat-option [value]="'3 Unit'">3 Unit</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div fxFlex="100" class="pl-2 mt-1" fxFlex.gt-xs="50">
+                <mat-form-field appearance="outline" fxFlex="100" class="w-100">
+                  <mat-label>Lifts In the Tower</mat-label>
+                  <mat-select formControlName="liftsInTower" placeholder="Lifts In Tower">
+                    <mat-option *ngFor="let ele of lifts" [value]="ele">
+                      {{ele}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div fxFlex="100" class="pl-2 mt-1" fxFlex.gt-xs="50" *ngIf="( propertyNameData === 'Commercial office Space' && propTypes === 'For Sale' ) || 
+                          ( propertyNameData === 'Commercial office Space' && propTypes === 'For Rent' ) || 
+                          ( propertyNameData === 'Commercial Shop' && propTypes === 'For Sale' )         || 
+                          ( propertyNameData === 'Commercial Shop' && propTypes === 'For Rent' )         ||
+                          ( propertyNameData === 'Commercial Showroom' && propTypes === 'For Sale' )     || 
+                          ( propertyNameData === 'Commercial Showroom' && propTypes === 'For Rent' )">
+                <mat-form-field appearance="outline" fxFlex="100" class="w-100">
+                  <mat-label>Office On The Floor</mat-label>
+                  <input matInput placeholder="Office On The Floor" formControlName="officeOnTheFloor"
+                    autocomplete="off">
+                </mat-form-field>
+              </div>
+
+              <div fxFlex="100" class="pl-2 mt-1" fxFlex.gt-xs="50" *ngIf="     ( propertyNameData === 'Commercial Shop' && propTypes === 'For Sale' )         || 
+                          ( propertyNameData === 'Commercial Shop' && propTypes === 'For Rent' )         ||
+                          ( propertyNameData === 'Commercial Showroom' && propTypes === 'For Sale' )     || 
+                          ( propertyNameData === 'Commercial Showroom' && propTypes === 'For Rent' )">
+                <mat-form-field appearance="outline" fxFlex="100" class="w-100">
+                  <mat-label>Shops/Showrooms on the Floor</mat-label>
+                  <input matInput placeholder="Shops/Showrooms on the Floor" formControlName="ShopsShowroomsOnTheFloor"
+                    autocomplete="off">
+                </mat-form-field>
+              </div>
+
+              <div fxFlex="100" class="px-2 mb-1"  fxLayout="row wrap" *ngIf="( propertyNameData === 'Commercial office Space' && propTypes === 'For Sale' ) || 
+                          ( propertyNameData === 'Commercial office Space' && propTypes === 'For Rent' ) || 
+                          ( propertyNameData === 'Commercial Shop' && propTypes === 'For Sale' )         || 
+                          ( propertyNameData === 'Commercial Shop' && propTypes === 'For Rent' )         ||
+                          ( propertyNameData === 'Commercial Showroom' && propTypes === 'For Sale' )     || 
+                          ( propertyNameData === 'Commercial Showroom' && propTypes === 'For Rent' )">
+              <div fxFlex="100" class="px-2 mb-1" fxFlex.gt-xs="50">     
+                <p class=" fw-500">Multiple Units Available</p>
+                <mat-radio-group fxLayout="row wrap" aria-labelledby="" class="example-radio-group"
+                  formControlName="mulUnitsAvail">
+                  <mat-radio-button class="example-radio-button pr-2" *ngFor="let avail of multipleUnits"
+                    [value]="avail">
+                    {{avail}}
+                  </mat-radio-button>
+                </mat-radio-group>
+               
+              </div>
+              <div fxFlex="50" fxFlex.gt-xs="50" class="px-2 mb-1" 
+                  *ngIf="submitForm.get('commercialPropertyFeature')['controls'].mulUnitsAvail.value === 'Yes'">
+                <mat-form-field appearance="outline" fxFlex="100" class="w-100">
+                  <mat-select formControlName="multipleUnitsForShop" placeholder="Multiple Units">
+                    <mat-option *ngFor="let ele of multipleUnitsupto200" [value]="ele">
+                      {{ele}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              </div>
+
+              <div fxFlex="100" class="pl-2 mt-1" fxLayout="row wrap" *ngIf="( propertyNameData === 'Commercial office Space' && propTypes === 'For Sale' ) || 
+                          ( propertyNameData === 'Commercial office Space' && propTypes === 'For Rent' ) || 
+                          ( propertyNameData === 'Commercial Shop' && propTypes === 'For Sale' )         || 
+                          ( propertyNameData === 'Commercial Shop' && propTypes === 'For Rent' )         ||
+                          ( propertyNameData === 'Commercial Showroom' && propTypes === 'For Sale' )     || 
+                          ( propertyNameData === 'Commercial Showroom' && propTypes === 'For Rent' )">
+
+                <div fxFlex="100" class="px-2 mb-1" fxFlex.gt-xs="50">
+                  <mat-form-field appearance="outline" fxFlex="100" class="w-100">
+                    <mat-label>Special Zone</mat-label>
+                    <mat-select formControlName="specialZone" placeholder="Special Zone">
+                      <mat-option *ngFor="let ele of specialZone" [value]="ele">
+                        {{ele}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div fxFlex="100" class="px-2 mb-1" fxFlex.gt-xs="50">
+                  <mat-form-field appearance="outline" fxFlex="100" class="w-100">
+                    <mat-label>Vanue Type</mat-label>
+                    <mat-select formControlName="vanueType" placeholder="Vanue Type">
+                      <mat-option *ngFor="let ele of vanueType" [value]="ele">
+                        {{ele}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div fxFlex="100" class="px-2 mb-1" *ngIf="( propertyNameData === 'Commercial office Space' && propTypes === 'For Sale' ) || 
+                       ( propertyNameData === 'Commercial Shop' && propTypes === 'For Sale' )         || 
+                       ( propertyNameData === 'Commercial Showroom' && propTypes === 'For Sale' )">
+                <mat-label>Virtual Space</mat-label>
+                <mat-radio-group fxLayout="row wrap" aria-labelledby="" class="example-radio-group"
+                  formControlName="VirtualSpace">
+                  <mat-radio-button class="example-radio-button pr-2" *ngFor="let ele of multipleUnits" [value]="ele">
+                    {{ele}}
+                  </mat-radio-button>
+                </mat-radio-group>
+              </div>
+
+              <div fxFlex="100" class="pl-2" fxFlex.gt-xs="50" *ngIf=" ( propertyNameData === 'Commercial office Space' && propTypes === 'For Sale' ) ||  
+                        ( propertyNameData === 'Commercial office Space' && propTypes === 'For Rent' ) || 
+                        ( propertyNameData === 'Commercial Shop' && propTypes === 'For Sale' )         ||
+                        ( propertyNameData === 'Commercial Shop' && propTypes === 'For Rent' )         ||
+                        ( propertyNameData === 'Commercial Showroom' && propTypes === 'For Sale' )     || 
+                          ( propertyNameData === 'Commercial Showroom' && propTypes === 'For Rent' )">
+                <mat-form-field appearance="outline" fxFlex="100" class="w-100">
+                  <mat-label>Building Class</mat-label>
+                  <mat-select formControlName="buildingClass" placeholder="Building Class">
+                    <mat-option *ngFor="let ele of buildingClass" [value]="ele">
+                      {{ele}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+              <div fxFlex="100" class="pl-2" fxFlex.gt-xs="50" *ngIf="   ( propertyNameData === 'Commercial office Space' && propTypes === 'For Sale' ) ||  
+                        ( propertyNameData === 'Commercial office Space' && propTypes === 'For Rent' ) || 
+                        ( propertyNameData === 'Commercial Shop' && propTypes === 'For Sale' )         ||
+                        ( propertyNameData === 'Commercial Shop' && propTypes === 'For Rent' )         ||
+                        ( propertyNameData === 'Commercial Showroom' && propTypes === 'For Sale' )     || 
+                        ( propertyNameData === 'Commercial Showroom' && propTypes === 'For Rent' )
+                        ">
+                <mat-form-field appearance="outline" fxFlex="100" class="w-100">
+                  <mat-label>LEED Certification</mat-label>
+                  <mat-select formControlName="leadCertificate" placeholder="LEED Certification">
+                    <mat-option *ngFor="let ele of leedCertified" [value]="ele">
+                      {{ele}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+
+              <div fxFlex="100" class="pl-2 mt-1" *ngIf="( propertyNameData === 'Commercial Shop' && propTypes === 'For Sale' ) ||
+              ( propertyNameData === 'Commercial Showroom' && propTypes === 'For Sale' )">
+                <p class="uppercase fw-500">Project RERA ID</p>
+              </div>
+
+              <div fxFlex="100" class="pl-2 mt-1" fxFlex.gt-xs="50" *ngIf="( propertyNameData === 'Commercial Shop' && propTypes === 'For Sale' ) ||
+              ( propertyNameData === 'Commercial Showroom' && propTypes === 'For Sale' )">
+                <mat-form-field appearance="outline" fxFlex="100" class="w-100">
+                  <mat-label>Project RERA ID</mat-label>
+                  <input matInput placeholder="Project RERA ID" formControlName="ProjectRERAID" autocomplete="off">
+                </mat-form-field>
+              </div>
+
+
+              <div fxFlex="100" class="pl-2 mt-1" fxLayout="row wrap">
+                <div fxFlex="100">
+                  <p class="uppercase fw-500">Status of Water & Electricity</p>
+                </div>
+                <div fxFlex="100" fxFlex.gt-xs="50">
+                  <mat-form-field appearance="outline" fxFlex="100" class="w-100">
+                    <mat-label>Availability of Water</mat-label>
+                    <mat-select formControlName="availabilityWater" placeholder="Availability of Water">
+                      <mat-option *ngFor="let ele of waterAvailability" [value]="ele">
+                        {{ele}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div fxFlex="100" class="pl-2" fxFlex.gt-xs="50">
+                  <mat-form-field appearance="outline" fxFlex="100" class="w-100">
+                    <mat-label>Status of Electricity</mat-label>
+                    <mat-select formControlName="statusElectricity" placeholder="Status of Electricity">
+                      <mat-option *ngFor="let ele of electricityStatus" [value]="ele">
+                        {{ele}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div fxFlex="100" class="px-2 my-1"
+                *ngIf="(propertyNameData === 'Warehouse/ Godown' && propTypes === 'For Sale') ||
+                                                           (propertyNameData === 'Commercial office Space' && propTypes === 'For Sale' )||
+                                                           (propertyNameData === 'Commercial Shop' && propTypes === 'For Sale') ||
+                                                           (propertyNameData === 'Commercial Showroom' && propTypes === 'For Sale')">
+                <p class="uppercase fw-500 my-1">Ownership & Approvals</p>
+
+                <mat-label>Land Ownership Status</mat-label>
+                <mat-radio-group fxLayout="row wrap" aria-labelledby="" class="example-radio-group"
+                  formControlName="ownershipStatus">
+                  <mat-radio-button class="example-radio-button pr-2" *ngFor="let ele of ownerShipStatus" [value]="ele">
+                    {{ele}}
+                  </mat-radio-button>
+                </mat-radio-group>
+              </div>
+
+              <div fxFlex="100" class="px-2 my-2" *ngIf="propertyNameData === 'Warehouse/ Godown' && propTypes === 'For Sale'  ||
+              (propertyNameData === 'Commercial office Space' && propTypes === 'For Sale') || 
+              (propertyNameData === 'Commercial Shop' && propTypes === 'For Sale') ||
+              (propertyNameData === 'Commercial Showroom' && propTypes === 'For Sale')">
+                <p class="uppercase fw-500 my-1">Plot Approval Authority</p>
+
+                <mat-label>Is the plot approved by any authority?</mat-label>
+                <mat-radio-group fxLayout="row wrap" aria-labelledby="" class="example-radio-group"
+                  formControlName="approvedByAuthority">
+                  <mat-radio-button class="example-radio-button pr-2 mt-1" *ngFor="let avail of multipleUnits"
+                    [value]="avail">
+                    {{avail}}
+                  </mat-radio-button>
+                </mat-radio-group>
+              </div>
+
+              <div fxFlex="100" class=" px-2 my-2" fxFlex.gt-xs="50"
+                *ngIf="submitForm.get('commercialPropertyFeature')['controls'].approvedByAuthority.value === 'Yes'">
+                <mat-form-field appearance="outline" fxFlex="100" class="w-100">
+                  <mat-label>Approved by</mat-label>
+                  <mat-select formControlName="approvedBy" placeholder="Select Approved By">
+                    <mat-option *ngFor="let ele of approvedBy" [value]="ele">
+                      {{ele}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+              <div fxFlex="100" class="pl-2" fxFlex.gt-xs="100">
+                <div class="m-2 py-3">
+                  <mat-label class="fw-500">Flooring</mat-label>
+                </div>
+
+                <div formArrayName="flooring" fxLayout="row wrap">
+                  <div [formGroupName]="i" fxFlex="100" fxFlex.gt-xs="50"
+                    *ngFor="let control of submitForm.get('commercialPropertyFeature')['controls'].flooring['controls']; index as i"
+                    class="p-2">
+                    <mat-checkbox formControlName="selected">{{control.value.name}}</mat-checkbox>
+                  </div>
+                </div>
+              </div>
+
+              <div fxFlex="100" class="pl-2" fxFlex.gt-xs="100">
+                <div class="m-2 py-3">
+                  <mat-label class="fw-500">Amenities</mat-label>
+                </div>
+                <div formArrayName="amenities" fxLayout="row wrap">
+                  <div [formGroupName]="i" fxFlex="100" fxFlex.gt-xs="50"
+                    *ngFor="let control of submitForm.get('commercialPropertyFeature')['controls'].amenities['controls']; index as i"
+                    class="p-2">
+                    <mat-checkbox formControlName="selected">{{control.value.name}}</mat-checkbox>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <p class="uppercase m-2 fw-500">Description & Landmarks</p>
+              </div>
+
+              <div fxFlex="100" class="px-2">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Interesting Property details</mat-label>
+                  <textarea matInput placeholder="Description" formControlName="Description" rows="7" >
+                  </textarea>
+                  
+                </mat-form-field>
+                <!-- <div class="editable list" contenteditable="true" formArrayName="propertyDetails">
+                  <ul
+                    *ngFor="let property of submitForm['controls'].commercialPropertyFeature['controls'].propertyDetails['controls']; index as i"
+                    [formGroupName]="i">
+                    <li>{{property.value}}</li>
+                  </ul>
+                </div> -->
+              </div>
+
+              <div
+                *ngIf="( propertyNameData === 'Commercial Shop' && propTypes === 'For Sale' )|| ( propertyNameData === 'Commercial Shop' && propTypes === 'For Rent' )||
+            ( propertyNameData === 'Commercial Showroom' && propTypes === 'For Sale' )|| ( propertyNameData === 'Commercial Showroom' && propTypes === 'For Rent' ) ">
+                <p class="uppercase m-2 fw-500">Popular Landmarks Nearby</p>
+              </div>
+              <div fxFlex="100" fxFlex.gt-xs="100" class="px-2"
+                *ngIf="( propertyNameData === 'Commercial Shop' && propTypes === 'For Sale' )|| ( propertyNameData === 'Commercial Shop' && propTypes === 'For Rent' )||
+            ( propertyNameData === 'Commercial Showroom' && propTypes === 'For Sale' )|| ( propertyNameData === 'Commercial Showroom' && propTypes === 'For Rent' ) ">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Popular Landmarks</mat-label>
+                  <mat-select placeholder="Select Popular Landmarks..." formControlName="popularLandmark">
+                    <mat-option *ngFor="let land of PopularLandmarks" [value]="land">
+                      {{land}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+              <div fxFlex="100" fxFlex.gt-xs="50" class="px-2"
+                *ngIf="submitForm['controls'].commercialPropertyFeature['controls'].popularLandmark['value'] === 'University/School'">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>University/School</mat-label>
+                  <input matInput placeholder="University/School" autocomplete="off" formControlName="universitySchool">
+                </mat-form-field>
+              </div>
+              <div fxFlex="100" fxFlex.gt-xs="50" class="px-2"
+                *ngIf="submitForm['controls'].commercialPropertyFeature['controls'].popularLandmark['value'] === 'Hospitals'">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Hospitals</mat-label>
+                  <input matInput placeholder="Hospitals" autocomplete="off" formControlName="hospitals">
+                </mat-form-field>
+              </div>
+
+              <div fxFlex="100" fxFlex.gt-xs="50" class="px-2"
+                *ngIf="( propertyNameData === 'Commercial Shop' && propTypes === 'For Sale' )|| ( propertyNameData === 'Commercial Shop' && propTypes === 'For Rent' )||
+              ( propertyNameData === 'Commercial Showroom' && propTypes === 'For Sale' )|| ( propertyNameData === 'Commercial Showroom' && propTypes === 'For Rent' )">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Distance From Property</mat-label>
+                  <input matInput placeholder="Distance From Property" autocomplete="off"
+                    formControlName="distanceFromProperty2nd">
+                </mat-form-field>
+              </div>
+
+              <div fxFlex="100" class="mt-3 p-2" fxLayoutAlign="space-between center">
+                <button mat-raised-button style="background: #ffe241;" matStepperPrevious fxLayout="row"
+                  fxLayoutAlign="center center" type="button">
+                  <mat-icon>navigate_before</mat-icon>
+                  <span class="mx-1 uppercase">Back</span>
+                </button>
+                <button mat-raised-button style="background: #ffe241;" matStepperNext fxLayout="row"
+                  fxLayoutAlign="center center" type="button">
+                  <span class="mx-1 uppercase">Next</span>
+                  <mat-icon>navigate_next</mat-icon>
+                </button>
+              </div>
+
+
+
+            </form>
+          </div>
+        </mat-step>
+        <mat-step [stepControl]="submitForm.get('additional')" label="Additional Details"
+          *ngIf="!displayAditionalFeaturPage">
+          <div class="step-content">
+            <form formGroupName="additional" fxLayout="row wrap">
+              <div fxFlex="100" class="p-3" fxLayoutAlign="center center">
+                <h1 class="fw-500 text-center">Additional Details</h1>
+              </div>
+
+              <div fxFlex="100" fxFlex.gt-xs="50" class="mb-2">
+                <!-- <p class="m-2 fw-500">Price Includes</p> -->
+                <div formArrayName="is_feature_property" fxLayout="row wrap">
+                  <div [formGroupName]="i" fxFlex="100" fxFlex.gt-xs="25"
+                    *ngFor="let control of submitForm.get('additional')['controls'].is_feature_property['controls']; index as i;"
+                    class="p-2">
+                    <mat-checkbox formControlName="selected">{{control.value.name}}</mat-checkbox>
+                  </div>
+                </div>
+              </div>
+              <!--Featured Property-->
+              <div fxFlex="100" fxFlex.gt-xs="50" class="mb-2">
+                <!-- <p class="m-2 fw-500">Price Includes</p> -->
+                <div formArrayName="is_hot_listed" fxLayout="row wrap">
+                  <div [formGroupName]="i" fxFlex="100" fxFlex.gt-xs="25"
+                    *ngFor="let control of submitForm.get('additional')['controls'].is_hot_listed['controls']; index as i;"
+                    class="p-2">
+                    <mat-checkbox formControlName="selected">{{control.value.name}}</mat-checkbox>
+                  </div>
+                </div>
+              </div>
+              <!--Hot Property-->
+
+              <div fxFlex="100" fxFlex.gt-xs="100" class="px-2">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Bedrooms</mat-label>
+                  <mat-select formControlName="bedrooms" placeholder="Select Bedrooms...">
+                    <mat-option *ngFor="let Bedroom of bedrooms; let i = index;" [value]="Bedroom"
+                      (click)="bedSelection(Bedroom)">
+                      {{Bedroom}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <!--bedrooms-->
+
+              <div fxFlex="100" fxFlex.gt-xs="100" class="px-2 pb-4" *ngIf="bedroomFlag ">
+                <mat-card>
+                  <h3 fxLayoutAlign="center">Specify bedroom sizes. - For example: 12 x 10 ft</h3>
+                  <mat-card-subtitle fxLayoutAlign="center">Length X Breadth</mat-card-subtitle>
+                  <mat-card-actions>
+                    <div fxLayout="row wrap">
+                      <div fxFlex="100" *ngFor="let bedrooms of BedroomNumbers let i = index;">
+                        <div fxFlex="50" class="px-2">
+                          <!--fxLayoutAlign="start center"-->
+                          <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>Bedroom {{i+1}}(ft)</mat-label>
+                            <input matInput placeholder="bedroom {{i+1}} (Length/ft)" [value]="bedrooms.length"
+                              (input)="onInputType($event.target.value, 'length',i)" autocomplete="off">
+                            <!--[formControlName]="i.bedroom_length"-->
+                            <!--formControlName="bedrooms" onlyNumber maxlength="2"-->
+                          </mat-form-field>
+                        </div>
+
+                        <div fxFlex="50" class="px-2">
+                          <!--fxLayoutAlign="start center"-->
+                          <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>Bedroom {{i+1}}(ft)</mat-label>
+                            <input matInput placeholder="bedroom {{i+1}}(Breadth/ft)" [value]="bedrooms.breadth"
+                              (input)="onInputType( $event.target.value, 'breadth',i)" autocomplete="off">
+                            <!--[formControlName]="i.bedroom_breadth"-->
+                          </mat-form-field>
+                        </div>
+                      </div>
+                    </div>
+                  </mat-card-actions>
+                </mat-card>
+              </div>
+              <!--bedrooms Sizes-->
+              <div fxFlex="100" fxFlex.gt-xs="100" class="px-2">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Balcony</mat-label>
+                  <mat-select formControlName="balconies" placeholder="Select Balconies...">
+                    <mat-option *ngFor="let balconie of balconies" [value]="balconie"
+                      (click)="balconiesSelection(balconie)">
+                      {{balconie}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <!--balconies-->
+              <div fxFlex="100" fxFlex.gt-xs="100" class="px-2 pb-4" *ngIf="balconieFlag ">
+                <mat-card>
+                  <h3 fxLayoutAlign="center">Specify Balcony sizes. - For example: 12 x 10 ft</h3>
+                  <mat-card-subtitle fxLayoutAlign="center">Length X Breadth</mat-card-subtitle>
+                  <mat-card-actions>
+                    <div fxLayout="row wrap">
+                      <div fxFlex="100" *ngFor="let balconies of BalconiesNumber let i = index;">
+                        <div fxFlex="50" class="px-2">
+                          <!--fxLayoutAlign="start center"-->
+                          <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>balcony {{i+1}}(ft)</mat-label>
+                            <input matInput placeholder="balcony {{i+1}} (Length/ft)" [value]="balconies.length"
+                              (input)="onBalInputtypes($event.target.value, 'length',i)" autocomplete="off">
+                          </mat-form-field>
+                        </div>
+                        <div fxFlex="50" class="px-2">
+
+                          <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>balcony {{i+1}}(ft)</mat-label>
+                            <input matInput placeholder="balcony {{i+1}}(Breadth/ft)" [value]="balconies.breadth"
+                              (input)="onBalInputtypes( $event.target.value, 'breadth',i)" autocomplete="off">
+
+                          </mat-form-field>
+                        </div>
+                      </div>
+                    </div>
+                  </mat-card-actions>
+                </mat-card>
+              </div>
+              <!--balconies Sizes-->
+              <div fxFlex="100" fxFlex.gt-xs="50" class="px-2">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Bathrooms</mat-label>
+                  <mat-select formControlName="bathrooms" placeholder="Select Bathrooms...">
+                    <mat-option *ngFor="let bathroom of bathrooms" [value]="bathroom">
+                      {{bathroom}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <!--Bathrooms-->
+
+              <div fxFlex="100" fxFlex.gt-xs="50" class="px-2">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Furnished Status</mat-label>
+                  <mat-select formControlName="furnishedStatus" placeholder="Select Status..."
+                    (selectionChange)="furnishedSelection($event.value)">
+                    <mat-option *ngFor="let furnished of furnishedStatus" [value]="furnished">
+                      {{furnished}}
+                    </mat-option>
+                  </mat-select>
+                  <!-- <mat-error *ngIf="submitForm.get('address')['controls'].city.errors?.required">City is required</mat-error>                     -->
+                </mat-form-field>
+              </div>
+              <!--Furnished Status-->
+              <div fxFlex="100" fxLayout="row wrap" *ngIf="furnishedFlag">
+                <!--*ngIf="furnishedFlag && propTypes =='For Rent'"-->
+                <div fxFlex="100" fxFlex.gt-xs="25" class="px-2">
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>AC</mat-label>
+                    <mat-select formControlName="furnishedAc" placeholder="Select Status...">
+                      <mat-option *ngFor="let furnished of furnishedAc" [value]="furnished">
+                        {{furnished}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div fxFlex="100" fxFlex.gt-xs="25" class="px-2">
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Bed</mat-label>
+                    <mat-select formControlName="furnishedBed" placeholder="Select Status...">
+                      <mat-option *ngFor="let furnished of furnishedBed" [value]="furnished">
+                        {{furnished}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div fxFlex="100" fxFlex.gt-xs="25" class="px-2">
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Wardrobe</mat-label>
+                    <mat-select formControlName="furnishedWardrobe" placeholder="Select Status...">
+                      <mat-option *ngFor="let furnished of furnishedWardrobe" [value]="furnished">
+                        {{furnished}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div fxFlex="100" fxFlex.gt-xs="25" class="px-2">
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>TV</mat-label>
+                    <mat-select formControlName="furnishedTv" placeholder="Select Status...">
+
+                      <mat-option *ngFor="let furnished of furnishedTv" [value]="furnished">
+                        {{furnished}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div fxFlex="100" class="mb-2">
+                  <!-- <p class="m-2 fw-500">Price Includes</p> -->
+                  <div formArrayName="furnishedItems" fxLayout="row wrap">
+                    <div [formGroupName]="i" fxFlex="100" fxFlex.gt-xs="25"
+                      *ngFor="let control of submitForm.get('additional')['controls'].furnishedItems['controls']; index as i"
+                      class="p-2">
+                      <mat-checkbox formControlName="selected">{{control.value.name}}</mat-checkbox>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!--AC-->
+              <div fxFlex="100" fxFlex.gt-xs="25" class="px-2">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Flat No.</mat-label>
+                  <input matInput placeholder="Flat No." formControlName="flat_no" autocomplete="off">
+                </mat-form-field>
+                
+              </div>
+              <!--Flat No.-->
+              <div fxFlex="100" fxFlex.gt-xs="25" class="px-2">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Floor No.</mat-label>
+                  <mat-select formControlName="floorNo" placeholder="Select Floor...">
+                    <mat-option *ngFor="let floor of floorNo" [value]="floor">
+                      {{floor}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div fxFlex="100" fxFlex.gt-xs="25" class="px-2">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Total Floors</mat-label>
+                  <mat-select formControlName="total_floor" placeholder="Select Total Floors...">
+                    <mat-option *ngFor="let floors of totalFloors" [value]="floors">
+                      {{floors}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div fxFlex="100" fxFlex.gt-xs="25" class="px-2">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>No of Towers</mat-label>
+                  <mat-select formControlName="tower" placeholder="Select Tower...">
+                    <mat-option *ngFor="let floors of totalTowers" [value]="floors">
+                      {{floors}}
+                    </mat-option>
+                    <mat-option [value]="'12+'">
+                      12+
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div fxFlex="100" fxLayout="row wrap" formGroupName="leaving_room_details">
+                <div fxFlex="100" fxFlex.gt-xs="100">
+                  <p class="uppercase m-2 fw-500">Living room details</p>
+                </div>
+                <div fxFlex="100" fxFlex.gt-xs="50" class="px-2">
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Length(ft)</mat-label>
+                    <input matInput placeholder="Length/ft" formControlName="length" autocomplete="off">
+                  </mat-form-field>
+                </div>
+                <div fxFlex="100" fxFlex.gt-xs="50" class="px-2">
+
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Breadth(ft)</mat-label>
+                    <input matInput placeholder="Breadth/ft" formControlName="breadth" autocomplete="off">
+                  </mat-form-field>
+                </div>
+
+              </div>
+              <div fxFlex="100" fxLayout="row wrap" formGroupName="kitchen_details">
+                <div fxFlex="100" fxFlex.gt-xs="100">
+                  <p class="uppercase m-2 fw-500">Kitchen room details</p>
+                </div>
+                <div fxFlex="100" fxFlex.gt-xs="50" class="px-2">
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Length(ft)</mat-label>
+                    <input matInput placeholder="Length/ft" formControlName="length" autocomplete="off">
+                  </mat-form-field>
+                </div>
+                <div fxFlex="100" fxFlex.gt-xs="50" class="px-2">
+
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Breadth(ft)</mat-label>
+                    <input matInput placeholder="Breadth/ft" formControlName="breadth" autocomplete="off">
+                  </mat-form-field>
+                </div>
+
+              </div>
+              <!-- <div fxFlex="100" fxFlex.gt-xs="100" class="px-2">
+                <mat-checkbox formControlName="kitchen"  >
+                  <span class="uppercase m-2 fw-500">Modular Kitchen</span>
+                </mat-checkbox>
+              </div> -->
+              <div fxFlex="100" class="px-2" fxLayout="row wrap" formGroupName="lobyDetails">
+                <div fxFlex="100" fxFlex.gt-xs="100">
+                  <mat-checkbox formControlName="isAvailable" (change)="isLobby($event)">
+                    <span class="uppercase m-2 fw-500">lobby</span>
+                  </mat-checkbox>
+                </div>
+                <div *ngIf="isLobbyFlag" fxFlex="100" fxLayout="row wrap" class="px-2">
+                  <div fxFlex="100" fxFlex.gt-xs="50" class="px-2">
+                    <mat-form-field appearance="outline" class="w-100">
+                      <mat-label>Length(ft)</mat-label>
+                      <input matInput placeholder="Length/ft" formControlName="length" autocomplete="off">
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="100" fxFlex.gt-xs="50" class="px-2">
+
+                    <mat-form-field appearance="outline" class="w-100">
+                      <mat-label>breadth(ft)</mat-label>
+                      <input matInput placeholder="Breadth/ft" formControlName="breadth" autocomplete="off">
+                    </mat-form-field>
+                  </div>
+                </div>
+
+              </div>
+
+
+
+              <div fxFlex="100" class="mb-2">
+                <p class="uppercase m-2 fw-500">Area</p>
+              </div>
+              <div fxFlex="100" fxFlex.gt-xs="20" class="px-2">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Super Area</mat-label>
+                  <input formControlName="superArea" matInput placeholder="Super Area" autocomplete="off">
+                </mat-form-field>
+              </div>
+              <div fxFlex="100" fxFlex.gt-xs="13.33" class="px-2">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>measure</mat-label>
+                  <mat-select formControlName="super_major" placeholder="Select measure...">
+                    <mat-option *ngFor="let ele of major" [value]="ele">
+                      {{ele}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div fxFlex="100" fxFlex.gt-xs="20" class="px-2">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Built-up Area </mat-label>
+                  <input matInput formControlName="builtUpArea" placeholder="Built-up Area" autocomplete="off">
+                </mat-form-field>
+              </div>
+              <div fxFlex="100" fxFlex.gt-xs="13.33" class="px-2">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>measure</mat-label>
+                  <mat-select formControlName="built_major" placeholder="Select measure...">
+                    <mat-option *ngFor="let ele of major" [value]="ele">
+                      {{ele}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div fxFlex="100" fxFlex.gt-xs="20" class="px-2">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Carpet Area</mat-label>
+                  <input matInput formControlName="carpetArea" placeholder="Carpet Area" autocomplete="off"
+                    (input)="calculationMethod()">
+                </mat-form-field>
+              </div>
+              <div fxFlex="100" fxFlex.gt-xs="13.33" class="px-2">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>measure</mat-label>
+                  <mat-select formControlName="carpet_major" placeholder="Select measure...">
+                    <mat-option *ngFor="let ele of major" [value]="ele">
+                      {{ele}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+
+
+              <div fxFlex="100" fxLayout="row wrap" *ngIf="propTypes =='For Sale'  ">
+                <div fxFlex="100" class="mb-2">
+                  <p class="uppercase m-2 fw-500">Transaction Type, Property Availability</p>
+                </div>
+                <div fxFlex="100" fxFlex.gt-xs="50" class="mb-2">
+                  <p class="m-2 fw-500">Transaction Type</p>
+                  <div formArrayName="transactionType" fxLayout="row wrap">
+                    <div [formGroupName]="i"
+                      *ngFor="let control of submitForm.get('additional')['controls'].transactionType['controls']; index as i"
+                      class="p-2">
+                      <mat-checkbox formControlName="selected" (change)="checked($event , transactionType[i])">
+                        {{transactionType[i].name}}
+                      </mat-checkbox>
+                    </div>
+                  </div>
+                </div>
+                <div fxFlex="100" fxFlex.gt-xs="50" class="mb-2">
+                  <p class="m-2 fw-500">Possession Status</p>
+                  <div formArrayName="possessionStatus" fxLayout="row wrap">
+                    <div [formGroupName]="i"
+                      *ngFor="let control of submitForm.get('additional')['controls'].possessionStatus['controls']; index as i"
+                      class="p-2">
+                      <mat-checkbox formControlName="selected" (change)="checked($event , possessionStatus[i] )">
+                        {{possessionStatus[i].name}}
+                      </mat-checkbox>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div fxFlex="100" fxLayout="row wrap" *ngIf="propTypes =='For Rent'">
+                <div fxFlex="100" class="mb-2">
+                  <p class="uppercase m-2 fw-500">Transaction Type, Property Availability</p>
+                </div>
+
+                <div fxFlex="100" class="px-2 mb-1">
+                  <p class=" fw-500">Available From</p>
+                  <mat-radio-group aria-label="Select an option" formControlName="availFromBtn">
+                    <mat-radio-button id="avail_{{i}}" *ngFor="let avail of availableFromBtn; let i = index;"
+                      class="example-radio-button pr-2" [value]="avail" (click)="availFromBtn(avail)">
+                      {{avail}}
+                    </mat-radio-button>
+                  </mat-radio-group>
+                </div>
+              </div>
+              <div fxFlex="100" fxFlex.gt-xs="50" class="px-2 my-2" *ngIf="availableFlag">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Available From</mat-label>
+                  <input matInput formControlName="availableFrom" [matDatepicker]="picker">
+                  <mat-hint>DD/MM/YYYY</mat-hint>
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+              </div>
+
+              <div fxFlex="100" fxFlex.gt-xs="50" class="px-2 my-2" *ngIf="ageFlag">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Age of Property</mat-label>
+                  <mat-select formControlName="ageOfProperty" placeholder="Select Major...">
+                    <mat-option *ngFor="let ele of ageOfPro" [value]="ele">
+                      {{ele}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+              <div fxFlex="100" class="mb-2" *ngIf="propTypes =='For Sale' ">
+                <p class="uppercase m-2 fw-500">Price Details</p>
+              </div>
+
+              <!-- Unusable -->
+              <div fxFlex="100" fxLayout="row wrap" *ngIf="otherChargesFlag">
+                <div fxFlex="100" fxFlex.gt-xs="33.33" class="px-2">
+                  <mat-form-field appearance="" class="w-100">
+                    <mat-label>Basic Price</mat-label>
+                    <!-- <mat-icon >people</mat-icon> -->
+                    <input matInput formControlName="basic_price" placeholder="Basic Price" autocomplete="off">
+                    <!--onlyNumber  maxlength="4"-->
+                  </mat-form-field>
+                </div>
+                <div fxFlex="100" fxFlex.gt-xs="33.33" class="px-2">
+                  <mat-form-field appearance="" class="w-100">
+                    <mat-label>Floor PLC</mat-label>
+                    <!-- <mat-icon >people</mat-icon> -->
+                    <input matInput formControlName="floor_plc" placeholder="Floor PLC" autocomplete="off">
+                    <!--onlyNumber  maxlength="4"-->
+                  </mat-form-field>
+                </div>
+                <div fxFlex="100" fxFlex.gt-xs="33.33" class="px-2">
+                  <mat-form-field appearance="" class="w-100">
+                    <mat-label>Facing PLC</mat-label>
+                    <!-- <mat-icon >people</mat-icon> -->
+                    <input matInput formControlName="facing_plc" placeholder="Facing PLC" autocomplete="off">
+                    <!--onlyNumber  maxlength="4"-->
+                  </mat-form-field>
+                </div>
+                <div fxFlex="100" fxFlex.gt-xs="33.33" class="px-2">
+                  <mat-form-field appearance="" fxFlex="100" fxFlex.gt-xs="70" class="w-100">
+                    <mat-label>Open Car Parking</mat-label>
+                    <!-- <mat-icon >people</mat-icon> -->
+                    <input matInput formControlName="open_car_parking" placeholder="Open Car Parking"
+                      autocomplete="off">
+                    <!--onlyNumber  maxlength="4"-->
+                  </mat-form-field>
+
+                  <mat-form-field appearance="" fxFlex="100" fxFlex.gt-xs="30" class="ml-1 w-100">
+                    <mat-label>per</mat-label>
+                    <mat-select formControlName="open_car_parking_per" placeholder="Select Major...">
+                      <mat-option [value]="'1 Unit'">1 Unit</mat-option>
+                      <mat-option [value]="'2 Unit'">2 Unit</mat-option>
+                      <mat-option [value]="'3 Unit'">3 Unit</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div fxFlex="100" fxFlex.gt-xs="33.33" class="px-2">
+                  <mat-form-field appearance="" fxFlex="100" fxFlex.gt-xs="70" class="w-100">
+                    <mat-label>Covered Car Parking</mat-label>
+                    <!-- <mat-icon >people</mat-icon> -->
+                    <input matInput formControlName="covered_car_parking" placeholder="Covered Car Parking"
+                      autocomplete="off">
+                    <!--onlyNumber  maxlength="4"-->
+                  </mat-form-field>
+                  <mat-form-field appearance="" fxFlex="100" fxFlex.gt-xs="30" class="ml-1 w-100">
+                    <mat-label>per</mat-label>
+                    <mat-select formControlName="covered_car_parking_per" placeholder="Select Major...">
+                      <mat-option [value]="'1 Unit'">1 Unit</mat-option>
+                      <mat-option [value]="'2 Unit'">2 Unit</mat-option>
+                      <mat-option [value]="'3 Unit'">3 Unit</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div fxFlex="100" fxFlex.gt-xs="33.33" class="px-2">
+                  <mat-form-field appearance="" class="w-100">
+                    <mat-label>Club Membership</mat-label>
+                    <!-- <mat-icon>people</mat-icon> -->
+                    <input matInput formControlName="club_membership" placeholder="Club Membership" autocomplete="off">
+                    <!--onlyNumber  maxlength="4"-->
+                  </mat-form-field>
+                </div>
+                <div fxFlex="100" fxFlex.gt-xs="33.33" class="px-2">
+                  <mat-form-field appearance="" class="w-100">
+                    <mat-label>Power Backup</mat-label>
+                    <!-- <mat-icon>people</mat-icon> -->
+                    <input matInput formControlName="powerbackup" placeholder="" autocomplete="off">
+                    <!--onlyNumber  maxlength="4"-->
+                  </mat-form-field>
+                </div>
+
+                <!-- <div fxFlex="100" fxFlex.gt-xs="33.33" class="px-2">
+                  <mat-form-field appearance="" class="w-100">
+                    <mat-label>Electricity/Water Charges</mat-label>
+                    <!-- <mat-icon>people</mat-icon> - ->
+                    <input matInput formControlName="electricity" placeholder="" autocomplete="off">
+                    <!--onlyNumber  maxlength="4"- ->
+                  </mat-form-field>
+                </div> -->
+                <div fxFlex="100" fxFlex.gt-xs="33.33" class="px-2">
+                  <mat-form-field appearance="" class="w-100">
+                    <mat-label>IFMS</mat-label>
+                    <!-- <mat-icon>people</mat-icon> -->
+                    <input matInput formControlName="ifms" placeholder="" autocomplete="off">
+                    <!--onlyNumber  maxlength="4"-->
+                  </mat-form-field>
+                </div>
+                <div fxFlex="100" fxFlex.gt-xs="33.33" class="px-2">
+                  <mat-form-field appearance="" class="w-100">
+                    <mat-label>EEC/FFC</mat-label>
+                    <!-- <mat-icon>people</mat-icon> -->
+                    <input matInput formControlName="eecffc" placeholder="" autocomplete="off">
+                    <!--onlyNumber  maxlength="4"-->
+                  </mat-form-field>
+                </div>
+                <div fxFlex="100" fxFlex.gt-xs="33.33" class="px-2">
+                  <mat-form-field appearance="" class="w-100">
+                    <mat-label>Other Charges</mat-label>
+                    <input matInput formControlName="otherCharges" placeholder="Other Charges" autocomplete="off">
+                    <!--onlyNumber  maxlength="4"-->
+                  </mat-form-field>
+                </div>
+                <div fxFlex="100" class="px-2 mb-2">
+                  <mat-checkbox formControlName="serviceTax">
+                    Service Tax & Registration charges excluded.
+                  </mat-checkbox>
+                </div>
+
+              </div>
+              <!-- end -->
+
+              <div fxFlex="100" fxLayout="row wrap" *ngIf="expectPrice ">
+                <div fxFlex="100" fxFlex.gt-xs="50" class="px-2" *ngIf="propTypes =='For Sale'">
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Expected Price</mat-label>
+                    <input matInput formControlName="expectedPrice" placeholder="Expected Price" autocomplete="off"
+                      (input)="calculationMethod()">
+                    <!--ExpectedPriceperSQFT()-->
+                    <!--onlyNumber  maxlength="4"-->
+                  </mat-form-field>
+                  <div *ngIf="propTypes !=='For Rent'">
+                    {{ submitForm["controls"].additional['controls'].expectedPrice.value | numberToWords}}
+
+                  </div>
+                </div>
+
+                <div fxFlex="100" fxFlex.gt-xs="50" class="px-2" *ngIf="propTypes =='For Sale'">
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Price per Sq-ft:</mat-label>
+                    <input matInput formControlName="pricePerSqft" placeholder="Price per Sq-ft..." autocomplete="off"
+                      readonly>
+                    <!--onlyNumber  maxlength="4"-->
+                  </mat-form-field>
+                  <div *ngIf="propTypes !=='For Rent'">
+
+                    {{submitForm["controls"].additional['controls'].pricePerSqft.value | numberToWords}}
+                  </div>
+                </div>
+                <div fxFlex="100" class="mb-2" *ngIf="propTypes =='For Sale'">
+                  <p class="m-2 fw-500">Price Includes</p>
+                  <div formArrayName="priceIncludes" fxLayout="row wrap">
+                    <div [formGroupName]="i"
+                      *ngFor="let control of submitForm.get('additional')['controls'].priceIncludes['controls']; index as i"
+                      class="p-2">
+                      <mat-checkbox formControlName="selected">{{priceIncludes[i].name}}</mat-checkbox>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div fxFlex="100" fxLayout="row wrap" class="pb-2" *ngIf="propTypes =='For Rent'">
+                <div fxFlex="100" class="mb-2">
+                  <p class="uppercase m-2 fw-500">Rent/ Lease Details</p>
+                </div>
+                <div fxFlex="100" fxFlex.gt-xs="50" class="px-2">
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Monthly Rent</mat-label>
+                    <input matInput formControlName="monthlyRent" placeholder="Monthly Rent" autocomplete="off">
+                  </mat-form-field>
+                  {{ submitForm.get('additional')['controls'].monthlyRent?.value | numberToWords}}
+                </div>
+
+                <div fxFlex="100" fxFlex.gt-xs="50" class="px-2">
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Security Amount</mat-label>
+                    <input matInput formControlName="securityAmount" placeholder="Security Amount" autocomplete="off">
+                    <!--onlyNumber  maxlength="4"-->
+                  </mat-form-field>
+                  {{ submitForm["controls"].additional['controls'].securityAmount.value | numberToWords}}
+                </div>
+              </div>
+
+              <div fxFlex="100" fxFlex.gt-xs="50" class="px-2" *ngIf="propTypes =='For Sale'">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Stamp Duty(%)</mat-label>
+                  <input matInput placeholder="Stamp Duty" formControlName="stampDuty" autocomplete="off"
+                    (input)="calculationMethod()">
+                </mat-form-field>
+              </div>
+              <div fxFlex="100" fxFlex.gt-xs="50" class="px-2 pb-2" *ngIf="propTypes =='For Sale'">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Stamp Duty (Included Price)</mat-label>
+                  <input matInput placeholder="Stamp Duty (Included Price)" formControlName="stampIncluded"
+                    autocomplete="off" readonly>
+                </mat-form-field>
+                <div *ngIf="propTypes !=='For Rent'">
+                  {{submitForm["controls"].additional['controls'].stampIncluded.value | numberToWords}}
+                </div>
+              </div>
+
+              <div fxFlex="100" fxFlex.gt-xs="50" class="px-2 pb-2" *ngIf="propTypes =='For Sale'">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Registration Charges</mat-label>
+                  <input matInput placeholder="Registration Charges" formControlName="regCharge" autocomplete="off">
+                </mat-form-field>
+                <div *ngIf="propTypes !=='For Rent'">
+
+                  {{submitForm["controls"].additional['controls'].regCharge.value | numberToWords}}
+                </div>
+              </div>
+
+              <div fxFlex="100" fxFlex.gt-xs="50" class="px-2 pb-2" *ngIf="propTypes =='For Rent'">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Agreement Charges</mat-label>
+                  <input matInput placeholder="Agreement Charges" formControlName="agreementCharges" autocomplete="off">
+                </mat-form-field>
+                <!-- <div *ngIf="propTypes !=='For Rent'"> -->
+
+                  {{submitForm["controls"].additional['controls'].agreementCharges.value | numberToWords}}
+                <!-- </div> -->
+              </div>
+
+              <div fxFlex="100" fxFlex.gt-xs="50" class="px-2 pb-2">
+                <!--*ngIf="propTypes =='For Sale'"-->
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Other Charges</mat-label>
+                  <input matInput placeholder="Other Charges" formControlName="otherCharges" autocomplete="off">
+                </mat-form-field>
+                <div >
+                  {{submitForm["controls"].additional['controls'].otherCharges.value | numberToWords}}
+                </div>
+              </div>
+
+
+              <div fxFlex="100" fxFlex.gt-xs="50" class="px-2" *ngIf="propTypes =='For Sale'   ">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Brokerage</mat-label>
+                  <mat-select formControlName="brokerage" placeholder="Select Brokerage..."
+                    (selectionChange)="calculationMethod()">
+                    <mat-option *ngFor="let brokerage of Brokerage" [value]="brokerage">
+                      {{brokerage}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+              <div fxFlex="100" fxFlex.gt-xs="50" class="px-2 pb-2" *ngIf="propTypes =='For Sale'">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Brokerage Included Price</mat-label>
+                  <input matInput formControlName="brokerageIncluded" placeholder="Brokerage Included Price"
+                    autocomplete="off">
+                  <!--onlyNumber  maxlength="4"-->
+                </mat-form-field>
+                <div *ngIf="propTypes !=='For Rent'">
+                  {{submitForm["controls"].additional['controls'].brokerageIncluded.value | numberToWords}}
+
+                </div>
+
+              </div>
+              <div fxFlex="100" fxFlex.gt-xs="50" class="px-2" *ngIf="propTypes =='For Rent'">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Brokerage</mat-label>
+                  <mat-select formControlName="brokerageInDays" placeholder="Select Brokerage..."
+                    (selectionChange)="getBrokerageValue($event)">
+                    <mat-option *ngFor="let brokerage of BrokerageInDays" [value]="brokerage">
+                      {{brokerage}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+              <div fxFlex="100" fxFlex.gt-xs="50" class="px-2 pb-2" *ngIf="propTypes =='For Rent'">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Brokerage Price</mat-label>
+                  <input matInput formControlName="brokeragePrice" placeholder="Brokerage Price" autocomplete="off">
+                  <!--onlyNumber  maxlength="4"-->
+                </mat-form-field>
+                {{submitForm["controls"].additional['controls'].brokeragePrice .value | numberToWords}}
+                <!-- <div *ngIf="propTypes !=='For Rent'">
+
+                </div> -->
+
+              </div>
+              <div fxFlex="100" class="px-2">
+                <div fxFlex="100" fxFlex.gt-xs="50" class="pr-2 pb-2">
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Maintenance Charges</mat-label>
+                    <input matInput formControlName="maintenenceCharges" placeholder="Maintenance Charges"
+                      autocomplete="off">
+                    <!-- onlyNumber  maxlength="4"-->
+
+                  </mat-form-field>
+                  <div>
+                    {{submitForm["controls"].additional['controls'].maintenenceCharges.value | numberToWords}}
+                  </div>
+                </div>
+                <div fxFlex="100" fxFlex.gt-xs="50" class="pl-2">
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>per</mat-label>
+                    <mat-select formControlName="maintenenceChargesPerYear"
+                      placeholder="Select Maintenance Charges per...">
+
+                      <mat-option *ngFor="let per of maintenenceChargePer" [value]="per">
+                        {{per}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div fxFlex="100" fxFlex.gt-xs="50" class="px-2 pb-2" *ngIf="propTypes !=='For Rent'">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Final Price</mat-label>
+                  <input matInput placeholder="Maintenance Charges" formControlName="finalPrice" autocomplete="off"
+                    disabled>
+                </mat-form-field>
+                <div *ngIf="propTypes !=='For Rent'">
+
+                  {{submitForm["controls"].additional['controls'].finalPrice.value | numberToWords}}
+                </div>
+
+              </div>
+
+              <!-- <div fxFlex="100" class="mb-2">
+                <p class="uppercase m-2 fw-500">Features</p>
+                <div formArrayName="features" fxLayout="row wrap">
+                  <div [formGroupName]="i"
+                    *ngFor="let control of submitForm.get('additional')['controls'].features['controls']; index as i"
+                    class="p-2">
+                    <mat-checkbox formControlName="selected">{{features[i].name}}</mat-checkbox>
+                  </div>
+                </div>
+              </div> -->
+              <div fxFlex="100" class="mt-3 p-2" fxLayoutAlign="space-between center">
+                <button mat-raised-button style="background: #ffe241;" matStepperPrevious fxLayout="row"
+                  fxLayoutAlign="center center" type="button">
+                  <mat-icon>navigate_before</mat-icon>
+                  <span class="mx-1 uppercase">Back</span>
+                </button>
+                <button mat-raised-button style="background: #ffe241;" matStepperNext fxLayout="row"
+                  fxLayoutAlign="center center" type="button" (click)="addDescription()">
+                  <span class="mx-1 uppercase">Next</span>
+                  <mat-icon>navigate_next</mat-icon>
+                </button>
+              </div>
+            </form>
+          </div>
+        </mat-step>
+        <mat-step [stepControl]="submitForm.get('propertyFeature')" label="Property Feature"
+          *ngIf="!displayAditionalFeaturPage">
+          <div class="step-content">
+            <form formGroupName="propertyFeature" fxLayout="row wrap">
+              <div fxFlex="100" class="p-3" fxLayoutAlign="center center">
+                <h1 class="fw-500 text-center">Property Feature</h1>
+              </div>
+              <div fxFlex="100" class="p-3" fxLayout="row wrap">
+                <!-- <div fxFlex="100" class="mb-2">
+                
+                  <p></p>
+                </div> -->
+                <!-- <div fxFlex="100" class="mb-2">
+                  <p class="uppercase m-2 fw-500">Features</p>
+                  <div formArrayName="features" fxLayout="row wrap">
+                    <div [formGroupName]="i"
+                      *ngFor="let control of submitForm.get('propertyFeature')['controls'].features['controls']; index as i"
+                      class="p-2">
+                      <mat-checkbox formControlName="selected">{{control.value.name}}</mat-checkbox>
+                    </div>
+                  </div>
+                </div> -->
+                <div fxFlex="100" class="mb-2" *ngIf="propertyNameData !== 'Warehouse/ Godown' ">
+                  <p class="uppercase m-2 fw-500">Additional Rooms</p>
+                  <div formArrayName="addFeature" fxLayout="row wrap">
+                    <div [formGroupName]="i"
+                      *ngFor="let control of submitForm.get('propertyFeature')['controls'].addFeature['controls']; index as i"
+                      class="p-2">
+                      <mat-checkbox formControlName="selected">{{control.value.name}}</mat-checkbox>
+                    </div>
+                  </div>
+                </div>
+                <div fxFlex="100" fxFlex.gt-xs="50" class="pl-2">
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Facing</mat-label>
+                    <mat-select formControlName="facing" placeholder="Facing">
+                      <mat-option *ngFor="let ele of facing" [value]="ele">
+                        {{ele}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div fxFlex="100" class="mb-2">
+                  <p class="uppercase m-2 fw-500">Overlooking</p>
+                  <div formArrayName="overlooking" fxLayout="row wrap">
+                    <div [formGroupName]="i"
+                      *ngFor="let control of submitForm.get('propertyFeature')['controls'].overlooking['controls']; index as i"
+                      class="p-2">
+                      <mat-checkbox formControlName="selected">{{control.value.name}}</mat-checkbox>
+                    </div>
+                  </div>
+                </div>
+                <div fxFlex="100" class="mb-2">
+                  <p class="uppercase m-2 fw-500">Car Parking</p>
+                  <div formArrayName="carParking" fxLayout="row wrap">
+                    <div [formGroupName]="i" fxFlex="50" fxLayout="row wrap"
+                      *ngFor="let control of submitForm.get('propertyFeature')['controls'].carParking['controls']; index as i"
+                      class="p-2">
+                      <div fxFlex="50" class="py-3">
+                        <mat-checkbox formControlName="selected">{{control.value.name}}</mat-checkbox>
+                      </div>
+                      <div fxFlex="50">
+                        <mat-form-field class="pr-5"
+                          *ngIf="control.value.selected && control.value.name !== 'None Of This'">
+                          <mat-label>per</mat-label>
+                          <mat-select formControlName="unit" placeholder="Select Major...">
+                            <mat-option [value]="'1 Unit'">1 Unit</mat-option>
+                            <mat-option [value]="'2 Unit'">2 Unit</mat-option>
+                            <mat-option [value]="'3 Unit'">3 Unit</mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+
+                <!-- <div fxFlex="100" class="px-2 mb-1">
+                  <p class=" fw-500">Multiple Units Available</p>
+                  <mat-radio-group fxLayout="row wrap" aria-labelledby="" class="example-radio-group"
+                    formControlName="mulUnitsAvail">
+                    <mat-radio-button class="example-radio-button pr-2" *ngFor="let avail of multipleUnits"
+                      [value]="avail">
+                      {{avail}}
+                    </mat-radio-button>
+                  </mat-radio-group>
+                </div> -->
+                <div fxFlex="100" class="pl-2 mt-1" fxLayout="row wrap">
+                  <div fxFlex="100">
+                    <p class="uppercase fw-500">Status of Water & Electricity</p>
+                  </div>
+                  <div fxFlex="100" fxFlex.gt-xs="50">
+                    <mat-form-field appearance="outline" fxFlex="100" class="w-100">
+                      <mat-label>Availability of Water</mat-label>
+                      <mat-select formControlName="availabilityWater" placeholder="Availability of Water">
+                        <mat-option *ngFor="let ele of waterAvailability" [value]="ele">
+                          {{ele}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="100" class="pl-2" fxFlex.gt-xs="50">
+                    <mat-form-field appearance="outline" fxFlex="100" class="w-100">
+                      <mat-label>Status of Electricity</mat-label>
+                      <mat-select formControlName="statusElectricity" placeholder="Status of Electricity">
+                        <mat-option *ngFor="let ele of electricityStatus" [value]="ele">
+                          {{ele}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <!-- <div fxFlex="100" class="px-2 my-2">
+                  <p class="uppercase fw-500">Society Status</p>
+                  <mat-label>Co-Operative Society</mat-label>
+                  <mat-radio-group fxLayout="row wrap" aria-labelledby="" class="example-radio-group"
+                    formControlName="coOperative">
+                    <mat-radio-button class="example-radio-button pr-2 mt-1" *ngFor="let avail of multipleUnits"
+                      [value]="avail">
+                      {{avail}}
+                    </mat-radio-button>
+                  </mat-radio-group>
+                </div> -->
+                <!-- <div fxFlex="100" class="px-2 my-2">
+                  <mat-label>Convenience</mat-label>
+                  <mat-radio-group fxLayout="row wrap" aria-labelledby="" class="example-radio-group"
+                    formControlName="Convenience">
+                    <mat-radio-button class="example-radio-button pr-2 mt-1" *ngFor="let avail of multipleUnits"
+                      [value]="avail">
+                      {{avail}}
+                    </mat-radio-button>
+                  </mat-radio-group>
+                </div> -->
+
+                <!-- <div fxFlex="100" class="px-2 mb-1">
+                  <p class="uppercase fw-500">Ownership & Approvals</p>
+                  <mat-label>Land Ownership Status</mat-label>
+                  <mat-radio-group fxLayout="row wrap" aria-labelledby="" class="example-radio-group"
+                    formControlName="ownershipStatus">
+                    <mat-radio-button class="example-radio-button pr-2" *ngFor="let ele of ownerShipStatus"
+                      [value]="ele">
+                      {{ele}}
+                    </mat-radio-button>
+                  </mat-radio-group>
+                </div>
+                <div fxFlex="100" class="px-2 my-2">
+                  <p class="uppercase fw-500">Plot Approval Authority</p>
+                  <mat-label>Is the plot approved by any authority?</mat-label>
+                  <mat-radio-group fxLayout="row wrap" aria-labelledby="" class="example-radio-group"
+                    formControlName="approvedByAuthority">
+                    <mat-radio-button class="example-radio-button pr-2 mt-1" *ngFor="let avail of multipleUnits"
+                      [value]="avail">
+                      {{avail}}
+                    </mat-radio-button>
+                  </mat-radio-group>
+                </div> -->
+                <div fxFlex="100" class="pl-2" fxFlex.gt-xs="50"
+                  *ngIf="submitForm.get('propertyFeature')['controls'].approvedByAuthority.value == 'Yes'">
+                  <mat-form-field appearance="outline" fxFlex="100" class="w-100">
+                    <mat-label>Approved by</mat-label>
+                    <mat-select formControlName="approvedBy" placeholder="Select Approved By">
+                      <mat-option *ngFor="let ele of approvedBy" [value]="ele">
+                        {{ele}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+
+                <!-- <div fxFlex="100" class="px-2 mt-2">
+                  <p class=" fw-500">Deals and Offers</p>
+                  <p>Hey! Your Agent Quality Score is 9.0, You can now add 'Deals & Offers' & enjoy more responses.</p>
+                  <mat-label>Add a Deal</mat-label>
+                  <mat-radio-group fxLayout="row wrap" aria-labelledby="" class="example-radio-group"
+                    formControlName="addDeal">
+                    <mat-radio-button class="example-radio-button pr-2" *ngFor="let avail of multipleUnits"
+                      [value]="avail">
+                      {{avail}}
+                    </mat-radio-button>
+                  </mat-radio-group>
+                </div> -->
+                <div fxFlex="100" class="mb-2 ">
+                  <p class="uppercase m-2 fw-500">Flooring and Amenities</p>
+
+                  <div class="m-2 py-3">
+                    <mat-label class="fw-500">Flooring</mat-label>
+                  </div>
+
+                  <div formArrayName="flooring" fxLayout="row wrap">
+                    <div [formGroupName]="i" fxFlex="100" fxFlex.gt-xs="50"
+                      *ngFor="let control of submitForm.get('propertyFeature')['controls'].flooring['controls']; index as i"
+                      class="p-2">
+                      <mat-checkbox formControlName="selected">{{control.value.name}}</mat-checkbox>
+                    </div>
+                  </div>
+                  <div class="m-2 py-3">
+                    <mat-label class="fw-500">Amenities</mat-label>
+                  </div>
+                  <div formArrayName="amenities" fxLayout="row wrap">
+                    <div [formGroupName]="i" fxFlex="100" fxFlex.gt-xs="50"
+                      *ngFor="let control of submitForm.get('propertyFeature')['controls'].amenities['controls']; index as i"
+                      class="p-2">
+                      <mat-checkbox formControlName="selected">{{control.value.name}}</mat-checkbox>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <p class="uppercase m-2 fw-500">Description & Landmarks</p>
+                </div>
+
+                <div fxFlex="100" class="px-2">
+                  <!-- <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Interesting Property details</mat-label>
+                    <textarea matInput placeholder="Description" formControlName="propertyDetails" rows="7">
+                    </textarea>
+                  </mat-form-field> -->
+                  <div class="editable list" contenteditable="true" formArrayName="propertyDetails">
+                    <ul
+                      *ngFor="let property of submitForm['controls'].propertyFeature['controls'].propertyDetails['controls']; index as i"
+                      [formGroupName]="i">
+                      <li>{{property.value}}</li>
+                    </ul>
+                  </div>
+                </div>
+                <div fxFlex="100" class="px-2">
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Landmarks & Neighbourhood</mat-label>
+                    <textarea matInput placeholder="Landmarks & Neighbourhood" formControlName="landmarkNeighbourhood"
+                      rows="7"></textarea>
+                  </mat-form-field>
+                </div>
+
+                <!-- <div fxLayout="row wrap" class="mt-3">
+                  <div fxFlex="100" fxFlex.gt-xs="50" class="p-2">
+                    <mat-checkbox formControlName="showOnBrokerConnect">Show on Broker Connect</mat-checkbox>
+                  </div>
+                  <div fxFlex="100" class="pl-5">
+                    <mat-label>This property will be visible on Broker Connect - India's Largest Broker Community
+                    </mat-label>
+                  </div>
+                </div> -->
+
+                <div fxFlex="100" class="py-2">
+                  <!-- <h3 class="m-2 fw-500">Add your Review</h3>
+                  <mat-label class="pl-2">Post a review about the project & share your knowledge</mat-label>
+                  <p class="m-2 fw-500"> Overall rating</p> -->
+                  <p class="m-2 fw-500"> Tell us more about this Project</p>
+                  <p class="m-2 ">Write brief description about this Project which helps other user in finding what they
+                    want.</p>
+
+                  <mat-form-field appearance="outline" class="w-100">
+                    <textarea matInput placeholder="" formControlName="teUsMore" rows="7"></textarea>
+                  </mat-form-field>
+
+
+                </div>
+              </div>
+              <div fxFlex="100" class="mt-3 p-2" fxLayoutAlign="space-between center">
+                <button mat-raised-button style="background: #ffe241;" matStepperPrevious fxLayout="row"
+                  fxLayoutAlign="center center" type="button">
+                  <mat-icon>navigate_before</mat-icon>
+                  <span class="mx-1 uppercase">Back</span>
+                </button>
+                <button mat-raised-button style="background: #ffe241;" matStepperNext fxLayout="row"
+                  fxLayoutAlign="center center" type="button">
+                  <span class="mx-1 uppercase">Next</span>
+                  <mat-icon>navigate_next</mat-icon>
+                </button>
+              </div>
+            </form>
+          </div>
+        </mat-step>
+        <mat-step [stepControl]="submitForm.get('document')" label="Media">
+          <div class="step-content">
+            <form formGroupName="document" fxLayout="row wrap">
+              <div fxFlex="100" class="p-3">
+                <h1 class="fw-500 text-center">Document</h1>
+              </div>
+              <div fxFlex="100" class="step-section px-2" *ngIf="isPoaFlag">
+                <input-file placeholder="Upload POA" formControlName="POA" fileLimit="1" [linkEnabled]="false">
+                </input-file>
+                <!--fileAccept="image/*"-->
+              </div>
+              <div fxFlex="100" class="step-section pb-2">
+                <p class="mb-0"><span class="uppercase fw-500">Cover Image</span></p>
+                <input-file formControlName="covered_image" fileLimit="1" (change)="selectCoverFile()"></input-file>
+              </div>
+              <div fxFlex="100" fxLayout="row wrap" *ngIf="covered_imageFile != null" class="step-section  pb-2">
+
+                <img src="{{covered_imageFile}}" alt="" width="150" height="150" class="my-4" />
+
+              </div>
+              <div fxFlex="100" class="step-section pb-2" style=" overflow: scroll;height: 210px;">
+                <p class="mb-0"><span class="uppercase fw-500">Gallary</span></p>
+                <input-file formControlName="gallery" fileLimit="20" (change)="selectFile()"></input-file>
+              </div>
+              <!-- <img *ngIf="imageFile !== null" src= alt="" width="150" height="150"/> -->
+              <div fxFlex="100" fxLayout="row wrap" *ngIf="imageFile.length !== 0" class="step-section  pb-2"
+                style=" overflow: scroll;height: 210px;">
+                <div fxFlex="25" *ngFor="let image of imageFile">
+                  <img src="{{image}}" alt="" width="150" height="150" class="my-4" />
+                </div>
+              </div>
+
+              <div fxFlex="100" class="step-section pb-2">
+                <p class="mb-0"><span class="uppercase fw-500">List of document </span></p>
+                <!--<span class="text-muted mx-3">(max 8 images)</span>-->
+                <input-file formControlName="listOfDocument" fileLimit="8" (change)="selectDoc()"></input-file>
+
+              </div>
+              <div fxFlex="100" class="step-section pb-2">
+                <p class="mb-0"><span class="uppercase fw-500">Index 2</span></p>
+                <input-file formControlName="index2" fileLimit="8"></input-file>
+              </div>
+
+              <div fxFlex="100" class="step-section pb-2">
+                <p class="mb-0"><span class="uppercase fw-500">Society Registration Certificate</span></p>
+                <input-file formControlName="societyRegCert" fileLimit="8"></input-file>
+              </div>
+              <div fxFlex="100" class="step-section pb-2">
+                <p class="mb-0"><span class="uppercase fw-500">Bank Documents</span></p>
+                <input-file formControlName="bank" fileLimit="8"></input-file>
+              </div>
+              <div fxFlex="100" class="step-section pb-2">
+                <p class="mb-0"><span class="uppercase fw-500">Completion certificate</span></p>
+                <input-file formControlName="completionCertificate" fileLimit="8"></input-file>
+              </div>
+
+              <div fxFlex="100" class="mt-3 p-2" fxLayoutAlign="space-between center">
+                <button mat-raised-button style="background: #ffe241;" matStepperPrevious fxLayout="row"
+                  fxLayoutAlign="center center" type="button">
+                  <mat-icon>navigate_before</mat-icon>
+                  <span class="mx-1 uppercase">Back</span>
+                </button>
+                <button mat-raised-button style="background: #ffe241;" matStepperNext fxLayout="row"
+                  fxLayoutAlign="center center" (click)="formSubmit()" type="button">
+                  <span class="mx-1 uppercase">Next</span>
+                  <mat-icon>navigate_next</mat-icon>
+                </button>
+              </div>
+            </form>
+          </div>
+        </mat-step>
+        <mat-step label="Confirmation">
+          <div class="step-content">
+            <div fxLayout="column" fxLayoutAlign="center center" class="pt-5 text-center">
+              <button mat-fab style="background: #ffe241;">
+                <mat-icon>check</mat-icon>
+              </button>
+              <h2 class="mt-3 uppercase">Congratulation!</h2>
+              <h2 class="text-muted my-3">Your property has been submitted
+              </h2>
+              <!-- <span
+                class="primary-color">"{{submitForm.get('basic')['controls'].title.value}}"</span>-->
+              <p>YOU CAN HAVE RESULTS OR EXCUSES.</p>
+              <P>NOT BOTH</P>
+            </div>
+            <!-- <div fxLayout="row" fxLayoutAlign="center center" class="pt-3">
+              <button mat-raised-button color="primary" (click)="reset()" type="button">Return to Owner</button>
+            </div> -->
+            <div fxLayout="row" fxLayoutAlign="center center" class="pt-3">
+              <button mat-raised-button style="background: #ffe241;" [routerLink]="['/adminProperties']"
+                (click)="reset()" type="button">Return To Properties</button>
+            </div>
+          </div>
+        </mat-step>
+      </mat-horizontal-stepper>
+    </mat-card>
+  </div>
+</div>

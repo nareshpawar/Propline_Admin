@@ -42,26 +42,25 @@
 
                         </mat-form-field>
                     </div>
-                    <div fxFlex="50" class="px-2">
+                    <div fxFlex="100" class="px-2">
                         <mat-form-field appearance="outline" class="w-100">
                             <mat-label>Email</mat-label>
                             <input matInput  placeholder="Email" formControlName="user_email" >
                             <mat-error *ngIf="userForm.controls.user_email.errors?.required">Email is Required</mat-error>
                         </mat-form-field>
                     </div>
-                    <div fxFlex="50" class="px-2">
+                    <!-- <div fxFlex="50" class="px-2">
                         <mat-form-field appearance="outline" class="w-100">
                             <mat-label>Mobile Number</mat-label>
                             <input matInput  placeholder="Mobile Number" formControlName="user_mobile" >
                             <mat-error *ngIf="userForm.controls.user_mobile.errors?.required">Mobile is Required</mat-error>
                         
                         </mat-form-field>
-                    </div>
+                    </div> -->
                     <div fxFlex="100" class="px-2">
                         <mat-form-field appearance="outline" class="w-100">
                             <mat-label>Address</mat-label>
                             <input matInput  placeholder="Address" formControlName="user_address" >
-                            
                             <mat-error *ngIf="userForm.controls.user_address.errors?.required">User Address is Required</mat-error>
                         </mat-form-field>
                     </div>
@@ -69,7 +68,7 @@
                     <div fxFlex="100" class="px-2">
                         <mat-form-field appearance="outline" class="w-100">
                             <mat-label>Role</mat-label>
-                            <mat-select placeholder="Select User Role..." formControlName="role">
+                            <mat-select placeholder="Select User Role..." formControlName="role" (selectionChange)="selectChangeFun($event)">
                                 <!--(selectionChange)=""-->
                                 <mat-option *ngFor="let role of userRoleData" [value]="role.role">
                                     {{role.role}}
@@ -94,6 +93,11 @@
                                     style="background: #ffe241;" (click)="submitUserData()">
                                     <span class="mat-button-wrapper">submit</span>
                           </button>
+                        <button mat-raised-button="" style="background: #ffe241;"
+                            class="mat-focus-indicator uppercase mx-1 mat-raised-button mat-button-base" ng-reflect-color="aceent"
+                            (click)="userForm.reset()">
+                            <span class="mat-button-wrapper">Cancel</span>
+                        </button>
                     </div>
                 </div>
                 <div fxFlex="100" class="px-2">

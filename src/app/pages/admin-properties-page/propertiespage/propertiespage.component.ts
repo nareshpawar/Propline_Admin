@@ -146,8 +146,6 @@ dataSource: MatTableDataSource<UserData>;
     this.pagination = new Pagination(1, this.count, null, null, this.pagination.total, this.pagination.totalPages);
   }
   public searchChanged(event){   
-    // console.log(event);
-     
     event.valueChanges.subscribe(() => {
       this.resetLoadMore();
       this.searchFields = event.value;
@@ -167,8 +165,6 @@ dataSource: MatTableDataSource<UserData>;
 
   public getProperties() {
     // this.appService.getProperties().subscribe(data => { 
-    //   console.log(data);
-
     //   let result = this.filterData(data); 
     //   if(result.data.length == 0){
     //     this.properties.length = 0;
@@ -181,7 +177,6 @@ dataSource: MatTableDataSource<UserData>;
     //   this.message = null;
     // })
     this._pagesServices.getProperty().subscribe(res => {
-      // console.log(res.data);
       let ele = res.data
       let data = res.data.map((ele,i) => {
         return {

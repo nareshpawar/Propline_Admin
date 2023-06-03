@@ -1,7 +1,6 @@
 <div class="p-3">
     <div class="theme-container">
         <mat-card ngClass.lt-lg="p-0">
-            <!--[formGroup]="cityForm"-->
             <form action="" [formGroup]="ownerForm">
                 <mat-card-title class="fw-500 text-center">
                     Owner
@@ -33,8 +32,8 @@
                         </div>
                         <div fxFlex="50" class="px-2">
                             <mat-form-field appearance="outline" class="w-100">
-                                <mat-label>Mobile</mat-label>
-                                <input matInput placeholder="Mobile" formControlName="contact_number">
+                                <mat-label>Mobile (+91-987-654-3210)</mat-label>
+                                <input matInput placeholder="Ex. +91-987-654-3210" formControlName="contact_number">
                             </mat-form-field>
 
                             <!-- <mat-form-field class="example-full-width w-100" appearance="outline">
@@ -97,9 +96,28 @@
                         <div fxFlex="100" class="pb-2 center" fxlayoutalign="center center">
                             <div class="px-2">
                                 <input-file type="file" placeholder="Documents" fileLimit="10"
-                                    formControlName="doc" (change)="selectFile()">
+                                    formControlName="extra_docs" (change)="getDocument()">
                                 </input-file>
                             </div>
+                        </div>
+                        <div *ngIf="extraDocs.length !== 0" fxFlex="100" class="pb-2 center" fxlayoutalign="center center">
+                            <h5>List of uploaded extra documents</h5>
+                            <mat-list *ngFor="let doc of extraDocs;let i = index;">  
+                                <mat-list-item class="shortName" fxLayout="row wrap">
+                                    <div fxFlex="100" class="pb-2 center" fxlayoutalign="left center">
+                                        <a mat-button [href]="doc.path" target="_blank">
+                                            {{i+1}}. {{doc.title}}
+                                        </a>
+                                    </div>
+                                    <div fxFlex="100" class="pb-2 center" fxlayoutalign="center center">
+
+                                        <button mat-icon-button color="warn" class="mx-2">
+                                            <i class="material-icons">delete</i>
+                                        </button>
+                                    </div>
+                                
+                                </mat-list-item>
+                            </mat-list>
                         </div>
                         <div fxFlex="100" class="mb-2">
                             <div fxLayout="row wrap">
@@ -140,8 +158,8 @@
                                     </div>
                                     <div fxFlex="50" class="px-2">
                                         <mat-form-field appearance="outline" class="w-100">
-                                            <mat-label>Mobile</mat-label>
-                                            <input matInput placeholder="Mobile" formControlName="contact_number">
+                                            <mat-label>Mobile(+91-987-654-3210)</mat-label>
+                                            <input matInput placeholder="Ex. +91-987-654-3210" formControlName="contact_number">
                                         </mat-form-field>
                                     </div>
                                     <div fxFlex="100" class="px-2">
@@ -227,8 +245,8 @@
                                         </div>
                                         <div fxFlex="50" class="px-2">
                                             <mat-form-field appearance="outline" class="w-100">
-                                                <mat-label>Mobile</mat-label>
-                                                <input matInput placeholder="Mobile" formControlName="contact_number">
+                                                <mat-label>Mobile(+91-987-654-3210)</mat-label>
+                                                <input matInput placeholder="Ex. +91-987-654-3210" formControlName="contact_number">
                                             </mat-form-field>
                                         </div>
                                         <div fxFlex="100" class="px-2">
@@ -363,6 +381,11 @@
                                 style="background: #ffe241;" (click)="submitUserData()">
                                 <span class="mat-button-wrapper">submit</span>
                             </button>
+                            <button mat-raised-button="" style="background: #ffe241;"
+                                class="mat-focus-indicator uppercase mx-1 mat-raised-button mat-button-base" ng-reflect-color="aceent"
+                                (click)="clearForm()">
+                                <span class="mat-button-wrapper">Cancel</span>
+                            </button>
                         </div>
                     </div>
                     <div fxFlex="100" class="px-2">
@@ -370,7 +393,7 @@
                             <mat-label>Filter</mat-label>
                             <input matInput (keyup)="applyFilter($event)" placeholder="Ex. name" #input>
                         </mat-form-field>
-                        <div class="example-container mat-elevation-z8" tabindex="0">
+                        <div class="mat-elevation-z8">
                             <table mat-table [dataSource]="dataSource" matSort
                                 (matSortChange)="announceSortChange($event)">
 

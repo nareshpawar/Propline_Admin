@@ -77,7 +77,6 @@ export class AgentsComponent implements OnInit {
   }
   getAgentsDetails(){
     this._masterPagesService.getAgentsDetails().subscribe(res=>{
-      // console.log(res.data);
       this.ELEMENT_DATA = res.data.map((ele,index) => {
         return {
           "agent_desc": ele.agent_desc,

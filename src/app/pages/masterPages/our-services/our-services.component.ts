@@ -76,7 +76,6 @@ export class OurServicesComponent implements OnInit {
   }
   getServicesDetails(){
     this._masterPageService.getServicesDetails().subscribe(res=>{
-      // console.log(res);
       this.ELEMENT_DATA = res.data.map((PD,index) => {
         return {
           position: index+1,
@@ -128,7 +127,6 @@ export class OurServicesComponent implements OnInit {
     this._hederShowService.submitButtonFlag.next(true);
   }
   editData(element){
-    // console.log(element);
     this.serviceForm.patchValue(element);
   }
 

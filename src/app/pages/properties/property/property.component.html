@@ -227,10 +227,19 @@
                             <span>Property Avaialable From:</span>
                             <span>{{property.extra_details.availableFrom | date: 'dd/MM/yyyy'}}</span>
                         </div>
+                        <div fxFlex="100" fxFlex.gt-xs="50" fxLayout="row" class="item" *ngIf="property.extra_details.availFromBtn !== null && property.propertyType === 'Residential' ">
+                            <span>Property Avaialable :</span>
+                            <span>{{property.extra_details.availFromBtn}}</span>
+                        </div>
                         <div fxFlex="100" fxFlex.gt-xs="50" fxLayout="row" class="item" *ngIf="property.commercial_details.availableFrom !== null && property.propertyType === 'Commercial' ">
                             <span>Property Avaialable From:</span>
                             <span>{{property.commercial_details.availableFrom | date: 'dd/MM/yyyy'}}</span>
                         </div>
+                        <div fxFlex="100" fxFlex.gt-xs="50" fxLayout="row" class="item" *ngIf="property.commercial_details.availFromBtn !== null && property.propertyType === 'Commercial' ">
+                            <span>Property Avaialable :</span>
+                            <span>{{property.commercial_details.availFromBtn}}</span>
+                        </div>
+
                     </div>
                 </mat-card>
                 <mat-card *ngIf="property" class="mt-3">
@@ -351,7 +360,7 @@
                     <div fxLayout="row" fxLayoutAlign="end center" *ngFor = "let card of cardDetails" >
                         <mat-slide-toggle  labelPosition="before" 
                             *ngIf = "card?.card_number == 6" 
-                            [checked]="card?.card?.flag" (change)="putCardDetails(card?.card?.card_id,$event)"></mat-slide-toggle><!-- (change)="settings.rtl = !settings.rtl"-->
+                            [checked]="card?.card?.flag" (change)="putCardDetails(card?.card?.card_id,$event)"></mat-slide-toggle>
                     </div>
                     <mat-card-content>
 
@@ -364,22 +373,30 @@
                         </div>
                         <div fxLayout="row wrap" class="details mt-2">
                             <div fxFlex="100" fxFlex.gt-xs="25" fxLayout="row" class="item" 
-                            *ngIf="property?.property_features.furnishedAc !== ''">
+                            *ngIf="property?.property_features.furnishedAc !== '' &&
+                                   property?.property_features.furnishedAc !== 0  &&
+                                   property?.property_features.furnishedAc !== '0' ">
                                 <span >Ac :</span>
                                 <span class="mx-1">{{property?.property_features.furnishedAc }} / Unit</span>
                             </div>
                             <div fxFlex="100" fxFlex.gt-xs="25" fxLayout="row" class="item"
-                            *ngIf="property?.property_features.furnishedBed !== ''">
+                            *ngIf="property?.property_features.furnishedBed !== '' && 
+                                   property?.property_features.furnishedBed !== 0  && 
+                                   property?.property_features.furnishedBed !== '0'">
                                 <span>Bed :</span>
                                 <span class="mx-1">{{property?.property_features.furnishedBed }} / Unit</span>
                             </div>
                             <div fxFlex="100" fxFlex.gt-xs="25" fxLayout="row" class="item"
-                            *ngIf="property?.property_features.furnishedTv !== ''">
+                            *ngIf="property?.property_features.furnishedTv !== ''&& 
+                                   property?.property_features.furnishedTv !== 0  && 
+                                   property?.property_features.furnishedTv !== '0'">
                                 <span>TV :</span>
                                 <span class="mx-1">{{property?.property_features.furnishedTv }} / Unit</span>
                             </div>
                             <div fxFlex="100" fxFlex.gt-xs="25" fxLayout="row" class="item"
-                            *ngIf="property?.property_features.furnishedWardrobe !== ''">
+                            *ngIf="property?.property_features.furnishedWardrobe !== '' && 
+                                   property?.property_features.furnishedWardrobe !== '0' && 
+                                   property?.property_features.furnishedWardrobe !== 0">
                                 <span>Wardrobe :</span>
                                 <span class="mx-1">{{property?.property_features.furnishedWardrobe }} / Unit</span>
                             </div>

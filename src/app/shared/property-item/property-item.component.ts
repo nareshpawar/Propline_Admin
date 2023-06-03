@@ -35,13 +35,11 @@ export class PropertyItemComponent implements OnInit {
   ngAfterViewInit(){
     this.initCarousel();
     // this.appService.getAddress(this.property.location.lat, this.property.location.lng).subscribe(data=>{
-    //   console.log(data['results'][0]['formatted_address']);
     //   this.address = data['results'][0]['formatted_address'];
     // })
   } 
  
   ngOnChanges(changes: {[propKey: string]: SimpleChange}){  
-    // console.log(this.property);
     
     if(changes.viewColChanged){
       this.getColumnCount(changes.viewColChanged.currentValue);

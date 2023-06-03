@@ -69,8 +69,6 @@ export class SocietyComponent implements OnInit {
       .pipe(takeUntil(this.notifier))
       .subscribe((res: any) => {
         this.cities = res.data;
-      // console.log(this.cities);
-
       })
   }
   selectCity(city){
@@ -127,9 +125,7 @@ export class SocietyComponent implements OnInit {
 
   getSocietyData() {
     this._pageService.getSocietyMaster().pipe(takeUntil(this.notifier)).subscribe((res: any) => {
-      // this.societyData = res.Data;
-      // console.log(res.data);
-      
+    
       this.societyMaster = res.data.map((ele, index) => {
         return {
           position: index + 1,
@@ -146,6 +142,8 @@ export class SocietyComponent implements OnInit {
         };
       })
       this.dataSource = new MatTableDataSource<PeriodicElement>(this.societyMaster);
+      this.dataSource.sort = this.sort;
+      this.dataSource.paginator = this.paginator;
     })
   }
 
@@ -215,8 +213,6 @@ export class SocietyComponent implements OnInit {
     this.societyForm.patchValue(rowData);
   }
   deleteData(element){
-    // console.log(element);
-    
     let id = element.society_id;
     this._masterPagesService.deleteScocietyController(id).subscribe(res=>{
       this.getSocietyData();

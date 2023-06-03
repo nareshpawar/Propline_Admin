@@ -7,7 +7,7 @@
             <h1 class="uppercase">Sign In</h1>  
             <!-- <a mat-button routerLink="/register" color="accent" class="w-100">Don't have an account? Sign up now!</a>     -->
           </div>
-          <form [formGroup]="loginForm" (ngSubmit)="onLoginFormSubmit(loginForm.value)">
+          <form [formGroup]="loginForm" >
               <mat-form-field appearance="outline" class="w-100 mt-2">
                   <mat-icon matPrefix class="mr-1 text-muted">person</mat-icon>
                   <mat-label>Username</mat-label>
@@ -26,8 +26,9 @@
                   </button>
               </mat-form-field> 
               <!-- <mat-slide-toggle formControlName="rememberMe" class="my-2">Keep me signed in</mat-slide-toggle> -->
-              <div class="text-center mt-2"> 
-                  <button mat-raised-button style="background:#ffe241;" class="uppercase" type="submit">
+              <div class="text-center mt-2" *ngIf="!hideOtp">  
+                  <button mat-raised-button style="background:#ffe241;" class="uppercase" type="submit"
+                  (click)="onLoginFormSubmit(loginForm.value)" >
                       Sign to My Account
                   </button>
               </div>     
@@ -36,8 +37,8 @@
                   <h3 class="text-muted ws-nowrap fw-500 p-2">or Sign in with one click</h3>                       
                   <div class="divider w-100"></div>
               </div>   -->
-              <!-- <div class="text-center py-3">
-                  <button mat-mini-fab color="primary" matTooltip="Facebook" type="button">
+              <div class="text-center py-3" *ngIf="hideOtp">
+                  <!-- <button mat-mini-fab color="primary" matTooltip="Facebook" type="button">
                     <svg class="mat-icon" viewBox="0 0 24 24">
                         <path d="M17,2V2H17V6H15C14.31,6 14,6.81 14,7.5V10H14L17,10V14H14V22H10V14H7V10H10V6A4,4 0 0,1 14,2H17Z" />
                     </svg>
@@ -51,8 +52,17 @@
                     <svg class="mat-icon" viewBox="0 0 24 24">
                         <path d="M21.35,11.1H12.18V13.83H18.69C18.36,17.64 15.19,19.27 12.19,19.27C8.36,19.27 5,16.25 5,12C5,7.9 8.2,4.73 12.2,4.73C15.29,4.73 17.1,6.7 17.1,6.7L19,4.72C19,4.72 16.56,2 12.1,2C6.42,2 2.03,6.8 2.03,12C2.03,17.05 6.16,22 12.25,22C17.6,22 21.5,18.33 21.5,12.91C21.5,11.76 21.35,11.1 21.35,11.1V11.1Z" />
                     </svg>
-                  </button> 
-              </div>      -->
+                  </button>  -->
+                  <mat-form-field appearance="outline" class="w-100 mt-1" >
+                    <mat-icon matPrefix class="mr-1 text-muted">lock</mat-icon>
+                    <mat-label>Enter the OTP</mat-label>
+                    <input matInput placeholder="OTP" #otpValue type='number'>
+                  </mat-form-field>
+                  <button mat-button style="background:#ffe241;" class="uppercase"  
+                   (click)="sendOTP(otpValue)">
+                      Verify
+                  </button>
+                </div>
           </form>
           <!-- <mat-card-actions fxLayoutAlign="end center">
             <button mat-button>

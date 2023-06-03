@@ -73,7 +73,6 @@ export class TestimonialComponent implements OnInit {
   }
   getTestimonialDetails(){
     this._masterPagesService.getTestimonialDetails().subscribe(res=>{
-      // console.log(res);
       this.ELEMENT_DATA = res.data.map((PD,index) => {
         return {
           position: index+1,
@@ -92,8 +91,6 @@ export class TestimonialComponent implements OnInit {
   }
   
   submitTestimonial(){
-    // console.log(this.testimonialForm.value.profile);
-    
     let imageFile = this.testimonialForm.controls.profile.value !== null && this.testimonialForm.value.profile.length !== 0 ? this.testimonialForm.controls.profile.value[0].file : null ;
     let testimonial = this.testimonialForm.value;
     delete testimonial.profile;

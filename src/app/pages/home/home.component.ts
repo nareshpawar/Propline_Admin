@@ -37,7 +37,6 @@ export class HomeComponent implements OnInit {
     this.watcher = mediaObserver.asObservable()
     .pipe(filter((changes: MediaChange[]) => changes.length > 0), map((changes: MediaChange[]) => changes[0]))
     .subscribe((change: MediaChange) => {
-      // console.log(change)
       if(change.mqAlias == 'xs') {
         this.viewCol = 100;
       }
@@ -86,15 +85,12 @@ export class HomeComponent implements OnInit {
   }
 
   public getProperties(){  
-    //console.log('get properties by : ', this.searchFields);  
     this.appService.getProperties().subscribe(data => {      
       if(this.properties && this.properties.length > 0){  
         this.settings.loadMore.page++;
         this.pagination.page = this.settings.loadMore.page; 
       }
       let result = this.filterData(data); 
-      // console.log(result);
-      
       if(result.data.length == 0){
         this.properties.length = 0;
         this.pagination = new Pagination(1, this.count, null, 2, 0, 0);  

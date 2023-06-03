@@ -52,9 +52,7 @@ export class BannerComponent implements OnInit,OnDestroy {
 
   getAllImages(){
     this._masterPagesService.getBannerImages().subscribe(res=>{
-      // console.log(res);
       let ImageData = res.data.map((PD,index) => {
-        // console.log(res.data);
         return {
           position : index+1,
           id:PD.id,
@@ -87,7 +85,6 @@ export class BannerComponent implements OnInit,OnDestroy {
     if(this.bannerForm.valid){
       this._masterPagesService.uploadImage(formData).subscribe(res=>{
         this.toastr.success("","Data Save Successfully")
-        // console.log(res);
         this.bannerForm.reset();
         this.getAllImages();
       }, error => {

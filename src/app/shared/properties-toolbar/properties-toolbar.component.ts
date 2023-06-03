@@ -23,14 +23,12 @@ export class PropertiesToolbarComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    // console.log(this.isHomePage);
     
     this.count = (this.isHomePage) ? this.counts[0] : this.counts[1];
     this.sort = this.sortings[0];
   }
 
   ngOnChanges(){
-    // console.log(' show toggle - ' ,this.showSidenavToggle)
   }
 
   public changeCount(count){

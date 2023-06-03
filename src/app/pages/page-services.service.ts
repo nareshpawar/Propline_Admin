@@ -109,6 +109,16 @@ export class PageServicesService {
     
   }
 
+  sendOtp(form){
+
+    return this.httpClient.post<any>(this.url + `/api/users/loginWithOtp?username=`+ form.username +`&password=`+ form.password ,{});
+  }
+
+  verifyOtp(form){
+    return this.httpClient.post<any>(this.url + `/api/users/verify-otp?username=`+ form.username +`&otp=`+ form.otp ,{});
+
+  }
+
   isPropertyActive(id,flag,reason){
     return this.httpClient.put<any>(this.url + `/api/property/updateAction?property_id=` + id + `&isPropertyActive=` + flag + `&reason=`+ reason,{});
   }

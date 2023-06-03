@@ -72,7 +72,6 @@ export class StreetComponent implements OnInit,OnDestroy {
         .getNeighborhoodController()
         .pipe(takeUntil(this.notifier))
         .subscribe((res : any) => {
-          // console.log(res.data);
           (res.data)
         this.neighborhoods = res.data.map(neighbor => {
           return {
@@ -87,7 +86,6 @@ export class StreetComponent implements OnInit,OnDestroy {
   getStreetController(){
     this._masterPagesService.getStreetController().pipe(takeUntil(this.notifier))
     .subscribe((res : any) => {
-      // console.log(res.data);
       
       this.streetData= res.data.map((PD,index) => {
         return {
@@ -125,7 +123,6 @@ export class StreetComponent implements OnInit,OnDestroy {
     if(this.streetForm.valid){
       this.postStreetController(Id,neighborhoodObj);
     }else if(this.streetForm.invalid){
-      // console.log(this.streetForm.controls);
       
       Object.keys(this.streetForm.controls).forEach(key =>{
         this.streetForm.controls[key].markAllAsTouched();

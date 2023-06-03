@@ -64,8 +64,6 @@ export class PropertyComponent implements OnInit {
   }
   getPropertyTypeController(){
     this._masterPagesService.getPropertyTypeController().subscribe(res=>{
-      // console.log(res.data);
-      
       this.propertyData = res.data.map((PD,index) => {
         return {
           position: index+1,
@@ -150,7 +148,8 @@ export class PropertyComponent implements OnInit {
   }  
 
   editData(element){
-  this.propertyForm.patchValue(element)
+  this.propertyForm.controls.propertyFor.setValue(element.propertytype);
+  this.propertyForm.controls.propertyType.setValue(element.discription);
   }
 
   deleteData(element){
@@ -159,6 +158,11 @@ export class PropertyComponent implements OnInit {
       this.getPropertyTypeController();
     })
     
+  }
+
+  clearForm(){
+    this.propertyForm.controls.propertyFor.setValue('Residential');
+    this.propertyForm.controls.propertyType.setValue('');
   }
 
 }

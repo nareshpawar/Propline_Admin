@@ -72,11 +72,14 @@
                     ng-reflect-fx-layout-align="center center"
                     style="flex-direction: row; box-sizing: border-box; display: flex; place-content: center; align-items: center;">
                     <button mat-raised-button="" style="background:#ffe241;"
-                        class="mat-focus-indicator uppercase mx-1 mat-raised-button mat-button-base "
-                        
+                        class="mat-focus-indicator uppercase mx-1 mat-raised-button mat-button-base"
                         (click)="submitAgentForm()">
                         <span class="mat-button-wrapper">submit</span>
-
+                    </button>
+                    <button mat-raised-button="" style="background: #ffe241;"
+                            class="mat-focus-indicator uppercase mx-1 mat-raised-button mat-button-base" ng-reflect-color="aceent"
+                            (click)="agentForm.reset()" (click)="imageFile = null">
+                            <span class="mat-button-wrapper">Cancel</span>
                     </button>
                 </div>
             </div>    

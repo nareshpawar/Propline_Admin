@@ -172,13 +172,6 @@ export class SubmitPropertyComponent implements OnInit, OnDestroy {
     "Beauty Spa and Saloon",
     "Photo Studio and Related",
     "Other"]
-  // businessSince = ["1910", "1911", "1912", "1913", "1914", "1915", "1916", "1917", "1918", "1919", "1920", "1921", "1922", "1923", "1924", "1925",
-  //   "1926", "1927", "1928", "1929", "1930", "1931", "1932", "1933", "1934", "1935", "1936", "1937", "1938", "1939", "1940", "1941",
-  //   "1942", "1943", "1944", "1945", "1946", "1947", "1948", "1949", "1950", "1951", "1952", "1953", "1954", "1955", "1956", "1957",
-  //   "1958", "1959", "1960", "1961", "1962", "1963", "1964", "1965", "1966", "1967", "1968", "1969", "1970", "1971", "1972", "1973",
-  //   "1974", "1975", "1976", "1977", "1978", "1979", "1980", "1981", "1982", "1983", "1984", "1985", "1986", "1987", "1988", "1989",
-  //   "1990", "1991", "1992", "1993", "1994", "1995", "1996", "1997", "1998", "1999", "2000", "2001", "2002", "2003", "2004", "2005",
-  //   "2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019",];
   businessSince = [];
   passasionStatusCom = ["Under Construction", "Ready to Move"]
   todaysDate = new Date();
@@ -195,6 +188,7 @@ export class SubmitPropertyComponent implements OnInit, OnDestroy {
   propertyTypesData: any;
   propertyNameData: any;
   lokInPeriods = ["6 Months", "12 Months", "24 Months", "36 Months"]
+  
   constructor(public appService: AppService,
     private fb: FormBuilder,
     private mapsAPILoader: MapsAPILoader,
@@ -203,7 +197,8 @@ export class SubmitPropertyComponent implements OnInit, OnDestroy {
     private _pageService: PageServicesService,
     private activatedRoute: ActivatedRoute,
     private toastr: ToastrService) { }
-  ngOnInit() {
+  
+    ngOnInit() {
     this.bussinessYearCalculate(2050);
     this.getPropertyTypeController();
     this.sub = this.activatedRoute.params.subscribe(params => {
@@ -215,11 +210,7 @@ export class SubmitPropertyComponent implements OnInit, OnDestroy {
     this._hederShowService.submitButtonFlag.next(false);
     this.features = this.appService.getFeatures();
     this.priceIncludes = this.appService.getPriceIncludes();
-    // this.propertyTypes = this.appService.getPropertyTypes();
     this.propertyStatuses = this.appService.getPropertyStatuses();
-    // this.cities = this.appService.getCities();
-    // this.neighborhoods = this.appService.getNeighborhoods();
-    // this.streets = this.appService.getStreets();
     this.transactionType = this.appService.getTransactionType();
     this.possessionStatus = this.appService.getPossessionStatus();
     this.furnishedItemsList = this.appService.getFurnishedItemList();
@@ -234,19 +225,15 @@ export class SubmitPropertyComponent implements OnInit, OnDestroy {
     this.commercialAmentiaies = this.appService.getCommercialAmenities();
     this.submitForm = this.fb.group({
       propertyId: '',
-      // owner: this.fb.group({
-      //   owners: this.fb.array([this.createOwner()])
-      // }),
       address: this.fb.group({
         projectName: ['', Validators.required],
-        location: '',  //  Validators.required
-        city: '',       //  Validators.required
+        location: '',  
+        city: '',       
         zipCode: '',
         neighborhood: '',
         street: '',
         propertyType: [null, Validators.required],
         propertyStatus: [null, Validators.required],
-        // gallery: null,
         reraId: null
       }),
       document: this.fb.group({
@@ -331,51 +318,46 @@ export class SubmitPropertyComponent implements OnInit, OnDestroy {
         stampIncluded: '',
         regCharge: '',
         finalPrice: ['', Validators.required],
-        // kitchen: false,
       }),
       propertyFeature: this.fb.group({
         addFeature: this.addFeatureItems(),
         overlooking: this.overlookingItems(),
         carParking: this.carParkingItems(),
         facing: '',
-        // mulUnitsAvail: '',
         statusElectricity: '',
         availabilityWater: '',
         ownershipStatus: '',
         approvedByAuthority: '',
         approvedBy: '',
-        // addDeal: '',
         flooring: this.flooringItems(),
         amenities: this.AmenitiesItems(),
         landmarkNeighbourhood: '',
-        // showOnBrokerConnect: false,
         teUsMore: '',
-        // features: this.buildFeatures(),
         coOperative: '',
         Convenience: '',
         propertyDetails: this.fb.array([]),
       }),
       commercial: this.fb.group({
         shopNo: null,
-        landmark: "Metro/Railway", //              ["Metro/Railway",Validators.required],
+        landmark: "Metro/Railway",
         transactionType: this.buildTransactionType(),
         possessionStatus: null,
         availableFrom: null,
         ageOfProperty: '',
         currentLeast: '',
         priceIncludes: this.buildPriceIncludes(),
-        maintenenceCharges: null, //   [null,Validators.required],
-        maintenenceChargesPerYear: null, //[null,Validators.required],
-        brokerage: null, // [null,Validators.required],
+        maintenenceCharges: null,
+        maintenenceChargesPerYear: null,
+        brokerage: null,
         metroRailway: null,
         busStops: null,
         airport: null,
         shoppingMall: null,
         officeComplex: null,
         distanceFromProperty: null,
-        floorNo: null,//[null,Validators.required],
-        totalFoors: null,//[null,Validators.required],
-        furnishedStatus: null,//[null,Validators.required],
+        floorNo: null,
+        totalFoors: null,
+        furnishedStatus: null,
         bedrooms: null,
         floorAllowCunstruction: null,
         noOfSides: null,
@@ -387,13 +369,10 @@ export class SubmitPropertyComponent implements OnInit, OnDestroy {
         mainRoadFacing: null,
         personalWash: null,
         Cafeteria: null,
-
-        coverdArea: null,//[null,Validators.required],
-        coveredMessure: null,//["Sq-ft",Validators.required],
-
-        plotArea: null,//[null,Validators.required],
-        plotMessure: null,//["Sq-ft",Validators.required],
-
+        coverdArea: null,
+        coveredMessure: null,
+        plotArea: null,
+        plotMessure: null,
         plotLength: null,
         plotBreadth: null,
 
@@ -553,29 +532,10 @@ export class SubmitPropertyComponent implements OnInit, OnDestroy {
     this.BalconiesNumber = [];
 
     this.isPoaFlag = false;
-    // const videos = <FormArray>this.submitForm.controls.media.get('videos');
-    // while (videos.length > 1) {
-    //   videos.removeAt(0)
-    // }
-    // const plans = <FormArray>this.submitForm.controls.media.get('plans');
-    // while (plans.length > 1) {
-    //   plans.removeAt(0)
-    // }
-    // const owner = <FormArray>this.submitForm.controls.owner.get('owners');
-    // while (owner.length > 1) {
-    //   owner.removeAt(0)
-    // }
-    // const additionalFeatures = <FormArray>this.submitForm.controls.media.get('additionalFeatures');
-    // while (additionalFeatures.length > 1) {
-    //   additionalFeatures.removeAt(0)
-    // }
     this.submitForm.reset({
       additional: {
         features: this.features
       },
-      // media: {
-      //   featured: false
-      // }
     });
   }
   // -------------------- API calls -------------------------
@@ -683,14 +643,10 @@ export class SubmitPropertyComponent implements OnInit, OnDestroy {
     this.projectName = this.submitForm["controls"].address['controls'].projectName;
   }
   public onSelectCity(Id) {
-    // this.selectedCity = true;
-    // this.submitForm.controls.address.get('neighborhood').setValue(null, { emitEvent: false });
-    // this.submitForm.controls.address.get('street').setValue(null, { emitEvent: false });
     this.neighborhoods = this.neighborhoods.filter(x => x.city_id === Id);
   }
   public onSelectNeighborhood(arr) {
     this.selectedNeighborhood = true;
-    // this.submitForm.controls.address.get('street').setValue(null, { emitEvent: false });
     this.streets = this.streets.filter(x => x.neighborhood_id === arr.neighborhood_id);
   }
   onSelectStreet(event) {
@@ -837,7 +793,6 @@ export class SubmitPropertyComponent implements OnInit, OnDestroy {
       this.submitForm.controls.commercial['controls'].bookingOrTokenAmount.updateValueAndValidity();
     }
     if (propertyType == "For Rent" && !this.displayAditionalFeaturPage) {
-      // this.availableFlag = false;
       this.ageFlag = true;
       this.submitForm.controls.address['controls'].reraId.disable();
       this.submitForm.controls.additional['controls'].stampDuty.clearValidators();
@@ -849,7 +804,6 @@ export class SubmitPropertyComponent implements OnInit, OnDestroy {
       this.submitForm.controls.additional['controls'].priceIncludes.clearValidators();
       this.submitForm.controls.additional['controls'].priceIncludes.updateValueAndValidity();
     } else if (propertyType == "For Sale" && !this.displayAditionalFeaturPage) {
-      // this.availableFlag = true;
       this.ageFlag = false;
       this.submitForm.controls.address['controls'].reraId.enable();
       this.submitForm.controls.additional['controls'].stampDuty.setValidators([Validators.required]);
@@ -864,8 +818,6 @@ export class SubmitPropertyComponent implements OnInit, OnDestroy {
 
   }
   availFromBtn(avail) {
-    // console.log(avail);
-
     if (avail == "Select Date") {
       this.availableFlag = true;
       this.submitForm.controls.additional['controls'].availableFrom.setValidators([Validators.required]);
@@ -1149,7 +1101,6 @@ export class SubmitPropertyComponent implements OnInit, OnDestroy {
     this.submitForm.controls.additional.get('bedroomSizes').setValue(this.setBedrromList());
   }
   public setBedrromList() {
-    // console.log(this.BedroomNumbers);
     if (this.BedroomNumbers !== null) {
       let arr = this.BedroomNumbers?.map(Trans => {
         return this.fb.group({
@@ -1750,7 +1701,6 @@ export class SubmitPropertyComponent implements OnInit, OnDestroy {
     this.imageFile = [];
   }
   selectDoc(){
-    console.log(this.submitForm.controls.document.get("listOfDocument").value);
   }
   selectCoverFile() {
     this.covered_imageFile = null;

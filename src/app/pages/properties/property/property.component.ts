@@ -104,11 +104,6 @@ export class PropertyComponent implements OnInit {
           this.dto = ele.owner.ownerDto,
           this.poaOwner = ele.owner.poa_owner_details
       })
-      // console.log(this.ownerDetails);
-      // console.log( this.dto);
-      // console.log( this.poaOwner);
-
-      
       this.tenentbyOwner = this.getTenentFromOwenrId(this.ownerDetails[0]?.owner?.owner_id);
       
     })
@@ -135,7 +130,6 @@ export class PropertyComponent implements OnInit {
   public getPropertyById(id) {
     this._pageServices.getPropertyById(id).subscribe(res => {
       let ele = res.data;
-      // console.log(ele);
       
       let propertyType;
       if(ele.propertyId){
@@ -510,9 +504,6 @@ export class PropertyComponent implements OnInit {
           "big": ele.covered_image.Big
         })
       }
-
-      // console.log(this.property);
-      
     })
     
   }
@@ -668,7 +659,6 @@ export class PropertyComponent implements OnInit {
     let flag = event.checked;
     this._pageServices.putCardDetails(cardId, flag).subscribe(res => {
     }, error => {
-      console.log(error);
     })
   }
 

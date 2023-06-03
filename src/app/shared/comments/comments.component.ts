@@ -57,7 +57,6 @@ export class CommentsComponent implements OnInit {
 
   public onCommentFormSubmit(values:any){
     if (this.commentForm.valid) { 
-      // console.log(values);
       if(values.rate){
         //property.ratingsCount++,
         //property.ratingsValue = property.ratingsValue + values.rate,

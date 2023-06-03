@@ -102,8 +102,6 @@ export class NeighborhoodComponent implements OnInit,OnDestroy {
   getNeighborhoodController(){
     this._masterPagesService.getNeighborhoodController().pipe(takeUntil(this.notifier))
     .subscribe((res : any) => {
-      // console.log(res);
-      
      this.neiborhoodData= res.data.map((PD,index) => {
       return {
         position: index+1,

@@ -27,6 +27,7 @@ export class UserComponent implements OnInit {
   notifier = new Subject();
   userForm : FormGroup;
   userData: any;
+  userRoleID=1;
   constructor(
     private _hederShowService:HeaderShowServiceService,
     private _masterService:MasterPagesServicesService,
@@ -51,12 +52,12 @@ export class UserComponent implements OnInit {
       "user_email": ['',[Validators.required,emailValidator]],
       "user_address": ['',Validators.required],
       "role": ['Admin',Validators.required],
-      "user_mobile":['',[Validators.required,Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]]
+      // "user_mobile":['',[Validators.required,Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]]
     })
   }
   ngAfterViewInit() {
-    this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
+    // this.dataSource.sort = this.sort;
+    // this.dataSource.paginator = this.paginator;
   }
   announceSortChange(sortState: Sort) {
     if (sortState.direction) {
@@ -96,29 +97,27 @@ export class UserComponent implements OnInit {
         };
       })
       this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
-      
+      this.dataSource.sort = this.sort;
+      this.dataSource.paginator = this.paginator;
     },error=>{
       this.toastr.error("","Something went wrong");
     })
   }
 
   submitUserData(){
-    this.userForm.removeControl("user_mobile");
+    // this.userForm.removeControl("user_mobile");
    
-    // console.log(this.userForm.value); 
     if(this.userForm.value.user_id == ''){
       this.userForm.removeControl("user_id");
     }else{
       this.userRoleData.forEach(ele=>{
-        if(ele.role ==this.userForm.controls.role ){}
+        if(ele.role == this.userForm.controls.role ){}
         this.userForm.controls.role.setValue(ele);
       })
     }
-    // console.log(this.userForm.value);
 
     if (this.userForm.valid) {
-      let roleId = this.userForm.controls.role.value.role_id
-      this._masterService.userSubmit(roleId, this.userForm.value).subscribe(res => {
+      this._masterService.userSubmit(this.userRoleID, this.userForm.value).subscribe(res => {
         this.userForm.reset();
         this.getUserData();
         this.toastr.success("", "Data Save Successfully")
@@ -128,11 +127,9 @@ export class UserComponent implements OnInit {
         this.userForm.controls[key].markAllAsTouched();
       });
     }
-  
   }
 
   editData(element){
-  
    this.userForm.patchValue(element);
    
    }
@@ -140,7 +137,7 @@ export class UserComponent implements OnInit {
    deleteData(element){
     let id = element.user_id;
     this._masterService.deleteUserController(id).subscribe(res=>{
-      this.getUserData;
+      this.getUserData();
       this.toastr.success("","Data Deleted Successfully")
     },
     error => {
@@ -157,4 +154,14 @@ export class UserComponent implements OnInit {
     this._hederShowService.submitButtonFlag.next(true);
   }
 
+  selectChangeFun(event){
+    let role = event.value
+    this.userRoleData.forEach(element => {
+      if(element.role === role){
+        this.userRoleID = element.role_id;
+      }
+    });
+     
+    
+  }
 }

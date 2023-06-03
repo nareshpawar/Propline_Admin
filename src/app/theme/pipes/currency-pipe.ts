@@ -6,7 +6,6 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class CurrenecyPipe implements PipeTransform {
   transform(input:number) {
     // return items.filter(item => item.id == id)[0];
-    // console.log(input);
     
     if (! isNaN(input) && input !== null) {
         var currencySymbol = '₹';

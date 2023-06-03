@@ -148,9 +148,6 @@ export class OurMissionComponent implements OnInit {
   }
 
   selectRow(event,row){
-    // console.log(event.checked);
-
-    // console.log(row);
     if(event.checked){
     this.missionForm.patchValue({
       image:row.image,
@@ -170,7 +167,6 @@ export class OurMissionComponent implements OnInit {
     return this.missionForm.get('missionModels') as FormArray;
   }
   deleteCard(i){
-    // console.log(this.missionModels.removeAt(i));
     this.missionModels.removeAt(i)
   }
 

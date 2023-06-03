@@ -85,6 +85,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
     SharedModule,
     ToastrModule.forRoot(), // ToastrModule added
     NgxChartsModule,
+   
   ],
   providers: [
     AppSettings,

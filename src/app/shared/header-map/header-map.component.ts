@@ -316,7 +316,6 @@ export class HeaderMapComponent implements OnInit {
   } 
 
   public onMapClick(e:any){
-    // console.log(e); 
   }
 
   public onMarkerClick(e:any, propertyId:number){ 

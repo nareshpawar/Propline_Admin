@@ -1,10 +1,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { OnlyNumberDirective } from './only-number.directive';
+// import { BulletTextBoxDirective } fro../../pages/masterPages/bullet-teext-box.directiveive';
 
 @NgModule({
   declarations: [
-    OnlyNumberDirective
+    OnlyNumberDirective,
+    // BulletTextBoxDirective
   ],
   exports: [
     OnlyNumberDirective

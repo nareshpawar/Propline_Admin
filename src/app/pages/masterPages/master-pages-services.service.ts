@@ -69,6 +69,11 @@ export class MasterPagesServicesService {
     return this.httpClient.get<any>(this.url + `/api/master/getMapData`);
     
   }
+
+  getCareerData(){
+    return this.httpClient.get<any>(this.url + `/api/careers`);
+
+  }
   ////////////////////////////////// Post Methods///////////////////////////////////////////
 
   getPropertyDetails(streetId,obj){
@@ -79,8 +84,6 @@ export class MasterPagesServicesService {
   }
 
   neighborhoodController(data,Id):Observable<any>{
-    // console.log(data);
-    // console.log(Id);
     return this.httpClient.post<any>(this.url + `/api/neighborhood?city_id=`+Id, data);
   }
 
@@ -111,8 +114,8 @@ export class MasterPagesServicesService {
 
   }
 
-  postOwnerDetails(formData,propertyId){
-    return this.httpClient.post<any>(this.url + `/api/owner?property_id=`+propertyId,formData);
+  postOwnerDetails(formData,propertyId,flag){
+    return this.httpClient.post<any>(this.url + `/api/owner?property_id=`+propertyId +`&doc_flag=`+flag,formData);
   }
 
   postTenentDetails(formData, ownerId){
@@ -122,6 +125,11 @@ export class MasterPagesServicesService {
 
   uploadImage(image){
     return this.httpClient.post<any>(this.url + `/api/master/banner`,image);
+
+  }
+
+  postCareerData(data){
+    return this.httpClient.post<any>(this.url + `/api/careers`,data);
 
   }
 /////////////////////////////////////////// DELETE ////////////////////////////////////
@@ -184,5 +192,9 @@ export class MasterPagesServicesService {
   deleteBannerImage(id:any){
     const headers:any = { "id": String(id) };
     return this.httpClient.delete(this.url + '/api/master/banner',{headers});
+  }
+
+  deleteCareerdata(id){
+    return this.httpClient.delete(this.url + '/api/careers?jobId='+id); 
   }
 }

@@ -1,0 +1,219 @@
+<div class="p-3">
+    <div class="theme-container">
+        <form action="" [formGroup]="careerForm">
+            <mat-card ngClass.lt-lg="p-0">
+              
+                <mat-card-title class="fw-500 text-center">
+                    Career
+                </mat-card-title>
+                <mat-card-content fxLayout="row wrap">
+                    <!-- <div fxFlex="20" class="px-2">
+                    </div>
+                    <div fxFlex="60" class="px-2">
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>Job Title</mat-label>
+                            <input matInput placeholder="Job Title" formControlName="jobId">
+                            <mat-error *ngIf="careerForm.get('jobId').errors?.required"> Job Title is required</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="20" class="px-2">
+        
+                    </div> -->
+                    <div fxFlex="20" class="px-2">
+                    </div>
+                    <div fxFlex="60" class="px-2">
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>Job Title</mat-label>
+                            <!-- <input matInput placeholder="Job Title" formControlName=""> -->
+                            <mat-select placeholder="Select Job Title" formControlName="jobType">
+                                <mat-option *ngFor="let job of jobTitles" [value]="job">
+                                    {{job}}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="careerForm.get('jobType').errors?.required">Job Type is required</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="20" class="px-2">
+                    </div>
+                    <div fxFlex="20" class="px-2">
+                    </div>
+                    <div fxFlex="60" class="px-2">
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>Job Description</mat-label>
+                            <input matInput placeholder="Job Description" maxlength="100" formControlName="jobSummary">
+                            <mat-error *ngIf="careerForm.get('jobSummary').errors?.required">Job Description is required</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="20" class="px-2">
+                    </div>
+                    <div fxFlex="20" class="px-2">
+                    </div>
+                    <div fxFlex="60" class="px-2">
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>Experience</mat-label>
+                            <mat-select placeholder="Select Experience" formControlName="experience">
+                                <mat-option *ngFor="let job of experience" [value]="job">
+                                    {{job}}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="careerForm.get('experience').errors?.required">Experience is required</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="20" class="px-2">
+                    </div>
+                    <div fxFlex="20" class="px-2">
+                    </div>
+                    <div fxFlex="60" class="px-2">
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>Salary</mat-label>
+                            <input matInput placeholder="Salary" maxlength="100" formControlName="salary">
+                            <mat-error *ngIf="careerForm.get('salary').errors?.required">Salary is required</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="20" class="px-2">
+                    </div>
+                    <div fxFlex="20" class="px-2">
+                    </div>
+                    <div fxFlex="60" class="px-2">
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>Qualifications</mat-label>
+                            <textarea matInput appBulletTextBox [(stringArray)]="qualification" rows="10"
+                            (input)="addInputTextForQualification($event)" ></textarea>
+                            <mat-error *ngIf="careerForm.get('qualifications').errors?.required">Description is required</mat-error>
+                        </mat-form-field>
+                        <!-- <div>
+                            <p class="uppercase m-2 fw-500">Qualifications</p>
+                          </div>
+                            <div class="editable list" contenteditable="true" formArrayName="qualifications">
+                                <ul
+                                  *ngFor="let property of careerForm['controls'].qualifications['controls']; index as i"
+                                  [formGroupName]="i">
+                                  <li>{{property.value}}</li>
+                                </ul>
+                        </div> -->
+                    </div>
+                    <div fxFlex="20" class="px-2">
+                    </div>
+                    <div fxFlex="20" class="px-2">
+                    </div>
+                    
+                    <div fxFlex="60" class="px-2">
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>Responsibilities</mat-label>
+                            <textarea matInput appBulletTextBox [(stringArray)]="responsibility"  rows="10" 
+                            (input)="addInputTextForResponsibility($event)"></textarea>
+                            <mat-error *ngIf="careerForm.get('responsibilities').errors?.required">Responsibilities is required</mat-error>
+                        </mat-form-field>
+                        <!-- <div>
+                            <p class="uppercase m-2 fw-500">Responsibilities</p>
+                          </div> -->
+                        <!-- <div class="editable list" contenteditable="true" formArrayName="responsibilities">
+                                <ul
+                                  *ngFor="let property of careerForm['controls'].responsibilities['controls']; index as i"
+                                  [formGroupName]="i">
+                                  <li>{{property.value}}</li>
+                                </ul>
+                        </div> -->
+                        <!-- <textarea  appBulletTeextBox [(stringArray)]="duplicate"></textarea> -->
+                    </div>
+                    <div fxFlex="20" class="px-2">
+                    </div>
+                    
+                    <div fxFlex="20" class="px-2">
+                    </div>
+                    <div fxFlex="20" class="px-2 my-4">
+                        <div fxLayout="row" fxLayoutAlign="start center" class="mat-typography">
+                            <label for="is_active">InActive</label>
+                            <mat-slide-toggle id="is_active" class="mx-2"  labelPosition="before"  
+                            formControlName="is_active" ></mat-slide-toggle>
+                            <label for="is_active">Active</label>
+
+                        </div>
+                    </div>
+                    <div fxFlex="100" class="px-2">
+                        <div fxlayout="row" fxlayoutalign="center center" class="p-2" ng-reflect-fx-layout="row"
+                            ng-reflect-fx-layout-align="center center"
+                            style="flex-direction: row; box-sizing: border-box; display: flex; place-content: center; align-items: center;">
+                            <button mat-raised-button="" style="background: #ffe241;"
+                                class="mat-focus-indicator uppercase mx-1 mat-raised-button mat-button-base"
+                                ng-reflect-color="aceent" (click)="submitCareerForm()">
+                                <span class="mat-button-wrapper">submit</span>
+                            </button>
+                            <button mat-raised-button="" style="background: #ffe241;"
+                                class="mat-focus-indicator uppercase mx-1 mat-raised-button mat-button-base" ng-reflect-color="aceent"
+                                (click)="clearForm()">
+                                <span class="mat-button-wrapper">Cancel</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- +++++++++++++++++++++++++++++++++++++ Table++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+                    <div fxFlex="100" class="px-2">
+                        <mat-form-field appearance="standard">
+                            <mat-label>Filter</mat-label>
+                            <input matInput (keyup)="applyFilter($event)" placeholder="Ex. name" #input>
+                        </mat-form-field>
+                        <div class="mat-elevation-z8">
+                            <table mat-table [dataSource]="dataSource" matSort
+                                (matSortChange)="announceSortChange($event)" class="mat-elevation-z8">
+    
+                                <ng-container matColumnDef="position">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                        sortActionDescription="Sort by position"> No. </th>
+                                    <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="Job Type">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                        sortActionDescription="Sort by jobType"> Job Title </th>
+                                    <td mat-cell *matCellDef="let element"> {{element.jobType}} </td>
+                                </ng-container>
+                            
+                                <ng-container matColumnDef="Job Summary" >
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 50%;"
+                                        sortActionDescription="Sort by jobSummary"> Job Description </th>
+                                    <td mat-cell *matCellDef="let element"> {{element.jobSummary}} </td>
+                                </ng-container>
+                                <!-- <ng-container matColumnDef="Qualification">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header 
+                                    sortActionDescription="Sort by qualifications"> Qualification </th>
+                                    <td mat-cell *matCellDef="let element">{{element.qualifications}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="Responsibility">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                        sortActionDescription="Sort by responsibilities"> Responsibility </th>
+                                    <td mat-cell *matCellDef="let element"> {{element.responsibilities}} </td>
+                                </ng-container> -->
+                               
+                                <ng-container matColumnDef="Is-Active">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                        sortActionDescription="Sort by is_active"> Is-Active </th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <p *ngIf="element.is_active">Active</p>
+                                        <p *ngIf="!element.is_active">Inactive</p></td>
+                                </ng-container>
+                               
+                                <ng-container matColumnDef="Action">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by Action"> Edit </th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <button mat-stroked-button (click)="editData(element)" style="background: green;" class=" mx-1 my-1">
+                                            <i class="material-icons" style="color: white;">edit</i>
+                                        </button>
+                                        <button mat-stroked-button (click)="deleteData(element)" class=" mx-1 my-1" style="background: red;">
+                                            <i class="material-icons" style="color: white;">delete</i>
+                                        </button>
+                                    </td>
+                                </ng-container>
+                                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                            </table>
+                            <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
+                                aria-label="Select page of periodic elements">
+                            </mat-paginator>
+                        </div>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </form>
+    </div>
+</div>

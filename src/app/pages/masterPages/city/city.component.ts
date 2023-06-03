@@ -108,8 +108,6 @@ export class CityComponent implements OnInit,OnDestroy {
 
   citiesController(name){
     let data ;
-    // console.log(this.cityForm.value);
-    
     if(this.cityForm.value.city_id != ''){
       data = { 
         "city":name,
@@ -122,7 +120,6 @@ export class CityComponent implements OnInit,OnDestroy {
     }
     
     this._masterPagesService.citiesController(data).subscribe(res=>{
-      // console.log(res);
       this.city.nativeElement.value='';
       this.getCitiesController();
     })
@@ -130,7 +127,6 @@ export class CityComponent implements OnInit,OnDestroy {
   }
 
   editData(data){
-    // console.log(data);
     this.cityForm.patchValue(data);
 
   }

@@ -290,7 +290,6 @@ export class FooterComponent implements OnInit {
 
   public onSubscribeFormSubmit(values:Object):void {
     if (this.subscribeForm.valid) {
-    //   console.log(values);
     }
   }
 

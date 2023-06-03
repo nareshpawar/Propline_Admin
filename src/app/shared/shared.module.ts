@@ -50,7 +50,7 @@ import { AgmCoreModule } from '@agm/core';
 import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
  
 import { PipesModule } from '../theme/pipes/pipes.module';
-import { DirectivesModule } from '../theme/directives/directives.module'; 
+// import { DirectivesModule } from '../theme/directives/directives.module'; 
 
 import { HeaderImageComponent } from './header-image/header-image.component';
 import { HeaderCarouselComponent } from './header-carousel/header-carousel.component';
@@ -121,7 +121,7 @@ import { DialogHeaderControlsComponent } from './dialog-header-controls/dialog-h
     AgmCoreModule,
     AgmSnazzyInfoWindowModule,
     PipesModule,
-    DirectivesModule   
+    // DirectivesModule   
   ],
   exports: [
     RouterModule,
@@ -166,7 +166,7 @@ import { DialogHeaderControlsComponent } from './dialog-header-controls/dialog-h
     AgmCoreModule,
     AgmSnazzyInfoWindowModule,
     PipesModule,
-    DirectivesModule, 
+    // DirectivesModule, 
     LogoComponent,
     HeaderImageComponent,
     HeaderCarouselComponent,

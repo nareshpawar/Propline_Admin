@@ -60,7 +60,6 @@ export class FeedbackTableComponent implements OnInit {
 
     getFeedbackData(){
       this._masterPagesService.getFeedbackDetails().subscribe(res=>{
-          // console.log("res",res);
           // this.ELEMENT_DATA = res.data;
           this.ELEMENT_DATA = res.data.map((PD,index) => {
             return {

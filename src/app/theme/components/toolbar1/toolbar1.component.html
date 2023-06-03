@@ -40,9 +40,9 @@
 <mat-toolbar id="main-toolbar" class="mat-elevation-z2" style="height: 60%;"> 
   <div class="theme-container" fxLayout="row" fxLayoutAlign="space-between center">
     <a class="logo"  ><app-logo></app-logo></a> <!--routerLink="/"-->
-    <div fxShow="false" fxShow.gt-sm class="horizontal-menu" *ngIf="changeHederFlag == true">          
+    <!-- <div fxShow="false" fxShow.gt-sm class="horizontal-menu" *ngIf="changeHederFlag == true">          
         <app-horizontal-menu [menuParentId]="0"></app-horizontal-menu>
-    </div> 
+    </div>  -->
     <div fxLayout="row" fxLayoutAlign="start center">
       <!-- <a routerLink="/account/favorites" mat-icon-button matTooltip="Favorites" fxShow="false" fxShow.gt-md *ngIf="changeHederFlag == true">
           <mat-icon [matBadge]="appService.Data.favorites.length" 

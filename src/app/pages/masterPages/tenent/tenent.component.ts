@@ -18,9 +18,6 @@ import { MasterPagesServicesService } from '../master-pages-services.service';
 })
 export class TenentComponent implements OnInit {
   @HostListener('window:scroll')
-
-
-
   tenentForm: FormGroup
   displayedColumns: string[] = ['position', 'Tenent_Name', 'Email', 'Mobile', 'Address', 'Created_On', 'Updated_On', 'Action']; //'Status','Owner',,'Aggrement_Start','Aggrement_End','DOB'
   dataSource;
@@ -99,9 +96,6 @@ export class TenentComponent implements OnInit {
           "created_on": ele["created_on"],
         };
       })
-    
-      console.log(this.tenentDetails);
-      
       this.dataSource = new MatTableDataSource(this.tenentDetails);
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
@@ -216,24 +210,24 @@ export class TenentComponent implements OnInit {
     this.pageServices.sendClickevent("scroll");
   }
   editData(element) {
-    console.log(element);
-    
     this.tenentForm.patchValue(element);
     this.tenentForm.controls.owner.setValue([element.owner.owner_id]);
-    this.tenentForm.controls.adhar_card.setValue([element.owner.adhar_path]);
-    this.tenentForm.controls.pan_card.setValue([element.owner.pan_card_path]);
-    this.tenentForm.controls.profile_photo.setValue([element.owner.profile_path]);
+    element.owner.adhar_path !== null ? 
+    this.tenentForm.controls.adhar_card.setValue([element.owner.adhar_path]) : 
+    this.tenentForm.controls.adhar_card.setValue(null) ;
+
+    element.owner.pan_card_path !== null ? 
+    this.tenentForm.controls.pan_card.setValue([element.owner.pan_card_path]):
+    this.tenentForm.controls.pan_card.setValue(null);
+    
+    element.owner.profile_path !== null ? 
+    this.tenentForm.controls.profile_photo.setValue([element.owner.profile_path]):
+    this.tenentForm.controls.profile_photo.setValue(null);
+    
     // this.tenentForm.controls.company_doc.setValue(element.owner.);
     // this.tenentForm.controls.other_doc.setValue(element.owner.);
     // this.tenentForm.controls.agreement_doc.setValue(element.owner.);
     this.countDays();
-    console.log( this.tenentForm);
-   
-    window.scroll({
-      top: 0,
-      left: 0,
-      behavior: 'smooth'
-    });
   }
 
   deleteData(element) {

@@ -23,7 +23,9 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { AngularFileViewerModule } from '@taldor-ltd/angular-file-viewer';
 import { FormsModule } from '@angular/forms';
 import { NgxIntlTelInputModule } from 'ngx-intl-tel-input';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CareerComponent } from './career/career.component';
+import { DirectivesModule } from 'src/app/theme/directives/directives.module';
+import { BulletTextBoxDirective } from './bullet-teext-box.directive';
 export const routes = [
   {   path: 'city', component: CityComponent, pathMatch: 'full'                  },
   {   path: 'neighborhood', component: NeighborhoodComponent, pathMatch: 'full'  },
@@ -40,7 +42,7 @@ export const routes = [
   {   path: 'tenent', component: TenentComponent, pathMatch: 'full'              },
   {   path: 'banner', component: BannerComponent, pathMatch: 'full'              },
   {   path: 'dashboard', component: DashboardComponent, pathMatch: 'full'        },
-
+  {   path: 'career', component: CareerComponent, pathMatch: 'full'              },
 ];
 
 @NgModule({
@@ -58,7 +60,9 @@ export const routes = [
                   UserComponent, 
                   TenentComponent, 
                   BannerComponent, 
-                  DashboardComponent,
+                  DashboardComponent, 
+                  CareerComponent,
+                  BulletTextBoxDirective
                 ],
   imports: [
     CommonModule,
@@ -69,7 +73,8 @@ export const routes = [
     NgxChartsModule,
     AngularFileViewerModule,
     FormsModule,
-    NgxIntlTelInputModule
+    NgxIntlTelInputModule,
+    DirectivesModule
   ]
 })
 export class MasterDataModule { }

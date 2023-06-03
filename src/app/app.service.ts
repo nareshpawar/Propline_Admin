@@ -1,6 +1,6 @@
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Property, Location } from './app.models';
@@ -33,6 +33,9 @@ export class AppService {
   public url = environment.url + '/assets/data/'; 
   public apiKey = 'AIzaSyAO7Mg2Cs1qzo_3jkKkZAKY6jtwIlm41-I';
   public pripertyData :any ;
+
+  loginAcc = new Subject();
+
   constructor(public http:HttpClient, 
               private bottomSheet: MatBottomSheet, 
               private snackBar: MatSnackBar,
@@ -387,10 +390,6 @@ export class AppService {
 
 
   public filterData(data, params?: any, sort?, page?, perPage?){ 
-    // console.log(params);
-    // console.log(sort);
-    // console.log(page);
-    // console.log(perPage);
     if(params){
       if(params.propertyType){
         data = data.filter(property => property.propertyType == params.propertyType.property_type_id)

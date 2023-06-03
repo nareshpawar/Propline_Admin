@@ -46,7 +46,7 @@
                       ng-reflect-fx-layout="row" 
                       ng-reflect-fx-layout-align="center center" 
                       style="flex-direction: row; box-sizing: border-box; display: flex; place-content: center; align-items: center;">
-                      <button mat-flat-button class="uppercase"
+                      <button mat-flat-button class="mat-focus-indicator uppercase mx-1 mat-raised-button mat-button-base"
                               style="background: #ffe241;"
                               type="submit"
                               (click)="submit()"
@@ -54,6 +54,11 @@
                               <span class="mat-button-wrapper">submit</span>
                       
                       </button>
+                    <button mat-raised-button="" style="background: #ffe241;"
+                        class="mat-focus-indicator uppercase mx-1 mat-raised-button mat-button-base" ng-reflect-color="aceent"
+                        (click)="clearForm()">
+                        <span class="mat-button-wrapper">Cancel</span>
+                    </button>
                       
                   </div>
               </div>
@@ -65,7 +70,7 @@
                       <mat-label>Filter</mat-label>
                       <input matInput (keyup)="applyFilter($event)" placeholder="Ex. name" #input>
                   </mat-form-field>
-                  <div class="mat-elevation-z8">
+                  <div class=" mat-elevation-z8">
                       <table mat-table [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)"
                           class="mat-elevation-z8">
                           <!-- Position Column -->

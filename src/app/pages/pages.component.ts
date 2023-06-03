@@ -8,6 +8,7 @@ import { MasterPagesServicesService } from './masterPages/master-pages-services.
 // import {MdSidenav} from "@angular/material";
 import { ToastrService } from 'ngx-toastr';
 import { PageServicesService } from './page-services.service';
+import { AppService } from '../app.service';
 @Component({
   selector: 'app-pages',
   templateUrl: './pages.component.html',
@@ -32,6 +33,8 @@ export class PagesComponent implements OnInit {
   sidebarFlag: boolean = true;
 
   clickEventSubscription:Subscription;
+  account: any;
+  logAcc: any;
   // @ViewChild('propertieSidebar') public propertieSidebar ;
   // @HostListener('window:resize', ['$event'])
   // onResize(event) {
@@ -45,8 +48,12 @@ export class PagesComponent implements OnInit {
   
   constructor(public appSettings:AppSettings, 
               public router:Router, private toastr: ToastrService,
-  @Inject(PLATFORM_ID) private platformId: Object,private _hederShowService:HeaderShowServiceService,
-    private _masterPagesService: MasterPagesServicesService, private pageServices:PageServicesService) {
+              private appService: AppService,
+              @Inject(PLATFORM_ID) private platformId: Object,
+              private _hederShowService:HeaderShowServiceService,
+              private _masterPagesService: MasterPagesServicesService, 
+              private pageServices:PageServicesService
+              ) {
     this.settings = this.appSettings.settings;  
     this._hederShowService.headerFlag.subscribe(res =>{
       this.changeHederFlag = res;
@@ -69,6 +76,12 @@ export class PagesComponent implements OnInit {
     this.toolbarTypeOption = this.settings.toolbar;    
     this.headerTypeOption = this.settings.header; 
     this.searchPanelVariantOption = this.settings.searchPanelVariant;
+    this.account = localStorage.getItem("userName");
+    this.appService.loginAcc.subscribe(res=>{
+        this.logAcc = res;
+    })
+
+    
   }
   
   public changeTheme(theme){
@@ -131,16 +144,6 @@ export class PagesComponent implements OnInit {
         }              
       }
     }
-  }
-
-  public scrollToTop2(){
-    // console.log("scroll");
-    
-    window.scroll({ 
-      top: 0, 
-      left: 0, 
-      behavior: 'smooth' 
-    });
   }
 
   public scrollToTop(){

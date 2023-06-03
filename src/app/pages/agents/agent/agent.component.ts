@@ -179,7 +179,6 @@ export class AgentComponent implements OnInit {
 
   public onContactFormSubmit(values:Object){
     if (this.contactForm.valid) { 
-      // console.log(values);
     } 
   }
 

@@ -1,5 +1,5 @@
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
+import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
@@ -8,9 +8,8 @@ import { ToastrService } from 'ngx-toastr';
 import { HeaderShowServiceService } from 'src/app/theme/components/header-show-service.service';
 import { MasterPagesServicesService } from '../master-pages-services.service';
 import { emailValidator } from 'src/app/theme/utils/app-validators';
-import { filter, Subscription } from 'rxjs';
-import { NavigationEnd, Router } from '@angular/router';
-import { SearchCountryField, PhoneNumberFormat, CountryISO } from 'ngx-intl-tel-input';
+import {  Subscription } from 'rxjs';
+import { SearchCountryField, CountryISO } from 'ngx-intl-tel-input';
 @Component({
   selector: 'app-owner',
   templateUrl: './owner.component.html',
@@ -46,7 +45,6 @@ export class OwnerComponent implements OnInit {
   panFlag2: boolean = false;
   panFlag3: boolean = false;
 
-
   separateDialCode = false;
   SearchCountryField = SearchCountryField;
   CountryISO = CountryISO;
@@ -66,14 +64,14 @@ export class OwnerComponent implements OnInit {
   adharCardTitle3;
   PanCardTitle3;
 
-
+  multipleFileUploadFlag : boolean = false;
+  extraDocs = [];
   constructor(
     private _liveAnnouncer: LiveAnnouncer,
     private _hederShowService: HeaderShowServiceService,
     private _masterService: MasterPagesServicesService,
     private fb: FormBuilder,
     private toastr: ToastrService,
-    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -91,7 +89,8 @@ export class OwnerComponent implements OnInit {
       "adharFile": null,
       "panFile": null,
       "profile": null,
-      "doc":null,
+      // "doc":null,
+      "extra_docs":null,
       "is_current_owner": false,
       "co_profile": null,
       "co_adhar_card": null,
@@ -114,10 +113,12 @@ export class OwnerComponent implements OnInit {
       "poa_adhar": null,
       "poa_pan": null,
       "poa_profile": null,
+     
     })
 
     this.getOwnerDetails();
     this.getProperty();
+    
   }
 
   // "owner":{"is_current_owner":true,"co_owner_details":{},"owner_name":""}
@@ -223,9 +224,11 @@ export class OwnerComponent implements OnInit {
     this.ownerForm.controls.co_owner_details.reset();
     this.ownerForm.controls.poa_owner_details.reset();
     this.ownerData = this.ownerDetails.find(item => item.owner_id === elementId);
-   
+    console.log(this.ownerData);
     
     this.ownerForm.patchValue(this.ownerData);
+    console.log(this.ownerForm.controls.extra_docs);
+
     if (this.ownerData.profile_path !== null) {
       this.profilePhotoFlag1 = true;
       this.ProfileImage  = this.ownerData.profile_path;
@@ -241,6 +244,20 @@ export class OwnerComponent implements OnInit {
       this.PanCardTitle  = this.ownerData.pan_card;
       this.ownerForm.controls.panFile.setValue([this.ownerData.pan_card_path]);
     }
+    // if(this.ownerData.extra_docs !== null && this.ownerData.extra_docs.length !== 0){
+    //   let extrsDocs= [];
+    //   this.ownerData.extra_docs.forEach(element => {
+    //     extrsDocs.push(element.path);
+    //   });
+      this.ownerForm.controls.extra_docs.setValue(null);
+    // }
+    this.extraDocs = [];
+    this.ownerData.extra_docs.forEach(element => {
+      this.extraDocs.push(element);
+    });
+    console.log(this.ownerForm.controls.extra_docs);
+    
+
     this.property?.forEach(ele => {
       if (this.ownerData.property.property_name !== undefined && ele?.property_name == this.ownerData.property.property_name) {
         this.ownerForm.controls.property_id.setValue(ele.propertyId);
@@ -340,62 +357,66 @@ export class OwnerComponent implements OnInit {
         "poa_owner_details": [this.ownerForm.value.poa_owner_details]
       }
     }
-
-
     let propert_id = this.ownerForm.value.property_id;
-    let profile = this.ownerForm.controls.profile.value !== null &&
+    let profile = (this.ownerForm.controls.profile.value !== null &&
                   this.ownerForm.controls.profile.value.length !== 0 && 
-                  this.ownerForm.controls.profile.value[0].file ? 
+                  this.ownerForm.controls.profile.value[0].file) ? 
                   this.ownerForm.controls.profile.value[0].file : 
-                  this.ownerForm.controls.profile.value[0];
+                  (this.ownerForm.controls.profile.value !== null ? this.ownerForm.controls.profile.value[0] : null);
 
     let adharFile = this.ownerForm.controls.adharFile.value !== null &&
                     this.ownerForm.controls.adharFile.value.length !== 0 &&
                     this.ownerForm.controls.adharFile.value[0].file ? 
                     this.ownerForm.controls.adharFile.value[0].file : 
-                    this.ownerForm.controls.adharFile.value[0];
+                    this.ownerForm.controls.adharFile.value !== null ? this.ownerForm.controls.adharFile.value[0] : null;
 
     let panFile = this.ownerForm.controls.panFile.value !== null &&
                   this.ownerForm.controls.panFile.value.length !== 0 &&
                   this.ownerForm.controls.panFile.value[0].file ? 
                   this.ownerForm.controls.panFile.value[0].file : 
-                  this.ownerForm.controls.panFile.value[0];
+                  this.ownerForm.controls.panFile.value !== null ?this.ownerForm.controls.panFile.value[0] : null;
 
     let co_profile = this.ownerForm.controls.co_profile.value !== null &&
                      this.ownerForm.controls.co_profile.value.length !== 0 &&
                      this.ownerForm.controls.co_profile.value[0].file ? 
                      this.ownerForm.controls.co_profile.value[0].file : 
-                     this.ownerForm.controls.co_profile.value[0];
+                     this.ownerForm.controls.co_profile.value !== null ? this.ownerForm.controls.co_profile.value [0] : null;
 
     let co_adhar_card = this.ownerForm.controls.co_adhar_card.value !== null &&
                         this.ownerForm.controls.co_adhar_card.value.length !== 0 &&
                         this.ownerForm.controls.co_adhar_card.value[0].file ? 
                         this.ownerForm.controls.co_adhar_card.value[0].file : 
-                        this.ownerForm.controls.co_adhar_card.value[0];
+                        this.ownerForm.controls.co_adhar_card.value !== null ? this.ownerForm.controls.co_adhar_card.value[0] :null ;
 
     let co_panFile = this.ownerForm.controls.co_panFile.value !== null &&
                      this.ownerForm.controls.co_panFile.value.length !== 0 && 
                      this.ownerForm.controls.co_panFile.value[0].file ? 
                      this.ownerForm.controls.co_panFile.value[0].file : 
-                     this.ownerForm.controls.co_panFile.value[0];
+                     this.ownerForm.controls.co_panFile.value !== null ? this.ownerForm.controls.co_panFile.value[0] : null;
 
     let poa_adhar = this.ownerForm.controls.poa_adhar.value !== null &&
                     this.ownerForm.controls.poa_adhar.value.length !== 0 &&
                     this.ownerForm.controls.poa_adhar.value[0].file ? 
                     this.ownerForm.controls.poa_adhar.value[0].file : 
-                    this.ownerForm.controls.poa_adhar.value[0];
+                    this.ownerForm.controls.poa_adhar.value !== null ? this.ownerForm.controls.poa_adhar.value[0] : null;
 
     let poa_pan = this.ownerForm.controls.poa_pan.value !== null &&
                   this.ownerForm.controls.poa_pan.value.length !== 0 &&
                   this.ownerForm.controls.poa_pan.value[0].file ? 
                   this.ownerForm.controls.poa_pan.value[0].file : 
-                  this.ownerForm.controls.poa_pan.value[0];
+                  this.ownerForm.controls.poa_pan.value !== null ? this.ownerForm.controls.poa_pan.value[0] : null;
 
     let poa_profile = this.ownerForm.controls.poa_profile.value !== null &&
                       this.ownerForm.controls.poa_profile.value.length !== 0 &&
                       this.ownerForm.controls.poa_profile.value[0].file ? 
                       this.ownerForm.controls.poa_profile.value[0].file : 
-                      this.ownerForm.controls.poa_profile.value[0];
+                      this.ownerForm.controls.poa_profile.value !== null ? this.ownerForm.controls.poa_profile.value[0] : null;
+    // let extra_docs :any = [];
+    // this.ownerForm.controls.extra_docs.value.forEach((element,i) => {
+    //   if(element.file){
+    //     extra_docs.push(element.file);
+    //   }
+    // });
     
     const formData: FormData = new FormData();
     formData.append("owner", JSON.stringify(ownerFormData));
@@ -426,10 +447,14 @@ export class OwnerComponent implements OnInit {
     if (poa_profile !== null) {
       formData.append("poa_profile", poa_profile);
     }
-
-
+    let extra_doc = this.ownerForm.controls.extra_docs.value;
+    if(extra_doc!== null && extra_doc.length != 0){
+      extra_doc?.forEach((element) => {
+        element.file? formData.append("extra_docs", element.file):null;
+      });
+    }  
     if (this.ownerForm.valid) {
-      this._masterService.postOwnerDetails(formData, propert_id).subscribe(res => {
+      this._masterService.postOwnerDetails(formData, propert_id,this.multipleFileUploadFlag).subscribe(res => {
         this.ownerForm.reset();
 
         this.getOwnerDetails();
@@ -453,6 +478,8 @@ export class OwnerComponent implements OnInit {
         this.ProfileImage3  = null;
         this.adharCardTitle3= null;
         this.PanCardTitle3  = null;
+        this.multipleFileUploadFlag = false;
+        this.extraDocs =[];
         if (res.statusCode == 204 || res.status == 'Failed') {
           this.toastr.error("", "Something went wrong")
         } else {
@@ -465,6 +492,51 @@ export class OwnerComponent implements OnInit {
         }
       )
     }
+  }
+
+  clearForm(){
+    this.ownerForm.reset();
+    this.profilePhotoFlag1 = false;
+    this.profilePhotoFlag2 = false;
+    this.profilePhotoFlag3 = false;
+  
+    this.AdharFlag1= false;
+    this.AdharFlag2= false;
+    this.AdharFlag3= false;
+  
+    this.panFlag1 = false;
+    this.panFlag2 = false;
+    this.panFlag3 = false;
+    this.ProfileImage   = null;
+    this.adharCardTitle = null;
+    this.PanCardTitle   = null;
+    this.ProfileImage2  = null;
+    this.adharCardTitle2= null;
+    this.PanCardTitle2  = null;
+    this.ProfileImage3  = null;
+    this.adharCardTitle3= null;
+    this.PanCardTitle3  = null;
+    this.extraDocs =[];
+  }
+
+
+  // getImage(imagePath,fileName) {
+  //   return this.http
+  //     .get(
+  //       imagePath,
+  //       {
+  //         responseType: 'arraybuffer',
+  //       }
+  //     )
+  //     .pipe(
+  //       map((response) => {
+  //         return new File([response], fileName);
+  //       })
+  //     );
+  // }
+
+  getDocument(){
+     this.multipleFileUploadFlag = true;
   }
 
   ngOnDestroy(): void {

@@ -11,7 +11,6 @@ export class PropertiesSearchResultsFiltersComponent implements OnInit {
   constructor() { }
 
   ngOnInit() { 
-    // console.log(this.searchFields);
     
   }
 
